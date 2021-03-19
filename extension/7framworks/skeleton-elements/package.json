@@ -1,0 +1,56 @@
+{
+  "_from": "skeleton-elements@^3.3.0",
+  "_id": "skeleton-elements@3.3.0",
+  "_inBundle": false,
+  "_integrity": "sha512-vynb/KHHZJ79xW0O9vmiFdqRboxM1VNmRnFP5qcCDa6wKLVd64BlnCFQRt8Ll0v41Qf7efXqo5mDr/9rcp1YCw==",
+  "_location": "/skeleton-elements",
+  "_phantomChildren": {},
+  "_requested": {
+    "type": "range",
+    "registry": true,
+    "raw": "skeleton-elements@^3.3.0",
+    "name": "skeleton-elements",
+    "escapedName": "skeleton-elements",
+    "rawSpec": "^3.3.0",
+    "saveSpec": null,
+    "fetchSpec": "^3.3.0"
+  },
+  "_requiredBy": [
+    "/framework7"
+  ],
+  "_resolved": "https://registry.npmjs.org/skeleton-elements/-/skeleton-elements-3.3.0.tgz",
+  "_shasum": "7298df4296de02925d152c05202f5031fa857e1f",
+  "_spec": "skeleton-elements@^3.3.0",
+  "_where": "C:\\xampp\\htdocs\\vendasOnline\\node_modules\\framework7",
+  "author": {
+    "name": "Vladimir Kharlampidi"
+  },
+  "bugs": {
+    "url": "https://github.com/nolimits4web/skeleton-elements/issues"
+  },
+  "bundleDependencies": false,
+  "deprecated": false,
+  "description": "Skeleton elements (aka UI Skeletons, Skeleton Screens, Ghost Elements) - UI for improved perceived performance",
+  "homepage": "https://github.com/nolimits4web/skeleton-elements#readme",
+  "keywords": [
+    "skeleton",
+    "ghost",
+    "lazy",
+    "lazy-loading",
+    "loader",
+    "placeholder",
+    "performance",
+    "vue",
+    "vuejs",
+    "react",
+    "svelte"
+  ],
+  "license": "MIT",
+  "main": "skeleton-elements.css",
+  "name": "skeleton-elements",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nolimits4web/skeleton-elements.git"
+  },
+  "version": "3.3.0"
+}
