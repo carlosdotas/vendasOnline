@@ -30,7 +30,7 @@
 	<div data-options="region:'center'" border="0" class="fundoImg section_center sombra_Interna_foot " style="padding: 5px">
 
 		<div class="easyui-layout" fit="true">
-			<div data-options="region:'west'" class="produtos" border="0" style="width:500px;padding: 5px;">
+			<div data-options="region:'west'" class="produtos" border="0" style="width:550px;padding: 5px;">
 
 				<div class="easyui-layout" fit="true" >
 					<div data-options="region:'north'" style="padding-bottom:10px" border="0">
@@ -54,7 +54,7 @@
 								<img src='`+row.imgsSelected+`' >
 							</div>
 							<div class='col-10' style:'width: 250px'>
-								Nome: <b style='font-size:14px'>`+row.produto+`</b><br>
+								Nome: <b style='font-size:14px'>`+row.produto.toUpperCase() +`</b><br>
 								Preço: <b style='font-size:14px;color:red'>R$ `+((row.preco-0).toFixed(2))+`</b><br>
 								Codigo: <b style='font-size:10px;'>`+row.cod+`</b><br>
 
@@ -183,13 +183,20 @@
 	.section_north .row{
 		padding-right: 15px;
 	}
+
+	.datagrid-row-selected {
+	    background: #77A7FF;
+	    color: #fff;
+	}
+
 	
 	#codigo{
+		background: #77A7FF;
+		color: #fff;
 		width: 100%;
 		text-align: center;
 		font-size: 20px;
 		height: 50px;
-		background-color: #ddd;
 		font-family: Arial Black;
 	}
 
