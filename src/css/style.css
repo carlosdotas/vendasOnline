@@ -1,0 +1,76 @@
+*{
+	font-family: verdana
+}
+input, .inputs{
+    background-color: #FFFFCC;
+    padding-left: 5px;
+    border: 1px solid #D4D4D4;
+    margin: 0;
+    font-size: 16px;
+    box-shadow: inset 1px 1px 2px 0px rgb(0 0 0 / 45%);
+    border-radius: 5px 5px 5px 5px;
+}
+
+
+
+.header{
+	height:5px;
+}
+.section{
+
+}
+.section.tabs-title{
+}
+.section .easyui-tabs{
+
+}
+.section .easyui-tabs .tabs-tool {
+	border-width: 0px;
+	border-bottom-width: 1px;
+}    	
+
+.section .section_north{
+	border-top-width: 0px;
+	border-right-width: 0px;
+	border-left-width: 0px;
+}
+.section .section_center{
+	border-top-width: 0px;
+	border-right-width: 0px;
+	border-left-width: 0px;
+}		
+.footer{
+	padding: 3px
+}
+/*------------------------------------------------------------*/
+.sombra{
+	box-shadow: 2px 2px 5px -2px rgba(0,0,0,0.75);
+}
+.sombra_Interna{
+	box-shadow: inset 2px 2px 5px -2px rgba(0,0,0,0.75);
+}
+.sombra_Interna_foot{
+	box-shadow: inset 0px 1px 2px 0px rgba(0,0,0,0.45);    		
+}
+.gradiente1{
+	background: rgba(255,255,255,1);
+	background: linear-gradient(to bottom, rgba(255,255,255,1) 0%, rgba(246,246,246,1) 47%, rgba(237,237,237,1) 100%);
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#ededed', GradientType=0 );    	
+}
+/*------------------------------------------------------------*/
+.fundoImg{
+	/*background: url(../imgs/Wallpaper_1366x768.jpg);
+	background-repeat: no-repeat;
+	background-size: 100% 100%;
+	background-position: center;
+	background: rgba(0, 0, 0, 0.4);*/
+}			
+/*------------------------------------------------------------*/
+.fundoBlue{background-color: #F0F2F5;}
+.blue-05{color: #ECF3FF;}
+.blue-30{color: #AAC9FF;}
+.blue-40{color: #77A7FF;}
+.blue-60{color: #1877F2;}
+.blue-70{color: #2851A3;}
+.blue-80{color: #1D3C78;}
+
