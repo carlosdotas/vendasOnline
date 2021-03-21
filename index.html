@@ -12,36 +12,59 @@
     <script type="text/javascript" src="extension/jquery-easyui/jquery.easyui.min.js"></script> 
     <script type="text/javascript" src="extension/uikit-3.6.18/js/uikit.min.js"></script>
 	<script type="text/javascript" src="extension/uikit-3.6.18/js/uikit-icons.min.js"></script> 
-    <style type="text/css">
-    
-    </style>  
+	<script type="text/javascript" src="src/js/funcoes.js"></script> 
+	<script type="text/javascript" src="main.js"></script>  
 </head>
-<body class="fundoBlue">
+<body >
 	<div class="easyui-layout " fit="true">
 	    <div data-options="region:'center'" border="0" class="section fundoBlue">
-			<div id="secttionTab"  data-options="{
-											tools:[{
-												iconCls:'icon-add',
-												handler:function(){
-													alert('add')
-												}
-											},{
-												iconCls:'icon-save',
-												handler:function(){
-													alert('save')
-												}
-											}]
-										}" class="easyui-tabs" border="0" fit="true" plain="true" >
-			    <div title="vendas" href="modulos/vendas/index.html" >
-
-					
-
-			    </div>
-			</div>	    	
+			<div id="secttionTab" ></div>	    	
 	    </div>
 	</div>
 	<script type="text/javascript">
-		
+
+
+		(function( $ ){
+			$.fn.easuiTabs = function(dados){
+
+				var objecto = this;
+				
+				if(!objecto[0].innerHTML){
+					objecto.tabs({
+						border:0,
+						fit:true,
+						plain:true,
+						tools:[{
+							iconCls:'icon-add',
+							handler:function(){
+								alert('add')
+							}
+						},{
+							iconCls:'icon-save',
+							handler:function(){
+								alert('save')
+							}
+						}]
+					});
+				}	
+				dados.forEach(function(data){
+					objecto.tabs('add',data);	
+				});
+
+				return objecto[0].innerHTML;
+
+			}
+		})( jQuery );
+
+		$('#secttionTab').easuiTabs([
+			{
+			    title:'Venda',
+			    href:"modulos/vendas/index.html"
+			}	
+		]);
+
+
+
 	</script>
 </body>
 </html>

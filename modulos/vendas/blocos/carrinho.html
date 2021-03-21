@@ -1,0 +1,83 @@
+<style type="text/css">
+	.venda_detalhes{
+		height: 60px;
+		overflow-x: hidden;
+		padding-left: 10px; 
+		padding-right: 10px;
+	}
+	.venda_detalhes input{
+		width: 100%
+	}
+	.venda_detalhes label{
+		margin:0px;
+		margin-top: 5px;
+		font-size: 10px;
+	}	
+	.venda_detalhes .col{
+		padding-right: 0px;
+	}	
+	.venda_detalhes .row{
+		padding-right: 15px;
+	}
+</style>
+<div class="easyui-layout " fit="true">
+    <div data-options="region:'north'" border="0" class=" gradiente1"  >
+    	
+    </div>
+    <div data-options="region:'center'" border="0" >
+    	
+		<div class="easyui-layout" fit="true" >
+		    <div data-options="region:'center'" border="0" >
+		    	
+				<table class="easyui-datagrid" fit="true" border="0" title="Carrinho">
+					<thead>
+						<tr>
+							<th data-options="field:'code'">Code</th>
+							<th data-options="field:'name'">Name</th>
+							<th data-options="field:'price'">Price</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td>001</td><td>name1</td><td>2323</td>
+						</tr>
+						<tr>
+							<td>002</td><td>name2</td><td>4612</td>
+						</tr>
+					</tbody>
+				</table>	
+
+		    </div>
+		    <div data-options="region:'east'" border="0" style="padding: 10px; width:230px;background-color: #eee">
+	
+				<label>CLIENTE:</label>
+				<input name="valorTotal" style="width: 100%;margin-bottom: 5px ">	
+		
+				<label>VALOR TOTAL:</label>
+				<input name="valorTotal" style="width: 100%;margin-bottom: 5px ">	
+				<label>VALOR PAGO:</label>
+				<input name="valorPago" style="width: 100%;margin-bottom: 5px ">	
+				<label>TROCO:</label>
+				<input name="valorTroco" style="width: 100%;margin-bottom: 5px ">	
+				<hr>	
+				<label>INFORMAÇÕES:</label>
+				<input name="valorTotal" style="width: 100%;margin-bottom: 5px; height: 80PX">	
+				<hr>							
+				[F2] Select Busca <br>
+				[F5] Finaliza <br>
+				[F9] Imprime						    	
+		    </div>
+
+		</div>
+
+
+
+
+    </div>
+</div>
+
+
+
+
+
+
