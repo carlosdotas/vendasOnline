@@ -36,39 +36,93 @@
 
 <script type="text/javascript">
 
-	$('#listaProdutos').datalistTemplate({
-		//url:"server.php?json=produtos",
-		input:"#codigo",
-		colMysql:'produto',
-		template:'#linhas_Produtos',
-		keyup:false
-	});	
 
-	function buscar(value,col){
-		$().Deley(function(){
-			$('#listaProdutos').datalist({
-				url:'server.php?json=produtos&'+col+'='+value
-			});				
-		})
+//////Inicia Modulo
+/////////////////////////////////////////////////////////////////////////////
+$( document ).ready(function() {
+	$('#codigo').focus();
+});
+
+//////Cria Carrinho
+/////////////////////////////////////////////////////////////////////////////
+var criaCarrinhoDeCompras = lista({
+	onSet:(value)=>{
+		//console.log(criaCarrinhoDeCompras);
 	}
+});
 
+//////Cria Lista
+/////////////////////////////////////////////////////////////////////////////
+$('#listaProdutos').datalistTemplate({
+	//url:"server.php?json=produtos",
+	input:"#codigo",
+	colMysql:'produto',
+	template:'#linhas_Produtos',
+	keyup:false
+});	
 
-	$('#codigo').buscar({
-		onTextDetect:function(value){
-			buscar(value.val,'produto');
-		},
-		onMoneyDetect:function(value){
-			buscar(value.val,'preco');
-		},
-		onCodeDetect:function(value){
-			buscar(value.val,'cod');
-		},		
-		onSend:function(value){
-			buscar('***');
-		},
-		onClean:function(value){
-			buscar('***');
+//////Cria Busca
+/////////////////////////////////////////////////////////////////////////////
+function buscar(value,col){
+	$().Deley(function(){
+		$('#listaProdutos').datalist({
+			url:'server.php?json=produtos&'+col+'='+value
+		});				
+	})
+}
+
+//////Cria Buscador
+/////////////////////////////////////////////////////////////////////////////
+function addNaLista(value){
+	criaCarrinhoDeCompras.add(value);
+	var listaCarrinho = [];
+	$.each(criaCarrinhoDeCompras.lista, function( index, value ) {
+		listaCarrinho.push(value);
+	});				
+	$('#'+tableSelect).datalistTemplate({
+		textField:'produto',
+		data: listaCarrinho.reverse(),
+		template:'#linhas_Carrinho',
+	});	
+};
+
+//////Cria Buscador
+/////////////////////////////////////////////////////////////////////////////
+$('#codigo').buscar({
+	onTextDetect:function(value){
+		buscar(value.val,'produto');
+	},
+	onMoneyDetect:function(value){
+		buscar(value.val,'preco');
+	},
+	onCodeDetect:function(value){
+		buscar(value.val,'cod');
+	},		
+	onSend:function(value){
+
+		if(value.type=='money'){
+			addNaLista({
+				cod:mikrotime(),
+				produto:"Produdo Avulso",
+				preco:value.val,
+				qnt:1,
+			});
 		}
-	});
+
+		if(value.type=='code'){
+			$.getJSON('server.php?json=produtos&cod='+value.val, function(resultado){
+				addNaLista(resultado.rows[0]);
+			});
+		}
+		
+		buscar('***');
+	},
+	onClean:function(value){
+		buscar('***');
+	}
+});
+
+
+
 
 </script>

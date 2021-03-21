@@ -41,12 +41,12 @@ const lista = (data) =>{
 	
 	//////////////////////////////////////////////////////////////////
 	objeto.add = (arry)=>{
-		var codigo = arry.codigo;
+		var codigo = "cod_"+arry.cod;
 		if(!arry.qnt)arry.qnt=1;
 		if(objeto.lista[codigo]){
 			arry.qnt = (objeto.lista[codigo].qnt+arry.qnt);
 		}
-		arry.total = arry.qnt*arry.preco;
+		arry.total = (arry.qnt*arry.preco).toFixed(2);
 		objeto.lista[codigo] = arry;
 		onSet(objeto);		
 	}

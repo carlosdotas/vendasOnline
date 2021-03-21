@@ -8,15 +8,15 @@
 		///////// Parametros
 		//////////////////////////////////////////////////////////////////
 		let objeto = {
-			fit:"true",
+			fit:true,
 			border:0,
-			pageSize:"10",
+			pageSize:10,
 			lines:true,
 			pagination:true,
 			textFormatter:function(value,row){
 				var templateOut = $(params.template).html();
 				$.each(row, function( index, value ) {
-				  	templateOut = templateOut.replace("{"+index+"}", value);
+				  	if(templateOut)templateOut = templateOut.replace("{"+index+"}", value);
 				});
 				return templateOut;
 			}
@@ -42,7 +42,7 @@
 					url:params.url+'&'+params.colMysql+'='+$(params.input).val(),
 					onLoadSuccess:function(){
 						$(dataListid).datalist('selectRow',0);	
-						console.log('Buscando');
+						//console.log('Buscando');
 					}
 				});
 			},500);
@@ -83,6 +83,34 @@
 	}
 })( jQuery );
 
+//////////////////////////////////////////////////////////////////
+//Auto key UP
+//////////////////////////////////////////////////////////////////
+(function( $ ){
+	$.fn.teclas = function(dados){
+		if(!dados.tipo)dados.tipo = "keydown";
+		$( this ).bind( dados.tipo, function(event) {
+			//console.log(event.which);
+			$.each(dados, function( index, value ) {
+				var tecla = event.originalEvent.key;
+				
+				if(tecla==index){
+					event.preventDefault();
+					dados[index]();
+					return this;
+				}			
+			});
+		});
+
+		$( this ).bind( 'keydown', function(event) {
+			//dados.onDown();
+		});
+		$( this ).bind( 'keyup', function(event) {
+			//dados.onKeyup();
+		});
+
+	}
+})( jQuery );
 
 //////////////////////////////////////////////////////////////////
 //Funçao de Busca Jquery

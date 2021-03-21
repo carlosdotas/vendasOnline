@@ -8,18 +8,59 @@
 		<div class="easyui-layout" fit="true">
 		    <div data-options="region:'west',split:true,title:'Termina: CAIXA1'" href="modulos/vendas/blocos/produtos.html" border="0" style="width:360px;"></div>
 		    <div data-options="region:'center'"  style="background:#eee;">
-				<div class="easyui-tabs" fit="true" plain="true">
-				    <div title="Venda: 01" class="venda_carrinho" ></div>
-				</div>	    	
+				<div class="tabDeCarrinho" ></div>	    	
 		    </div>
 		</div>
 	</div>
 </div>
 <script type="text/javascript">
+//////Parametros do Modulos
+/////////////////////////////////////////////////////////////////////////////
+var tableSelect = '';
 
-	$.get( "modulos/vendas/blocos/carrinho.html", function( data ) {
-		$( ".venda_carrinho" ).html( data );
-		$.parser.parse('.venda_carrinho');
+//////Inicia Modulo
+/////////////////////////////////////////////////////////////////////////////
+$( document ).ready(function() {
+	addTabeCarrinho();
+
+});
+
+//////AbreTabDeCarrinho
+/////////////////////////////////////////////////////////////////////////////
+$('.tabDeCarrinho').tabs({
+    fit:true,
+    plain:true,
+    border:0,
+    onSelect:function(value,rows){
+        tableSelect=value;
+    }
+});
+
+//////AbreTabDeCarrinho
+/////////////////////////////////////////////////////////////////////////////
+function addTabeCarrinho(dados){
+	var vendaID = getCodTimer();
+	$('.tabDeCarrinho').tabs('add',{
+	    title:'venda_'+vendaID,
+	    href:"modulos/vendas/blocos/carrinho.html#"+vendaID,
+	    closable:true
 	});
 
+}
+
+//////Cria Buscador
+/////////////////////////////////////////////////////////////////////////////
+$('body').teclas({
+	F2:function(){
+		$('#'+tableSelect).select();							
+	},
+	F4:function(){
+		addTabeCarrinho();							
+	},		
+	F9:function(){
+		var carrinhoJson = JSON.stringify(criaCarrinhoDeCompras);				
+		postPrint(carrinhoJson,'modulos/pdv/print.php');							
+	},
+
+});
 </script>

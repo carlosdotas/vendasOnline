@@ -26,23 +26,7 @@
     <div data-options="region:'center'" border="0" >
 		<div class="easyui-layout" fit="true" >
 		    <div data-options="region:'center'" border="0" >
-				<table class="easyui-datagrid" fit="true" border="0" title="Carrinho">
-					<thead>
-						<tr>
-							<th data-options="field:'code'">Code</th>
-							<th data-options="field:'name'">Name</th>
-							<th data-options="field:'price'">Price</th>
-						</tr>
-					</thead>
-					<tbody>
-						<tr>
-							<td>001</td><td>name1</td><td>2323</td>
-						</tr>
-						<tr>
-							<td>002</td><td>name2</td><td>4612</td>
-						</tr>
-					</tbody>
-				</table>	
+				<div id="listaCarrinho"></div>
 		    </div>
 		    <div data-options="region:'east'" border="0" style="width:230px;background-color: #eee">
 				<div class="easyui-layout" fit="true">
@@ -66,8 +50,26 @@
 		</div>
     </div>
 </div>
-
-
+<!-------------------------------------------------------------------->
+<!----------------------------TENPLATES------------------------------->
+<!-------------------------------------------------------------------->
+<template id="linhas_Carrinho">
+	<div class='row' style='padding:5px;'>
+		<div class='col-2 text-center'>
+			<img src='{imgsSelected}' >
+		</div>
+		<div class='col-10' style="width: 250px">
+			<b style='font-size:14px'>{produto}</b><br>
+			Preço: <b style='font-size:14px;color:red'>R$ {preco}</b> X <b style='font-size:14px;color:red'>{qnt}</b> = <b style='font-size:18px;color:red'>{total}</b><br>
+			Codigo: <b style='font-size:10px;'>{cod}</b><br>
+		</div>							
+	</div>	
+</template>
+<script type="text/javascript">
+//////Inicia Modulo
+/////////////////////////////////////////////////////////////////////////////
+$('#listaCarrinho').attr('id',tableSelect);
+</script>
 
 
 
