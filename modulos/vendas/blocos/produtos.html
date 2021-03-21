@@ -4,14 +4,13 @@
 		color: #fff;
 		width: 100%;
 		text-align: center;
-		font-size: 20px;
-		height: 50px;
+		font-size: 18px;
 		font-family: Arial Black;
 	}
 </style>
 
 <div class="easyui-layout" fit="true">
-    <div data-options="region:'north',split:true" style="height:70px;padding: 5px;background-color: #ddd">
+    <div data-options="region:'north',split:true" style="height:0px;padding: 5px;background-color: #ddd">
     	<input name="codigo" id="codigo" autocomplete="off" placeholder="BURCAR / PREÇO [F2]">
     </div>
     <div data-options="region:'center',title:'PRODUTOS'" >
@@ -19,54 +18,57 @@
     </div>
 </div>
 
-
-
-
-
-
-
+<!-------------------------------------------------------------------->
+<!----------------------------TENPLATES------------------------------->
+<!-------------------------------------------------------------------->
+<template id="linhas_Produtos">
+	<div class='row' style='padding:5px;'>
+		<div class='col-2 text-center'>
+			<img src='{imgsSelected}' >
+		</div>
+		<div class='col-10' style="width: 250px">
+			<b style='font-size:14px'>{produto}</b><br>
+			Preço: <b style='font-size:14px;color:red'>R$ {preco}</b><br>
+			Codigo: <b style='font-size:10px;'>{cod}</b><br>
+		</div>							
+	</div>	
+</template>
 
 <script type="text/javascript">
 
-	$('#listaProdutos').datalist({
-		fit:"true",
-		border:0,
-		pageSize:"10",
-		lines:true,
-		url:"server.php?json=produtos",
-		pagination:true,
-		textFormatter:function(value,row){
-			return `
-			<div class='row' style='padding:5px;'>
-				<div class='col-2 text-center'>
-					<img src='`+row.imgsSelected+`' >
-				</div>
-				<div class='col-10' style:'width: 250px'>
-					<b style='font-size:14px'>`+row.produto.toUpperCase() +`</b><br>
-					Preço: <b style='font-size:14px;color:red'>R$ `+((row.preco-0).toFixed(2))+`</b><br>
-					Codigo: <b style='font-size:10px;'>`+row.cod+`</b><br>
+	$('#listaProdutos').datalistTemplate({
+		//url:"server.php?json=produtos",
+		input:"#codigo",
+		colMysql:'produto',
+		template:'#linhas_Produtos',
+		keyup:false
+	});	
 
-				</div>							
-			</div>`;
-		}
-
-	});
-
-
-	var timeout = null;
-	$('#codigo').keyup(function() {
-		clearTimeout(timeout);
-		timeout = setTimeout(() => {
-
+	function buscar(value,col){
+		$().Deley(function(){
 			$('#listaProdutos').datalist({
-				url:'server.php?json=produtos&produto='+$("#codigo").val(),
-				onLoadSuccess:function(){
-					$('#listaProdutos').datalist('selectRow',0);	
-				}
-			});
+				url:'server.php?json=produtos&'+col+'='+value
+			});				
+		})
+	}
 
 
-		}, 400);
+	$('#codigo').buscar({
+		onTextDetect:function(value){
+			buscar(value.val,'produto');
+		},
+		onMoneyDetect:function(value){
+			buscar(value.val,'preco');
+		},
+		onCodeDetect:function(value){
+			buscar(value.val,'cod');
+		},		
+		onSend:function(value){
+			buscar('***');
+		},
+		onClean:function(value){
+			buscar('***');
+		}
 	});
 
 </script>

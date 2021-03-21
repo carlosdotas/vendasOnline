@@ -6,7 +6,6 @@
 ///////// Metodos
 ///////////////////////////////////////////////////
 $( document ).ready(function(){
-/*
 var criaCarrinhoDeCompras = lista({
 	onSet:(value)=>{
 		console.log(criaCarrinhoDeCompras);
@@ -55,5 +54,8 @@ criaCarrinhoDeCompras.edit({
 	preco:3,
 	qnt:8,
 });
-*/
+
 })
+
+
+

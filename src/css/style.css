@@ -1,7 +1,7 @@
 *{
 	font-family: verdana
 }
-input, .inputs{
+input, textarea{
     background-color: #FFFFCC;
     padding-left: 5px;
     border: 1px solid #D4D4D4;

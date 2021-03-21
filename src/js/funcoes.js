@@ -83,3 +83,177 @@ function SESSION(data){
 	};
 	return objeto;
 }
+
+///////////////////////////////////////////////////
+///////// Outras Funcoes
+//////////////////////////////////////////////////
+function getJSON(url){
+	$.ajaxSetup({
+	    async: false
+	});
+
+ 	var saida;
+	$.getJSON(url, function(resultado){
+		saida = resultado;
+	});
+
+	return saida;			
+}
+
+///////////////////////////////////////////////////
+///////// Outras Funcoes
+//////////////////////////////////////////////////
+function buscarNomeGoogle($cod){
+	return getJSON(home+'/buscar_produtos/?cod='+$cod).nome;
+}
+
+///////////////////////////////////////////////////
+///////// Outras Funcoes
+//////////////////////////////////////////////////
+function mikrotime(){
+	var date  = new Date();
+	var timestamp = Math.round(date.getTime()/1000 | 0); 
+	return timestamp;
+}
+
+///////////////////////////////////////////////////
+///////// Outras Funcoes
+//////////////////////////////////////////////////
+function dataHota(){
+	return new Date();	
+}
+
+///////////////////////////////////////////////////
+///////// Outras Funcoes
+//////////////////////////////////////////////////
+function getRandomInt(min=1000, max=9999) {
+  min = Math.ceil(min);
+  max = Math.floor(max);
+  return Math.floor(Math.random() * (max - min)) + min;
+}
+
+///////////////////////////////////////////////////
+///////// Outras Funcoes
+//////////////////////////////////////////////////
+function getCodTimer(min=1000, max=9999) {
+  min = Math.ceil(min);
+  return mikrotime()+''+getRandomInt();
+}
+
+
+///////////////////////////////////////////////////
+///////// Outras Funcoes
+//////////////////////////////////////////////////
+function geraCodigo(){
+	return calcMD5(mikrotime()+'_'+getRandomInt(1000, 9999));
+}
+
+///////////////////////////////////////////////////
+///////// Outras Funcoes
+//////////////////////////////////////////////////
+function isNumber(n) {
+    return !isNaN(parseFloat(n)) && isFinite(n);
+}
+
+///////////////////////////////////////////////////
+///////// Outras Funcoes
+//////////////////////////////////////////////////
+function postPrint(data,url){
+
+    $('body').append('<iframe name="iframePrint" id="iframePrint" src="'+url+'"></iframe>');
+    $('body').append('<form action="'+url+'" method="post" target="iframePrint" id="postToIframe"></form>');
+    $('#postToIframe').append('<input type="hidden" name="carrinho" value=\''+data+'\' />');
+    $('#postToIframe').submit().remove();;
+    document.getElementById("iframePrint").contentWindow.print();
+
+}
+
+
+///////////////////////////////////////////////////
+///////////////////////////////////////////////////
+///////////////////////////////////////////////////
+///////////////////////////////////////////////////
+///////////////////////////////////////////////////
+///////// Funcões  Easyui
+//////////////////////////////////////////////////
+function dialog(dataIn){
+    var id          =   mikrotime();
+    var valuesInput =   dataIn.valuesInput; delete dataIn.valuesInput;
+    var onClose     =   dataIn.onClose; delete dataIn.onClose;
+    var onOpen	    =   dataIn.onOpen; delete dataIn.onOpen;
+
+    var dataIn = unirObj({
+        title: 'Title',
+        width:  550,
+        closed: false,
+        border:  false, 
+        modal:  true,
+        buttons:[{
+            text:'Salvar',
+            id:'Salvar_'+id,
+            handler:function(){
+                var inputs = {};
+                $.each($('#form_'+id).serializeArray(), function( index, value ) {
+                    inputs[value.name]=value.value;
+                });                    
+                dataIn.onSave({
+                    id:id,
+                    inputs:inputs
+                });                    
+            }
+        },{
+            text:'Fechar',
+            handler:function(){
+                $('#'+id).dialog('close');
+            }
+        }],
+        onClose:function(){  
+            onClose();
+            $('#'+id).dialog('destroy');                
+        }
+    },dataIn);
+
+    $.get(dataIn.href, function( data ) {
+        delete dataIn.href;
+        dataIn.content = '<form style="padding:5px" id="form_'+id+'">'+data+'<form>';            
+        $('<div id="'+id+'" ></div>').dialog(dataIn);
+
+        $( "#"+id ).keyup(function(event) {
+			if ( event.which == 27 ) {
+				$('#'+id).dialog('close');
+			}else if( event.which == 13 ){
+				$('#Salvar_'+id).click();				
+			}			
+		});
+
+        $.each(valuesInput, function( index, value ) {
+            $('[name="'+index+'"]').val(value);
+        });
+
+        $("#"+id).parent().find('input')[0].focus();
+
+        onOpen(data);
+    });        
+
+}
+
+///////////////////////////////////////////////////
+///////////////////////////////////////////////////
+///////////////////////////////////////////////////
+///////////////////////////////////////////////////
+///////////////////////////////////////////////////
+///////// Funcões  Easyui
+//////////////////////////////////////////////////
+function tabs(array,select){
+    array.map(function(dados){
+        $('#contentTab').tabs('add',{
+            href:dados.href,
+            title:dados.title,
+        //    closable:false
+        });
+    });
+    setTimeout(function(){ 
+        $('#contentTab').tabs('select',select);
+        $('#codigo').focus()
+    }, 500);
+}

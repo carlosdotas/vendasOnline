@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <!-- Required meta tags-->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, viewport-fit=cover">
     <link rel="stylesheet" href="extension/jquery-easyui/themes/bootstrap/easyui.css">
@@ -12,7 +11,9 @@
     <script type="text/javascript" src="extension/jquery-easyui/jquery.easyui.min.js"></script> 
     <script type="text/javascript" src="extension/uikit-3.6.18/js/uikit.min.js"></script>
 	<script type="text/javascript" src="extension/uikit-3.6.18/js/uikit-icons.min.js"></script> 
+	<script type="text/javascript" src="extension/jquery.maskMoney.min.js"></script> 
 	<script type="text/javascript" src="src/js/funcoes.js"></script> 
+	<script type="text/javascript" src="src/js/jquery.funcoes.js"></script> 
 	<script type="text/javascript" src="main.js"></script>  
 </head>
 <body >
@@ -22,13 +23,9 @@
 	    </div>
 	</div>
 	<script type="text/javascript">
-
-
 		(function( $ ){
 			$.fn.easuiTabs = function(dados){
-
 				var objecto = this;
-				
 				if(!objecto[0].innerHTML){
 					objecto.tabs({
 						border:0,
@@ -50,9 +47,7 @@
 				dados.forEach(function(data){
 					objecto.tabs('add',data);	
 				});
-
 				return objecto[0].innerHTML;
-
 			}
 		})( jQuery );
 
@@ -60,11 +55,8 @@
 			{
 			    title:'Venda',
 			    href:"modulos/vendas/index.html"
-			}	
+			}
 		]);
-
-
-
 	</script>
 </body>
 </html>
