@@ -44,7 +44,7 @@ const lista = (data) =>{
 		var codigo = "cod_"+arry.cod;
 		if(!arry.qnt)arry.qnt=1;
 		if(objeto.lista[codigo]){
-			arry.qnt = (objeto.lista[codigo].qnt+arry.qnt);
+			arry.qnt = (objeto.lista[codigo].qnt+1);
 		}
 		arry.total = (arry.qnt*arry.preco).toFixed(2);
 		objeto.lista[codigo] = arry;
@@ -53,7 +53,7 @@ const lista = (data) =>{
 	//////////////////////////////////////////////////////////////////
 	objeto.remove = (codigo,qnt)=>{
 		if(objeto.lista[codigo].qnt>=1){
-			objeto.lista[codigo].qnt = (objeto.lista[codigo].qnt-qnt);
+			objeto.lista[codigo].qnt = (objeto.lista[codigo].qnt-1);
 			objeto.lista[codigo].total = objeto.lista[codigo].qnt*objeto.lista[codigo].preco;
 			objeto.lista[codigo] = objeto.lista[codigo];
 		}
@@ -167,7 +167,12 @@ function postPrint(data,url){
     document.getElementById("iframePrint").contentWindow.print();
 
 }
-
+///////////////////////////////////////////////////
+///////// Console.log
+//////////////////////////////////////////////////
+function cl(value){
+	console.log(value);
+}
 
 ///////////////////////////////////////////////////
 ///////////////////////////////////////////////////
@@ -256,4 +261,23 @@ function tabs(array,select){
         $('#contentTab').tabs('select',select);
         $('#codigo').focus()
     }, 500);
+}
+
+///////// Funcões  Google
+//////////////////////////////////////////////////
+//	googleSearch('Pandinha',function($value){
+//		console.log($value);
+//	})
+//////////////////////////////////////////////////
+async function googleSearch(busca,funcao,key="AIzaSyAuRFhq0UJJU9Z1ChQdKKK_8AptzM00buU"){
+	try{		
+		let url = `https://www.googleapis.com/customsearch/v1?q=${busca}&num=10&cx=013594553343653397533:q-qkkaltmay&key=${key}&cr=countryBR&lr=lang_pt`;
+		let saida = await $.get(url,function(data){
+	 		return data;		 	
+	 	});
+		funcao(saida);		
+		return 	saida;	
+	} catch{
+		console.log('ERROR googleSearch');
+	}	
 }

@@ -41,15 +41,52 @@
 /////////////////////////////////////////////////////////////////////////////
 $( document ).ready(function() {
 	$('#codigo').focus();
+	window.listSelected = '#listaProdutos';
+
+	//////Cria Buscador
+	/////////////////////////////////////////////////////////////////////////////
+	$('#codigo').teclas({
+		F2:function(){
+			$('#codigo').focus();							
+		},
+		F4:function(){
+			addTabeCarrinho();										
+		},
+		F5:function(){
+			//addTabeCarrinho();							
+		},
+		F9:function(){
+			var carrinhoJson = JSON.stringify(criaCarrinhoDeCompras);				
+			postPrint(carrinhoJson,'modulos/pdv/print.php');							
+		},	
+		Escape:function(){
+			if($('#codigo').val().length==0){
+				$('.tabDeCarrinho').tabs('close', tableSelect);								
+			}
+		},
+		ArrowLeft:function(){			
+			$(window.listSelected).datalist('unselectAll');
+			window.listSelected = '#listaProdutos';	
+			$(window.listSelected).datalist('selectRow',0);			
+		},	
+		ArrowRight:function(){
+			$(window.listSelected).datalist('unselectAll');
+			window.listSelected = '#'+tableSelect;
+			$(window.listSelected).datalist('selectRow',0);	
+		},					
+		ArrowUp:function(){
+			var getSelected = $(window.listSelected).datalist('getSelected');
+			var getRowIndex = $(window.listSelected).datalist('getRowIndex',getSelected);		
+			$(window.listSelected).datalist('selectRow',getRowIndex-1);	
+		},
+		ArrowDown:function(){
+			var getSelected = $(window.listSelected).datalist('getSelected');
+			var getRowIndex = $(window.listSelected).datalist('getRowIndex',getSelected);		
+			$(window.listSelected).datalist('selectRow',getRowIndex+1);	
+		}
+	});	
 });
 
-//////Cria Carrinho
-/////////////////////////////////////////////////////////////////////////////
-var criaCarrinhoDeCompras = lista({
-	onSet:(value)=>{
-		//console.log(criaCarrinhoDeCompras);
-	}
-});
 
 //////Cria Lista
 /////////////////////////////////////////////////////////////////////////////
@@ -58,70 +95,163 @@ $('#listaProdutos').datalistTemplate({
 	input:"#codigo",
 	colMysql:'produto',
 	template:'#linhas_Produtos',
-	keyup:false
+	keyup:false,
+	onSelect:function(index,row){
+		produtoSelecionado = row;
+	}
 });	
 
-//////Cria Busca
-/////////////////////////////////////////////////////////////////////////////
-function buscar(value,col){
-	$().Deley(function(){
-		$('#listaProdutos').datalist({
-			url:'server.php?json=produtos&'+col+'='+value
-		});				
-	})
-}
 
 //////Cria Buscador
 /////////////////////////////////////////////////////////////////////////////
 function addNaLista(value){
-	criaCarrinhoDeCompras.add(value);
+	criaCarrinhoDeCompras[tableSelect].add(value);
 	var listaCarrinho = [];
-	$.each(criaCarrinhoDeCompras.lista, function( index, value ) {
+	$.each(criaCarrinhoDeCompras[tableSelect].lista, function( index, value ) {
 		listaCarrinho.push(value);
 	});				
 	$('#'+tableSelect).datalistTemplate({
 		textField:'produto',
 		data: listaCarrinho.reverse(),
 		template:'#linhas_Carrinho',
-	});	
+	});		
 };
 
 //////Cria Buscador
 /////////////////////////////////////////////////////////////////////////////
 $('#codigo').buscar({
-	onTextDetect:function(value){
-		buscar(value.val,'produto');
+	onkeyup:function(value){
+
+		//cl(value);
+		if(value.sizer==1){
+			$('#listaProdutos').datalist('loadData',[]);
+		}
+
+		filtarListaDeProdutos({
+			result:value,
+			onTrue:function(value,col){
+				$().Deley(function(){
+					$('#listaProdutos').datalist({
+						url:`server.php?json=produtos&${col}=${value}`
+					});				
+				});				
+			}
+		});
 	},
-	onMoneyDetect:function(value){
-		buscar(value.val,'preco');
-	},
-	onCodeDetect:function(value){
-		buscar(value.val,'cod');
-	},		
 	onSend:function(value){
+			//window.listSelected = '#'+tableSelect;
+			//$(window.listSelected).datalist('selectRow',0);	
 
-		if(value.type=='money'){
-			addNaLista({
-				cod:mikrotime(),
-				produto:"Produdo Avulso",
-				preco:value.val,
-				qnt:1,
-			});
+		var getSelected = $(window.listSelected).datalist('getSelected');
+		if(getSelected && !value.val){
+			value.type="select"
+			value.select = getSelected
 		}
 
-		if(value.type=='code'){
-			$.getJSON('server.php?json=produtos&cod='+value.val, function(resultado){
-				addNaLista(resultado.rows[0]);
-			});
-		}
-		
-		buscar('***');
+		var getSelected = $(window.listSelected).datalist('getSelected');
+		var getRowIndex = $(window.listSelected).datalist('getRowIndex',getSelected);
+
+		enviarParaCarrinho({
+			result:value,
+		});
+
+		$(window.listSelected).datalist('selectRow',getRowIndex);
 	},
 	onClean:function(value){
-		buscar('***');
+
 	}
 });
 
+
+
+/////////////////////////////////////////////////////////////////////////////
+function enviarParaCarrinho(value){
+	
+	let result = value.result;
+	
+	let titleProdutoAvulso = "Produdo Avulso";
+	let titleProdutoNegativo = "Pagamento";
+	let titleProdutocalculadora = "Calculo: "+result.text;
+
+	let produto = {
+		cod:mikrotime(),
+		preco:(result.val-0).toFixed(2)
+	};
+
+	/////////////////////////////////////////////////////////////////////////////
+	if(result.type=='money') {
+		produto.type = 'money';
+		produto.produto = titleProdutoAvulso;
+	}
+
+	/////////////////////////////////////////////////////////////////////////////
+	if(result.type=='negative') {
+		produto.type = 'pgto';
+		produto.produto = titleProdutoNegativo;
+	}	
+
+	/////////////////////////////////////////////////////////////////////////////
+	if(result.type=='calculadora') {
+		produto.type = 'pgto';
+		produto.produto = titleProdutocalculadora;
+	}
+
+	/////////////////////////////////////////////////////////////////////////////
+	if(result.type=='cod'){
+		var json = getJSON('server.php?json=produtos&cod='+result.val).rows[0];
+		produto.type = 'db';
+		produto.cod = json.cod;
+		produto.produto = json.produto;
+		produto.preco = json.preco;
+	}
+
+	/////////////////////////////////////////////////////////////////////////////
+	if(result.type=='select'){
+		produto.type = 'select';
+		produto.produto = result.select.produto;
+		produto.cod 	= result.select.cod;
+		produto.preco 	= result.select.preco;
+	}
+
+	/////////////////////////////////////////////////////////////////////////////
+	if(!produto.produto && result.type!='select'){
+		produto = window.produtoNaMemoria;
+	}
+
+
+	window.produtoNaMemoria = produto;
+
+	if(produto.produto)addNaLista(produto);
+	return false
+
+}
+
+/////////////////////////////////////////////////////////////////////////////
+function filtarListaDeProdutos(value){
+
+	let sizerMin = 1;
+	let result = value.result;
+
+
+	if(result.val==window.textDigitadoEmCodigo)return false;
+	window.textDigitadoEmCodigo = result.val;
+
+	/////////////////////////////////////////////////////////////////////////////
+	if(result.sizer<=sizerMin) return false;
+	
+	/////////////////////////////////////////////////////////////////////////////
+	if(result.type=='text')  var coluna = 'produto';
+	//if(result.type=='money') var coluna = 'preco';
+	if(result.type=='cod')	 var coluna = 'cod';
+	 
+	/////////////////////////////////////////////////////////////////////////////
+	if(coluna){
+		value.onTrue(result.val,coluna);
+	}else{
+		if(value.onFalse) value.onFalse(result);
+	}
+
+}
 
 
 

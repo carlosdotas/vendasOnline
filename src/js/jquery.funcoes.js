@@ -77,6 +77,10 @@
 	var timeout = null;
 	$.fn.Deley = function(funcao){	
 		clearTimeout(timeout);
+		if(funcao=="off"){
+			
+			return false;
+		}
 		timeout = setTimeout(() => {
 			funcao();
 		}, 400);		
@@ -90,10 +94,8 @@
 	$.fn.teclas = function(dados){
 		if(!dados.tipo)dados.tipo = "keydown";
 		$( this ).bind( dados.tipo, function(event) {
-			//console.log(event.which);
 			$.each(dados, function( index, value ) {
-				var tecla = event.originalEvent.key;
-				
+				var tecla = event.originalEvent.key;				
 				if(tecla==index){
 					event.preventDefault();
 					dados[index]();
@@ -101,14 +103,6 @@
 				}			
 			});
 		});
-
-		$( this ).bind( 'keydown', function(event) {
-			//dados.onDown();
-		});
-		$( this ).bind( 'keyup', function(event) {
-			//dados.onKeyup();
-		});
-
 	}
 })( jQuery );
 
@@ -118,6 +112,8 @@
 (function( $ ){
 	$.fn.buscar = function(dados){	
 		$( this ).bind( "keyup", function(event) {	
+
+			//console.log(event.which);
 
 			var text = '';
 			var type = 'text';
@@ -157,6 +153,7 @@
 					output.type = "money";
 					if((output.val-0)<=0.001 && (output.val-0)!=0){
 						$(this).maskMoney({prefix:'-',thousands:'', decimal:'.'});
+						output.type = "negative";
 					}else{										
 						$(this).maskMoney({thousands:'', decimal:'.'});
 					}
@@ -164,7 +161,7 @@
 				}
 
 				if(output.type=="numbers" && output.sizer>=codeSize){
-					output.type = "code";
+					output.type = "cod";
 					$(this).maskMoney({thousands:'', decimal:''});
 					if(dados.onCodeDetect)dados.onCodeDetect(output);
 				}
@@ -182,11 +179,11 @@
 					output.val = calc;
 				}
 
+				if(dados.onkeyup)dados.onkeyup(output);
 
 			}else{
 				$(this).maskMoney('destroy');
 			}
-
 
 			//console.log(event.which);
 
@@ -198,15 +195,12 @@
 				if(dados.onSend)dados.onClean(output);	
 			}
 			if(event.which==13 || event.which==107){	//Tecla Enter
+				event.preventDefault();
 				$( dados.input ).focus();
-				event.preventDefault();
 				$(this).maskMoney('destroy');
-				$(this).val('');				
+				$(this).val('');
+
 				if(dados.onSend)dados.onSend(output);
-			}
-			if(event.which==40){	//Tecla Descer
-				event.preventDefault();
-				if(dados.onClickKeyDown)dados.onClickKeyDown();
 			}
 			
 			if(dados.onKeyup)dados.onKeyup(output);

@@ -17,12 +17,13 @@
 //////Parametros do Modulos
 /////////////////////////////////////////////////////////////////////////////
 var tableSelect = '';
+var criaCarrinhoDeCompras = {};
+var produtoSelecionado = {};
 
 //////Inicia Modulo
 /////////////////////////////////////////////////////////////////////////////
 $( document ).ready(function() {
-	addTabeCarrinho();
-
+	addTabeCarrinho();		
 });
 
 //////AbreTabDeCarrinho
@@ -32,9 +33,30 @@ $('.tabDeCarrinho').tabs({
     plain:true,
     border:0,
     onSelect:function(value,rows){
-        tableSelect=value;
+        
+		//////Cria Carrinho
+		/////////////////////////////////////////////////////////////////////////////
+		
+		var tab = $('.tabDeCarrinho').tabs('getSelected');
+		var index = $('.tabDeCarrinho').tabs('getTabIndex',tab);
+		tableSelect=index;
+
+		if(!criaCarrinhoDeCompras[tableSelect]){
+			criaCarrinhoDeCompras[tableSelect] = lista({
+				onSet:(value)=>{
+					//console.log(criaCarrinhoDeCompras);
+				}
+			});
+		}
+
+		$('#codigo').focus();
+
+    },
+    onClose:function(value){
+    	delete criaCarrinhoDeCompras[tableSelect]; 	
     }
 });
+
 
 //////AbreTabDeCarrinho
 /////////////////////////////////////////////////////////////////////////////
@@ -45,22 +67,11 @@ function addTabeCarrinho(dados){
 	    href:"modulos/vendas/blocos/carrinho.html#"+vendaID,
 	    closable:true
 	});
+	$('#codigo').focus();
 
 }
 
-//////Cria Buscador
-/////////////////////////////////////////////////////////////////////////////
-$('body').teclas({
-	F2:function(){
-		$('#'+tableSelect).select();							
-	},
-	F4:function(){
-		addTabeCarrinho();							
-	},		
-	F9:function(){
-		var carrinhoJson = JSON.stringify(criaCarrinhoDeCompras);				
-		postPrint(carrinhoJson,'modulos/pdv/print.php');							
-	},
 
-});
+
+
 </script>
