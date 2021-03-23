@@ -59,6 +59,7 @@
 //////////////////////////////////////////////////////////////////
 (function( $ ){
 	$.fn.keyupDeley = function(funcao,timer){	
+
 		var timeout = null;
 		$(this).keyup(function() {
 			clearTimeout(timeout);
@@ -95,7 +96,8 @@
 		if(!dados.tipo)dados.tipo = "keydown";
 		$( this ).bind( dados.tipo, function(event) {
 			$.each(dados, function( index, value ) {
-				var tecla = event.originalEvent.key;				
+				var tecla = event.originalEvent.key;
+				//console.log(tecla);				
 				if(tecla==index){
 					event.preventDefault();
 					dados[index]();

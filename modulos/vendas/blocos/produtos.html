@@ -33,6 +33,21 @@
 		</div>							
 	</div>	
 </template>
+<!-------------------------------------------------------------------->
+<!----------------------------TENPLATES------------------------------->
+<!-------------------------------------------------------------------->
+<template id="linhas_Carrinho">
+	<div class='row' style='padding:5px;'>
+		<div class='col-2 text-center'>
+			<img  >
+		</div>
+		<div class='col-10' style="width: 250px">
+			<b style='font-size:14px'>{produto}</b><br>
+			Preço: <b style='font-size:14px;color:red'>R$ {preco}</b> X <b style='font-size:14px;color:red'>{qnt}</b> = <b style='font-size:18px;color:red'>{total}</b><br>
+			Codigo: <b style='font-size:10px;'>{cod}</b><br>
+		</div>							
+	</div>	
+</template>
 
 <script type="text/javascript">
 
@@ -59,6 +74,10 @@ $( document ).ready(function() {
 			var carrinhoJson = JSON.stringify(criaCarrinhoDeCompras);				
 			postPrint(carrinhoJson,'modulos/pdv/print.php');							
 		},	
+		Del:function(){
+			
+			//alert();
+		},			
 		Escape:function(){
 			if($('#codigo').val().length==0){
 				$('.tabDeCarrinho').tabs('close', tableSelect);								
@@ -109,7 +128,8 @@ function addNaLista(value){
 	var listaCarrinho = [];
 	$.each(criaCarrinhoDeCompras[tableSelect].lista, function( index, value ) {
 		listaCarrinho.push(value);
-	});				
+	});		
+
 	$('#'+tableSelect).datalistTemplate({
 		textField:'produto',
 		data: listaCarrinho.reverse(),
@@ -143,7 +163,7 @@ $('#codigo').buscar({
 			//$(window.listSelected).datalist('selectRow',0);	
 
 		var getSelected = $(window.listSelected).datalist('getSelected');
-		if(getSelected && !value.val){
+		if(getSelected){
 			value.type="select"
 			value.select = getSelected
 		}
@@ -151,8 +171,11 @@ $('#codigo').buscar({
 		var getSelected = $(window.listSelected).datalist('getSelected');
 		var getRowIndex = $(window.listSelected).datalist('getRowIndex',getSelected);
 
-		enviarParaCarrinho({
+		geraDadosDoProduto({
 			result:value,
+			onSend:function(produto){
+				addNaLista(produto);
+			}
 		});
 
 		$(window.listSelected).datalist('selectRow',getRowIndex);
@@ -165,8 +188,8 @@ $('#codigo').buscar({
 
 
 /////////////////////////////////////////////////////////////////////////////
-function enviarParaCarrinho(value){
-	
+function geraDadosDoProduto(value){
+
 	let result = value.result;
 	
 	let titleProdutoAvulso = "Produdo Avulso";
@@ -174,56 +197,65 @@ function enviarParaCarrinho(value){
 	let titleProdutocalculadora = "Calculo: "+result.text;
 
 	let produto = {
-		cod:mikrotime(),
+		cod:getCodTimer(),
 		preco:(result.val-0).toFixed(2)
 	};
+	
+	switch (result.type) {	  
 
-	/////////////////////////////////////////////////////////////////////////////
-	if(result.type=='money') {
-		produto.type = 'money';
+	  case 'money':
+		produto.type    = 'money';
 		produto.produto = titleProdutoAvulso;
-	}
-
-	/////////////////////////////////////////////////////////////////////////////
-	if(result.type=='negative') {
+	    break;
+	  
+	  case 'negative':
 		produto.type = 'pgto';
 		produto.produto = titleProdutoNegativo;
-	}	
-
-	/////////////////////////////////////////////////////////////////////////////
-	if(result.type=='calculadora') {
-		produto.type = 'pgto';
+	  	break;
+	  
+	  case 'calculadora':
+		produto.type = 'calc';
 		produto.produto = titleProdutocalculadora;
-	}
-
-	/////////////////////////////////////////////////////////////////////////////
-	if(result.type=='cod'){
+		break;
+	  
+	  case 'cod':
 		var json = getJSON('server.php?json=produtos&cod='+result.val).rows[0];
-		produto.type = 'db';
-		produto.cod = json.cod;
-		produto.produto = json.produto;
-		produto.preco = json.preco;
-	}
+		if(json){
+			produto.type = 'db';
+			produto.cod = json.cod;
+			produto.produto = json.produto;
+			produto.preco = json.preco;
+		}else{
+			produto.type = 'cadastro';
+			produto.cod = result.val;
+			produto.preco = 0.00;
+		}
+		break;
 
-	/////////////////////////////////////////////////////////////////////////////
-	if(result.type=='select'){
+	  case 'text':
+		produto.type = 'texto';
+		produto.produto = result.val;
+		produto.preco = ((prompt("Qual Valor do Item").replace(',', "."))-0);
+		
+		break;
+	  	  
+	  case 'select':
 		produto.type = 'select';
 		produto.produto = result.select.produto;
 		produto.cod 	= result.select.cod;
 		produto.preco 	= result.select.preco;
+	    break;
 	}
 
-	/////////////////////////////////////////////////////////////////////////////
-	if(!produto.produto && result.type!='select'){
-		produto = window.produtoNaMemoria;
+	if(produto.produto){
+		if(value.onSend)value.onSend(produto);
+	}else{
+		if(value.onNaoLocalizado)value.onNaoLocalizado(produto);
 	}
 
-
-	window.produtoNaMemoria = produto;
-
-	if(produto.produto)addNaLista(produto);
-	return false
-
+	
+	
+	return produto;
 }
 
 /////////////////////////////////////////////////////////////////////////////
