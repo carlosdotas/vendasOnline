@@ -1158,6 +1158,11 @@ if($_GET[json]){
       $dados = consultar_mysqli_filtro($tabela,$_GET,$ordem,$direc);
   }
 
+
+  header('Access-Control-Allow-Origin: *');
+  header('Content-Type: application/json');
+
+
   if($rows){
     echo json_encode($dados[rows]);
     die;
