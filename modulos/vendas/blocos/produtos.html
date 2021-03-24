@@ -152,7 +152,7 @@ $('#codigo').buscar({
 			onTrue:function(value,col){
 				$().Deley(function(){
 					$('#listaProdutos').datalist({
-						url:`server.php?json=produtos&${col}=${value}`
+						url:`https://carlosdotas.github.io/vendasOnline/server.php?json=produtos&${col}=${value}`
 					});				
 				});				
 			}
@@ -185,6 +185,7 @@ $('#codigo').buscar({
 
 	}
 });
+
 
 
 
