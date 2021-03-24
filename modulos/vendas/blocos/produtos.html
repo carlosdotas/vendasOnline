@@ -152,7 +152,7 @@ $('#codigo').buscar({
 			onTrue:function(value,col){
 				$().Deley(function(){
 					$('#listaProdutos').datalist({
-						url:`https://dotas.com.br/vendasOnline/server.php?json=produtos&${col}=${value}`
+						url:`http://dotas.com.br/vendasOnline/server.php?json=produtos&${col}=${value}`
 					});				
 				});				
 			}
