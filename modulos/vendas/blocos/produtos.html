@@ -162,6 +162,7 @@ $('#codigo').buscar({
 			//window.listSelected = '#'+tableSelect;
 			//$(window.listSelected).datalist('selectRow',0);	
 
+
 		var getSelected = $(window.listSelected).datalist('getSelected');
 		if(getSelected){
 			value.type="select"
@@ -219,7 +220,7 @@ function geraDadosDoProduto(value){
 		break;
 	  
 	  case 'cod':
-		var json = getJSON('server.php?json=produtos&cod='+result.val).rows[0];
+		var json = getJSON('http://dotas.com.br/vendasOnline/server.php?json=produtos&cod='+result.val).rows[0];
 		if(json){
 			produto.type = 'db';
 			produto.cod = json.cod;

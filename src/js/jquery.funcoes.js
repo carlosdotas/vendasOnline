@@ -133,6 +133,10 @@
 				type = 'calculadora';
 			}
 
+			if(value==""){
+				type="nulo"
+			}
+
 			var output = {
 				qnt: qnt,
 				text: text,
@@ -180,6 +184,7 @@
 					eval('var calc = '+calculo)
 					output.val = calc;
 				}
+
 
 				if(dados.onkeyup)dados.onkeyup(output);
 
