@@ -51,105 +51,115 @@
 
 <script type="text/javascript">
 
-
 //////Inicia Modulo
 /////////////////////////////////////////////////////////////////////////////
 $( document ).ready(function() {
 	$('#codigo').focus();
 	window.listSelected = '#listaProdutos';
-
-	//////Cria Buscador
-	/////////////////////////////////////////////////////////////////////////////
-	$('#codigo').teclas({
-		F2:function(){
-			$('#codigo').focus();							
-		},
-		F4:function(){
-			addTabeCarrinho();										
-		},
-		F5:function(){
-			//addTabeCarrinho();							
-		},
-		F9:function(){
-			var carrinhoJson = JSON.stringify(criaCarrinhoDeCompras);				
-			postPrint(carrinhoJson,'modulos/pdv/print.php');							
-		},	
-		Del:function(){
-			
-			//alert();
-		},			
-		Escape:function(){
-			if($('#codigo').val().length==0){
-				$('.tabDeCarrinho').tabs('close', tableSelect);								
-			}
-		},
-		ArrowLeft:function(){			
-			$(window.listSelected).datalist('unselectAll');
-			window.listSelected = '#listaProdutos';	
-			$(window.listSelected).datalist('selectRow',0);			
-		},	
-		ArrowRight:function(){
-			$(window.listSelected).datalist('unselectAll');
-			window.listSelected = '#'+tableSelect;
-			$(window.listSelected).datalist('selectRow',0);	
-		},					
-		ArrowUp:function(){
-			var getSelected = $(window.listSelected).datalist('getSelected');
-			var getRowIndex = $(window.listSelected).datalist('getRowIndex',getSelected);		
-			$(window.listSelected).datalist('selectRow',getRowIndex-1);	
-		},
-		ArrowDown:function(){
-			var getSelected = $(window.listSelected).datalist('getSelected');
-			var getRowIndex = $(window.listSelected).datalist('getRowIndex',getSelected);		
-			$(window.listSelected).datalist('selectRow',getRowIndex+1);	
-		}
-	});	
 });
+
+//////Cria Buscador
+/////////////////////////////////////////////////////////////////////////////
+$('#codigo').teclas({
+	F2:function(){
+		$('#codigo').focus();							
+	},
+	F4:function(){
+		addTabeCarrinho();										
+	},
+	F5:function(){
+
+	},
+	F9:function(){
+
+		var carrinhoJson = JSON.stringify(criaCarrinhoDeCompras);				
+		postPrint(carrinhoJson,'modulos/pdv/print.php');	
+
+	},	
+	Delete:function(){
+		criaCarrinhoDeCompras[tableSelect].del(produtoSelecionado.cod);		
+		addNaLista();	
+	},	
+	'+':function(){
+
+	},			
+	'/':function(){
+		criaCarrinhoDeCompras[tableSelect].remove(produtoSelecionado.cod,1);		
+		addNaLista();	
+	},				
+	Escape:function(){
+
+		if($('#codigo').val().length==0){
+			$('.tabDeCarrinho').tabs('close', tableSelect);								
+		}
+	},
+	ArrowLeft:function(){			
+		$(window.listSelected).datalist('unselectAll');
+		window.listSelected = '#listaProdutos';	
+		$(window.listSelected).datalist('selectRow',0);			
+	},	
+	ArrowRight:function(){
+		$(window.listSelected).datalist('unselectAll');
+		window.listSelected = '#'+tableSelect;
+		$(window.listSelected).datalist('selectRow',0);	
+	},					
+	ArrowUp:function(){
+		var getSelected = $(window.listSelected).datalist('getSelected');
+		var getRowIndex = $(window.listSelected).datalist('getRowIndex',getSelected);		
+		$(window.listSelected).datalist('selectRow',getRowIndex-1);	
+	},
+	ArrowDown:function(){
+		var getSelected = $(window.listSelected).datalist('getSelected');
+		var getRowIndex = $(window.listSelected).datalist('getRowIndex',getSelected);		
+		$(window.listSelected).datalist('selectRow',getRowIndex+1);	
+	}
+});	
 
 
 //////Cria Lista
 /////////////////////////////////////////////////////////////////////////////
 $('#listaProdutos').datalistTemplate({
-	//url:"server.php?json=produtos",
-	input:"#codigo",
-	colMysql:'produto',
 	template:'#linhas_Produtos',
-	keyup:false,
-	onSelect:function(index,row){
-		produtoSelecionado = row;
-	}
 });	
 
 
 //////Cria Buscador
 /////////////////////////////////////////////////////////////////////////////
 function addNaLista(value){
-	criaCarrinhoDeCompras[tableSelect].add(value);
+	if(value)criaCarrinhoDeCompras[tableSelect].add(value);
 	var listaCarrinho = [];
 	$.each(criaCarrinhoDeCompras[tableSelect].lista, function( index, value ) {
-		listaCarrinho.push(value);
+		if(value)listaCarrinho.push(value);
 	});		
+
+	if(value)produtoSelecionado = value;
 
 	$('#'+tableSelect).datalistTemplate({
 		textField:'produto',
 		data: listaCarrinho.reverse(),
-		template:'#linhas_Carrinho',
+		//template:'#linhas_Carrinho',
+		onSelect:function(index,row){
+			produtoSelecionado = row;
+		}
 	});		
+
 };
 
 //////Cria Buscador
 /////////////////////////////////////////////////////////////////////////////
 $('#codigo').buscar({
 	onkeyup:function(value){
-
+		
 		//cl(value);
 		if(value.sizer==1){
 			$('#listaProdutos').datalist('loadData',[]);
+			return false;
 		}
 
 		filtarListaDeProdutos({
 			result:value,
 			onTrue:function(value,col){
+
 				$().Deley(function(){
 					$('#listaProdutos').datalist({
 						url:`http://dotas.com.br/vendasOnline/server.php?json=produtos&${col}=${value}`
@@ -159,9 +169,6 @@ $('#codigo').buscar({
 		});
 	},
 	onSend:function(value){
-			//window.listSelected = '#'+tableSelect;
-			//$(window.listSelected).datalist('selectRow',0);	
-
 
 		var getSelected = $(window.listSelected).datalist('getSelected');
 		if(getSelected){
@@ -169,17 +176,15 @@ $('#codigo').buscar({
 			value.select = getSelected
 		}
 
-		var getSelected = $(window.listSelected).datalist('getSelected');
-		var getRowIndex = $(window.listSelected).datalist('getRowIndex',getSelected);
-
 		geraDadosDoProduto({
 			result:value,
 			onSend:function(produto){
+
 				addNaLista(produto);
+
 			}
 		});
 
-		$(window.listSelected).datalist('selectRow',getRowIndex);
 	},
 	onClean:function(value){
 
@@ -206,9 +211,9 @@ function geraDadosDoProduto(value){
 	
 	switch (result.type) {	  
 
-	  case 'money':
+	  case 'money':	  	
 		produto.type    = 'money';
-		produto.produto = titleProdutoAvulso;
+		produto.produto = titleProdutoAvulso;	
 	    break;
 	  
 	  case 'negative':
@@ -241,12 +246,20 @@ function geraDadosDoProduto(value){
 		produto.preco = ((prompt("Qual Valor do Item").replace(',', "."))-0);
 		
 		break;
-	  	  
+
+	  case 'nulo':
+		produto.type = 'add';
+		produto.cod = produtoSelecionado.cod;
+		produto.produto = produtoSelecionado.produto;
+		produto.preco = produtoSelecionado.preco;
+		
+		break;	  	  
 	  case 'select':
 		produto.type = 'select';
 		produto.produto = result.select.produto;
 		produto.cod 	= result.select.cod;
 		produto.preco 	= result.select.preco;
+
 	    break;
 	}
 
@@ -276,7 +289,6 @@ function filtarListaDeProdutos(value){
 	
 	/////////////////////////////////////////////////////////////////////////////
 	if(result.type=='text')  var coluna = 'produto';
-	//if(result.type=='money') var coluna = 'preco';
 	if(result.type=='cod')	 var coluna = 'cod';
 	 
 	/////////////////////////////////////////////////////////////////////////////

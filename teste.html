@@ -4,28 +4,145 @@
 	<title>Teste</title>
 </head>
 <script type="text/javascript" src="extension/jquery-easyui/jquery.min.js"></script>
+<style type="text/css">
+
+</style>
+
 <body>
+<div id="geral">lista</div>
+
+<template id="linhaProdutos">
+	${nome} - R$ ${preco}
+</template>
 
 <script type="text/javascript">
 
+function criaCarrinho(){
 
-
-	async function googleSearch(busca,funcao){
-		try{		
-			let key = "AIzaSyAuRFhq0UJJU9Z1ChQdKKK_8AptzM00buU";
-			let url = `https://www.googleapis.com/customsearch/v1?q=${busca}&num=10&cx=013594553343653397533:q-qkkaltmay&key=${key}&cr=countryBR&lr=lang_pt`;
-			let saida = await $.get(url,function(data){
-		 		return data;		 	
-		 	});
-			funcao(saida);		
-			return 	saida;	
-		} catch{
-			console.log('ERROR googleSearch');
-		}	
+	let listaDeProdutos={
+		lista:{}
 	}
-	googleSearch('Pandinha',function($value){
-		console.log($value);
-	})
+
+	listaDeProdutos.somarUm = (ProdutoId)=>{
+		if(listaDeProdutos.lista[ProdutoId]){
+			return ++listaDeProdutos.lista[ProdutoId].qnt;
+		}else{
+			return 1
+		}
+	}
+
+	listaDeProdutos.subtrairUm = (ProdutoId)=>{
+		if(listaDeProdutos.lista[ProdutoId]){
+			return --listaDeProdutos.lista[ProdutoId].qnt;
+		}
+	}
+
+	listaDeProdutos.setProdutoNaLista=(values)=>{
+		
+		let produtoID = values.id;
+		let produtoNome = values.nome;
+		let produtoPreco = values.preco.toFixed(2);
+		let produtoQnt = listaDeProdutos.somarUm(produtoID);
+		let produtoTotal =  (produtoQnt*values.preco).toFixed(2);
+
+		listaDeProdutos.lista[produtoID] = {
+			id:produtoID,
+			nome:produtoNome,
+			preco:produtoPreco,
+			qnt:produtoQnt,
+			total:produtoTotal,
+		}
+	}
+
+	listaDeProdutos.delProdutoNaLista=(values)=>{
+		produtoID = values.id;
+		delete listaDeProdutos[produtoID];
+	}
+
+	return listaDeProdutos;
+}
+
+const carrinho = criaCarrinho();
+	carrinho.setProdutoNaLista({
+		id:45254,
+		nome:'Vaneta',
+		preco:10.25,
+	});
+	carrinho.setProdutoNaLista({
+		id:45252,
+		nome:'Vaneta2',
+		preco:10.2,
+	});
+	carrinho.setProdutoNaLista({
+		id:45252,
+		nome:'Vaneta2',
+		preco:10.5,
+	});	
+	carrinho.setProdutoNaLista({
+		id:45253,
+		nome:'Vaneta2',
+		preco:0.25,
+	});
+
+	carrinho.subtrairUm(45253);
+	carrinho.subtrairUm(45253);
+	carrinho.subtrairUm(45253);
+
+	carrinho.setProdutoNaLista({
+		id:45253,
+		nome:'Vaneta2',
+		preco:0.25,
+	});	
+	carrinho.setProdutoNaLista({
+		id:45253,
+		nome:'Vaneta2',
+		preco:0.25,
+	});
+	carrinho.setProdutoNaLista({
+		id:45253,
+		nome:'Vaneta2',
+		preco:0.25,
+	});
+	carrinho.setProdutoNaLista({
+		id:45253,
+		nome:'Vaneta2',
+		preco:0.25,
+	});
+	carrinho.setProdutoNaLista({
+		id:45253,
+		nome:'Vaneta2',
+		preco:2.65,
+	});		
+	carrinho.setProdutoNaLista({
+		id:45255,
+		nome:'Vaneta2',
+		preco:1.39,
+	});
+	carrinho.setProdutoNaLista({
+		id:45256,
+		nome:'Vaneta2',
+		preco:1.5,
+	});
+	carrinho.delProdutoNaLista({
+		id:45256
+	});	
+
+$("#geral").html('');
+for (var prop in carrinho.lista) {
+
+	let nome = carrinho.lista[prop].nome;
+	let preco = carrinho.lista[prop].preco;
+	let qnt = carrinho.lista[prop].qnt;
+	let total = carrinho.lista[prop].total;
+
+	$("#geral").append('');
+  	// ctrl+shift+k (para abrir o console no mozilla firefox)
+  	console.log(carrinho.lista[prop]);
+}
+
+
+
+console.log(carrinho);
 
 </script>
 </body>

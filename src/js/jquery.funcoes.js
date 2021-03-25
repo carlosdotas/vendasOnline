@@ -25,28 +25,8 @@
 
 		///////// Sets Parametros
 		//////////////////////////////////////////////////////////////////
-		Object.assign(objeto, params);
-		
-		//////////////////////////////////////////////////////////////////
-		delete 	objeto.input,
-				objeto.colMysql,
-				objeto.template,
-				objeto.keyup;
+		Object.assign(objeto, params);		
 
-		if(params.keyup!=false){
-			var dataListid = this;
-			$(params.input).unbind();
-			//////////////////////////////////////////////////////////////////		
-			$(params.input).keyupDeley(function(){
-				$(dataListid).datalist({
-					url:params.url+'&'+params.colMysql+'='+$(params.input).val(),
-					onLoadSuccess:function(){
-						$(dataListid).datalist('selectRow',0);	
-						//console.log('Buscando');
-					}
-				});
-			},500);
-		}
 		///////// Saida
 		//////////////////////////////////////////////////////////////////		
 		$(this).datalist(objeto);
@@ -67,6 +47,7 @@
 				funcao();
 			}, timer);
 		});
+		
 	}
 })( jQuery );
 
@@ -93,17 +74,12 @@
 //////////////////////////////////////////////////////////////////
 (function( $ ){
 	$.fn.teclas = function(dados){
+
+
 		if(!dados.tipo)dados.tipo = "keydown";
 		$( this ).bind( dados.tipo, function(event) {
-			$.each(dados, function( index, value ) {
-				var tecla = event.originalEvent.key;
-				//console.log(tecla);				
-				if(tecla==index){
-					event.preventDefault();
-					dados[index]();
-					return this;
-				}			
-			});
+			var tecla = event.originalEvent.key;
+			if(dados[tecla])dados[tecla]();
 		});
 	}
 })( jQuery );

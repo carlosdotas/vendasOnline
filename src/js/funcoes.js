@@ -52,22 +52,23 @@ const lista = (data) =>{
 	}
 	//////////////////////////////////////////////////////////////////
 	objeto.remove = (codigo,qnt)=>{
+		var codigo = "cod_"+codigo;
 		if(objeto.lista[codigo].qnt>=1){
 			objeto.lista[codigo].qnt = (objeto.lista[codigo].qnt-1);
-			objeto.lista[codigo].total = objeto.lista[codigo].qnt*objeto.lista[codigo].preco;
+			objeto.lista[codigo].total = (objeto.lista[codigo].qnt*objeto.lista[codigo].preco).toFixed(2);
 			objeto.lista[codigo] = objeto.lista[codigo];
 		}
 		onSet(objeto);
 	}
 	//////////////////////////////////////////////////////////////////
 	objeto.del = (codigo)=>{
-		delete objeto.lista[codigo];
+		delete objeto.lista["cod_"+codigo];
 		onSet(objeto);
 	}
 	//////////////////////////////////////////////////////////////////
 	objeto.edit = (arry)=>{
 		arry.total = arry.qnt*arry.preco;
-		objeto.lista[arry.codigo]=arry;		
+		objeto.lista["cod_"+arry.codigo]=arry;		
 		onSet(objeto);
 	}
 
