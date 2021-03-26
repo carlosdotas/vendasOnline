@@ -4,22 +4,35 @@
 	<title>Teste</title>
 </head>
 <script type="text/javascript" src="extension/jquery-easyui/jquery.min.js"></script>
+<script type="text/javascript" src="src/js/funcoes.js"></script>
+<script type="text/javascript" src="src/js/jquery.funcoes.js"></script>
 <style type="text/css">
-
+.selectTemplateJquery{
+	background-color: #eee;
+}
 </style>
 
 <body>
-<div id="geral">lista</div>
+<div id="geral"></div>
 
 <template id="linhaProdutos">
-	${nome} - R$ ${preco}
+	Template
+	<div>{id}</div> 
+	<div>{nome}</div> 
+	<div>R$ {preco} x {qnt} = {total}</div>
+	<hr>
 </template>
+
+<button onclick="">SET</button>
+<button onclick="">DEL</button>
 
 <script type="text/javascript">
 
 function criaCarrinho(){
 
 	let listaDeProdutos={
+
+		selected:'45254',
 		lista:{}
 	}
 
@@ -55,94 +68,105 @@ function criaCarrinho(){
 	}
 
 	listaDeProdutos.delProdutoNaLista=(values)=>{
-		produtoID = values.id;
-		delete listaDeProdutos[produtoID];
+		delete listaDeProdutos.lista[values];
 	}
 
 	return listaDeProdutos;
 }
 
 const carrinho = criaCarrinho();
-	carrinho.setProdutoNaLista({
-		id:45254,
-		nome:'Vaneta',
-		preco:10.25,
-	});
-	carrinho.setProdutoNaLista({
-		id:45252,
-		nome:'Vaneta2',
-		preco:10.2,
-	});
-	carrinho.setProdutoNaLista({
-		id:45252,
-		nome:'Vaneta2',
-		preco:10.5,
-	});	
-	carrinho.setProdutoNaLista({
-		id:45253,
-		nome:'Vaneta2',
-		preco:0.25,
-	});
+carrinho.setProdutoNaLista({
+	id:45254,
+	nome:'Vaneta1',
+	preco:10.25,
+});
 
-	carrinho.subtrairUm(45253);
-	carrinho.subtrairUm(45253);
-	carrinho.subtrairUm(45253);
+carrinho.setProdutoNaLista({
+	id:45252,
+	nome:'Vaneta23',
+	preco:10.5,
+});	
+carrinho.setProdutoNaLista({
+	id:45253,
+	nome:'Vaneta24',
+	preco:0.25,
+});
 
-	carrinho.setProdutoNaLista({
-		id:45253,
-		nome:'Vaneta2',
-		preco:0.25,
-	});	
-	carrinho.setProdutoNaLista({
-		id:45253,
-		nome:'Vaneta2',
-		preco:0.25,
-	});
-	carrinho.setProdutoNaLista({
-		id:45253,
-		nome:'Vaneta2',
-		preco:0.25,
-	});
-	carrinho.setProdutoNaLista({
-		id:45253,
-		nome:'Vaneta2',
-		preco:0.25,
-	});
-	carrinho.setProdutoNaLista({
-		id:45253,
-		nome:'Vaneta2',
-		preco:2.65,
-	});		
-	carrinho.setProdutoNaLista({
-		id:45255,
-		nome:'Vaneta2',
-		preco:1.39,
-	});
-	carrinho.setProdutoNaLista({
-		id:45256,
-		nome:'Vaneta2',
-		preco:1.5,
-	});
-	carrinho.delProdutoNaLista({
-		id:45256
-	});	
+carrinho.subtrairUm(45253);
+carrinho.subtrairUm(45253);
+carrinho.subtrairUm(45253);
 
-$("#geral").html('');
-for (var prop in carrinho.lista) {
-
-	let nome = carrinho.lista[prop].nome;
-	let preco = carrinho.lista[prop].preco;
-	let qnt = carrinho.lista[prop].qnt;
-	let total = carrinho.lista[prop].total;
-
-	$("#geral").append('');
-  	// ctrl+shift+k (para abrir o console no mozilla firefox)
-  	console.log(carrinho.lista[prop]);
-}
+carrinho.setProdutoNaLista({
+	id:45253,
+	nome:'Vaneta25',
+	preco:0.25,
+});	
+carrinho.setProdutoNaLista({
+	id:45253,
+	nome:'Vaneta26',
+	preco:0.25,
+});
+carrinho.setProdutoNaLista({
+	id:45253,
+	nome:'Vaneta27',
+	preco:0.25,
+});
+carrinho.setProdutoNaLista({
+	id:45253,
+	nome:'Vaneta28',
+	preco:0.25,
+});
+carrinho.setProdutoNaLista({
+	id:45253,
+	nome:'Vaneta29',
+	preco:2.65,
+});		
+carrinho.setProdutoNaLista({
+	id:45255,
+	nome:'Vaneta210',
+	preco:1.39,
+});
+carrinho.setProdutoNaLista({
+	id:45256,
+	nome:'Vaneta211',
+	preco:1.5,
+});
+carrinho.delProdutoNaLista(45256);	
 
 
 
-console.log(carrinho);
+$('#geral').templateJquery({
+	data:carrinho.lista,
+	template:'#linhaProdutos',
+	onSelect:function(data){
+		console.log(data);
+	},	
+});
+
+//$('#geral').templateJquery('select',carrinho.selected);
+
+//$('#geral').templateJquery('set',carrinho.selected);
+//$('#geral').templateJquery('del',carrinho.selected);
+
+$('.templateJquery').click(function(){
+	$('#geral').templateJquery('select',$(this).attr('ref'));
+})
+
+
+
+
+//function renderListaProdutos(){
+//	let listaCarrinhoHtml = geraListaHtml('#linhaProdutos',carrinho.lista);
+//	$("#geral").html(listaCarrinhoHtml);
+//}
+
+
+//renderListaProdutos();
+
+
+
+
+//console.log(carrinho);
 
 </script>
 </body>

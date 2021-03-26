@@ -33,6 +33,64 @@
 	}
 })( jQuery );
 
+//////////////////////////////////////////////////////////////////
+(function( $ ){
+	$.fn.templateJquery = function(params1,params2){	
+
+		let pai = $(this).attr('id');
+
+		if(params1.onSelect)$(this)[0].onSelect = (data)=>params1.onSelect(data);
+	
+		if(params1=='select'){		
+			selectReturn = select(params2);
+			$(this)[0].onSelect(selectReturn);
+			return selectReturn
+		}
+
+
+		let template = templater(params1.template);
+		let data = params1.data;
+		
+		//Metodos
+
+		////////////////////////////////////////////////////////
+		function render(data,template){
+			let saidaHtml = '';
+			for (var prop in data) {
+				if(typeof  data[prop] == 'object'){	
+					let dados = data[prop];
+					saidaHtml += '<div class="templateJquery" ref="'+prop+'">'+render(dados,template)+'</div>';
+				}else{
+			  		template = template.replace("{"+prop+"}", data[prop]);
+			  	}	  	
+			};
+			if(saidaHtml)template = saidaHtml;
+			return template;
+		}
+
+		////////////////////////////////////////////////////////
+		function templater(template){
+			if(template.substr(0, 1)=='#') return $(template).html();
+			return template;
+						
+		}
+		
+		////////////////////////////////////////////////////////
+		function select(selected){
+
+			let index = $('#'+pai).find('[ref="'+selected+'"]').index();
+
+			$( '#'+pai+" .selectTemplateJquery" ).removeClass( "selectTemplateJquery" );
+			$('#'+pai+' [ref="'+selected+'"]').toggleClass('selectTemplateJquery');  
+
+			return {pai:'#'+pai,id:selected,index:index};
+		}
+
+		$(this).html(render(data,template));
+		return this;
+	}
+})( jQuery );
+
 
 //////////////////////////////////////////////////////////////////
 //Funçao keyupDeley

@@ -282,3 +282,29 @@ async function googleSearch(busca,funcao,key="AIzaSyAuRFhq0UJJU9Z1ChQdKKK_8AptzM
 		console.log('ERROR googleSearch');
 	}	
 }
+
+//////////////////////////////////////////////////
+//	
+//////////////////////////////////////////////////
+function template(valueIn){
+	let content = valueIn.content;
+	let object  = valueIn.object;
+	for (var prop in object) {
+	  	content = content.replace("${"+prop+"}", object[prop]);
+	};
+	return content;
+}
+
+//////////////////////////////////////////////////
+//	
+//////////////////////////////////////////////////
+function geraListaHtml(templateInt,lista){
+	let saidaHtml = '';
+	for (var prop in lista) {
+		saidaHtml = template({
+			content:$(templateInt).html(),
+			object:lista[prop]
+		})+saidaHtml;		
+	}
+	return saidaHtml;
+}
