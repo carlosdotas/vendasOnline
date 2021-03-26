@@ -35,21 +35,72 @@
 
 //////////////////////////////////////////////////////////////////
 (function( $ ){
-	$.fn.templateJquery = function(params1,params2){	
+	$.fn.keySeletor = function(params,id){	
 
-		let pai = $(this).attr('id');
+		//Parametros
+		let thisobject = this
+		let classSeletor = params.classSeletor;
+		let classKey     = params.classKey;
 
-		if(params1.onSelect)$(this)[0].onSelect = (data)=>params1.onSelect(data);
-	
-		if(params1=='select'){		
-			selectReturn = select(params2);
-			$(this)[0].onSelect(selectReturn);
-			return selectReturn
+		//Eventos
+		$(this)[0].onSelect = params.onSelect ? (data1,data2)=> params.onSelect(data1,data2) : ()=>{}
+		$(this)[0].onSend = params.onSend ? (data1,data2)=> params.onSend(data1,data2) : ()=>{}
+		
+		//Start
+		$( this )[0][classSeletor] = -1;
+		onKeyUp();
+
+		//Metodos
+		function onKeyUp(){
+			$( classKey ).keyup(function(event) {
+				let totalElements = (thisobject.length-1);
+
+			  	if(event.keyCode==40){
+			  		$( thisobject )[0][classSeletor]++;
+			  		aplicaSelecao();
+			  	}
+			  	if(event.keyCode==38){
+			  		$( thisobject )[0][classSeletor]--;
+			  		aplicaSelecao();
+			  	}
+
+			  	if(event.keyCode==13){
+	  				$( thisobject )[0].onSend(
+						$( thisobject )[0][classSeletor],
+						$( thisobject ).eq( $( thisobject )[0][classSeletor] )
+					);
+  				}
+
+				if($( thisobject )[0][classSeletor] >= totalElements)$( thisobject )[0][classSeletor] = totalElements;
+				if($( thisobject )[0][classSeletor] <= 0)$( thisobject )[0][classSeletor] = 0;
+
+			  	
+			});
 		}
 
+		function aplicaSelecao(){
+			$( thisobject ).removeClass( classSeletor );
+			$( thisobject ).eq( $( thisobject )[0][classSeletor] ).toggleClass( classSeletor );
+			$( thisobject )[0].onSelect(
+				$( thisobject )[0][classSeletor],
+				$( thisobject ).eq( $( thisobject )[0][classSeletor] )
+			);
+		}
+	}
+})( jQuery );
 
-		let template = templater(params1.template);
-		let data = params1.data;
+//////////////////////////////////////////////////////////////////
+(function( $ ){
+	$.fn.templateJquery = function(params){	
+
+		//Parametros
+		let thisobject = this
+		let template = templater(params.template)
+		let data = params.data
+
+		//Eventos
+		$(this)[0].onRender = params.onRender ? (data1)=> params.onRender(data1) : ()=>{}
+			
 		
 		//Metodos
 
@@ -65,6 +116,9 @@
 			  	}	  	
 			};
 			if(saidaHtml)template = saidaHtml;
+
+			$(thisobject)[0].onRender(thisobject);
+		   
 			return template;
 		}
 
@@ -75,17 +129,6 @@
 						
 		}
 		
-		////////////////////////////////////////////////////////
-		function select(selected){
-
-			let index = $('#'+pai).find('[ref="'+selected+'"]').index();
-
-			$( '#'+pai+" .selectTemplateJquery" ).removeClass( "selectTemplateJquery" );
-			$('#'+pai+' [ref="'+selected+'"]').toggleClass('selectTemplateJquery');  
-
-			return {pai:'#'+pai,id:selected,index:index};
-		}
-
 		$(this).html(render(data,template));
 		return this;
 	}

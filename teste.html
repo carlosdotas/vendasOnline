@@ -1,32 +1,56 @@
 <!DOCTYPE html>
 <html>
+
 <head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<title>Teste</title>
 </head>
-<script type="text/javascript" src="extension/jquery-easyui/jquery.min.js"></script>
+<link rel="stylesheet" href="extension/jquery.mobile-1.3.2/jquery.mobile-1.3.2.css" />
+<script src="extension/jquery-1.9.1.min.js"></script>
+<script src="extension/jquery.mobile-1.3.2/jquery.mobile-1.3.2.min.js"></script>
+
 <script type="text/javascript" src="src/js/funcoes.js"></script>
 <script type="text/javascript" src="src/js/jquery.funcoes.js"></script>
 <style type="text/css">
-.selectTemplateJquery{
-	background-color: #eee;
+.ui-listview-filter, .ui-listview {
+	margin-top: 15px
 }
+.selecionado{
+	background-color: #aaa;
+	color: #fff
+}
+
 </style>
 
 <body>
-<div id="geral"></div>
 
-<template id="linhaProdutos">
-	Template
-	<div>{id}</div> 
-	<div>{nome}</div> 
-	<div>R$ {preco} x {qnt} = {total}</div>
-	<hr>
-</template>
+<div style="padding: 5px;">
+	<template>
+	    <input id="filter-for-listview" data-type="search" placeholder="Type to search...">
+	</template>
+	<ul id="produtos" data-role="listview" data-inset="true" data-filter="true" data-input="#filter-for-listview">
+	    <li><a href="#">Acura</a></li>
+	    <li><a href="#">Audi</a></li>
+	    <li><a href="#">BMW</a></li>
+	    <li><a href="#">Cadillac</a></li>
+	    <li><a href="#">Ferrari</a></li>
+	</ul>
+	<button onclick="">SET</button>
+	<button onclick="">DEL</button>
 
-<button onclick="">SET</button>
-<button onclick="">DEL</button>
+</div>
+
 
 <script type="text/javascript">
+
+
+
+
+
+
+
+
 
 function criaCarrinho(){
 
@@ -133,40 +157,28 @@ carrinho.setProdutoNaLista({
 });
 carrinho.delProdutoNaLista(45256);	
 
+	$('#produtos').templateJquery({
+		data:carrinho.lista,
+		template:'<li><a href="#">{nome}</a></li>',
+		onRender:function(objeto){
+			console.log(objeto);
+		}
+	})
 
 
-$('#geral').templateJquery({
-	data:carrinho.lista,
-	template:'#linhaProdutos',
-	onSelect:function(data){
-		console.log(data);
-	},	
-});
-
-//$('#geral').templateJquery('select',carrinho.selected);
-
-//$('#geral').templateJquery('set',carrinho.selected);
-//$('#geral').templateJquery('del',carrinho.selected);
-
-$('.templateJquery').click(function(){
-	$('#geral').templateJquery('select',$(this).attr('ref'));
-})
+ 
+	$('li').keySeletor({
+		classSeletor:"ui-btn-hover-c",
+		classKey:'body',
+		onSelect:function(index,objeto){
+			cl(index);
+		},
+		onSend:function(index,objeto){
+			alert(objeto);
+		}
+	});
 
 
-
-
-//function renderListaProdutos(){
-//	let listaCarrinhoHtml = geraListaHtml('#linhaProdutos',carrinho.lista);
-//	$("#geral").html(listaCarrinhoHtml);
-//}
-
-
-//renderListaProdutos();
-
-
-
-
-//console.log(carrinho);
 
 </script>
 </body>
