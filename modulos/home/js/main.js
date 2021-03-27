@@ -1,44 +1,28 @@
-pagina.addJavascripts([
-
-]);
-
 $( document ).ready(function() {
 
-	$('body').append('<div id="panelBody"></div>');
+	$('body').html('<div id="panelBody">teste</div>');
 
-	$('#panelBody').panel({
-		border:0,
-		fit:true,
-	    content:'<div id="secttionTab"></div>',
-	});	
-
-	$('#secttionTab').tabs({
-		border:0,
-		fit:true,
-		plain:true,
-		tools:[{
-			iconCls:'icon-add',
-			handler:function(){
-				alert('add')
-			}
-		},{
-			iconCls:'icon-save',
-			handler:function(){
-				alert('save')
-			}
-		}]
+	const home = new Tabs('#panelBody');
+	
+	home.addMenu({
+		iconCls:'icon-save',
+		handler:function(){
+			alert('save')
+		}
 	});
 
-	$('#secttionTab').tabs('add',{
-	    title:'Venda',
-	    href:"modulos/vendas/index.html",
-	    closable:true,
-	    tools:[{
-	        iconCls:'icon-mini-refresh',
-	        handler:function(){
-	            alert('refresh');
-	        }
-	    }]
+	home.addMenu({
+		iconCls:'icon-add',
+		handler:function(){
+			alert('add')
+		}
 	});
+
+	home.addContent({
+	    title:'Pdv',
+	    href:'modulos/pdv/index.html'
+	});
+
+
 });
 
