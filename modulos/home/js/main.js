@@ -1,6 +1,6 @@
 $( document ).ready(function() {
 
-	$('body').html('<div id="panelBody">teste</div>');
+	$('body').html('<div id="panelBody"></div>');
 
 	const home = new Tabs('#panelBody');
 	
@@ -22,7 +22,16 @@ $( document ).ready(function() {
 	    title:'Pdv',
 	    href:'modulos/pdv/index.html'
 	});
-
+	home.addContent({
+	    title:'Vendas',
+	    selected:0,
+	    href:'modulos/vendas/index.html'
+	});
+	home.addContent({
+	    title:'Produtos',
+	    selected:0,
+	    href:'modulos/produtos/index.html'
+	});
 
 });
 

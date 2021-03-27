@@ -65,7 +65,7 @@ class Pagina{
 	}
 	update(){
 		this.setBody('');
-		this.setHead(`<head>${this.metas}${this.javascripts}${this.styles}</head>`);
+		this.setHead(`<head>${this.metas}${this.styles}${this.javascripts}</head>`);
 		this.setHtml(`<!DOCTYPE html><html>${this.head}<body>${this.body}${this.script}</body></html>`);		
 		document.write(this.html);
 	}

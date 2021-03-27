@@ -57,6 +57,10 @@ input, textarea{
 	background: linear-gradient(to bottom, rgba(255,255,255,1) 0%, rgba(246,246,246,1) 47%, rgba(237,237,237,1) 100%);
 	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#ededed', GradientType=0 );    	
 }
+.pdg5{
+	padding: 5px;
+}
+
 /*------------------------------------------------------------*/
 .fundoImg{
 	/*background: url(../imgs/Wallpaper_1366x768.jpg);

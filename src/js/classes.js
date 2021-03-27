@@ -1,12 +1,14 @@
 class Layout{
 	constructor(element){
-		this.element = element
-	}
-	setLayout(value){
+
+		//north,south,west,center,east
+
+		this.element = element;
+		
 		$(this.element).html('');
 		$(this.element).layout({
 			fit:true,
-		});
+		});		
 	}
 	addContent(params){		
 		let saida = Object.assign({
