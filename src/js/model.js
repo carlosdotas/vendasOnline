@@ -12,7 +12,7 @@ class Pagina{
 		
 	}
 	setTitle(value){
-		this.title = value;
+		document.title = value;
 	}
 	setHead(value){
 		this.head = value;
@@ -27,6 +27,15 @@ class Pagina{
 		})
 		this.styles = content;	
 	}
+	addStyles(value){
+		value.forEach(function(file){
+			var sc = document.createElement("link");
+			sc.setAttribute("rel", 'stylesheet');
+			sc.setAttribute("href", file);
+			document.head.appendChild(sc);
+		})
+	}
+
 	setJavascripts(value){
 		var contents = '';
 		value.forEach(function(file){
@@ -34,6 +43,14 @@ class Pagina{
 		})
 		this.javascripts = contents;	
 	}
+	addJavascripts(value){
+		value.forEach(function(file){
+			var sc = document.createElement("script");
+			sc.setAttribute("src", file);
+			document.head.appendChild(sc);
+		})
+	}
+
 	setBody(value){
 		this.body = value;
 	}
@@ -47,6 +64,9 @@ class Pagina{
 		this.html = value
 	}
 	update(){
+		this.setBody('');
+		this.setHead(`<head>${this.metas}${this.javascripts}${this.styles}</head>`);
+		this.setHtml(`<!DOCTYPE html><html>${this.head}<body>${this.body}${this.script}</body></html>`);		
 		document.write(this.html);
 	}
 }

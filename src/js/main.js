@@ -14,26 +14,14 @@ pagina.setStyles([
 	'src/css/style.css',
 	])
 
-pagina.setJavascripts([	
-	'extension/jquery-easyui/jquery.min.js',
+pagina.setJavascripts([
+	'src/js/jquery.min.js',
 	'extension/jquery-easyui/jquery.easyui.min.js',
 	'extension/jquery-easyui/locale/easyui-lang-pt_BR.js',
 	'extension/jquery.maskMoney.min.js',
 	'src/js/funcoes.js',
 	'src/js/jquery.funcoes.js',
-	]);   
-
-pagina.setBody('<div id="contentBody"></div>');
-
-pagina.setHead(`<head><title>${pagina.title}</title>${pagina.metas}${pagina.styles}${pagina.javascripts}</head>`);
-pagina.setHtml(`<!DOCTYPE html><html>${pagina.head}<body>${pagina.body}${pagina.script}</body></html>`);
+	'modulos/home/js/main.js',
+]);  
 
 pagina.update();
-
-document.addEventListener('DOMContentLoaded', (event) => {
-	$('#contentBody').panel({
-		boder:0,
-		fit:"true",
-	    href:'modulos/home/index.html',
-	});	
-});

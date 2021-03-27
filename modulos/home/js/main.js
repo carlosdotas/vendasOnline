@@ -1,4 +1,17 @@
+pagina.addJavascripts([
+
+]);
+
 $( document ).ready(function() {
+
+	$('body').append('<div id="panelBody"></div>');
+
+	$('#panelBody').panel({
+		border:0,
+		fit:true,
+	    content:'<div id="secttionTab"></div>',
+	});	
+
 	$('#secttionTab').tabs({
 		border:0,
 		fit:true,
