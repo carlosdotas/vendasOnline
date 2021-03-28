@@ -14,7 +14,7 @@ class Carrinho extends Observers{
 		this.pagamentos=[]
 		this.produtos=[]
 	}
-	addProduto(id){
+	set(id){
 		//if(!id)id=getCodTimer();
 		//this.selected = {
 
@@ -22,10 +22,10 @@ class Carrinho extends Observers{
 		//this.vendas.push(this.selected);	
 			
 	}
-	addProduto(id){
+	get(id){
 		//delete this.vendas[id];
 	}
-	selecProduto(id){
+	del(id){
 		//this.selected = this.vendas[id];
 	}
 }
