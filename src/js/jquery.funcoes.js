@@ -205,7 +205,7 @@
 			var text = '';
 			var type = 'text';
 			var value = $( this ).val();			
-			var detectIn = 1;
+			var detectIn = 0;
 			var qnt = 1;
 			var tecla = event.originalEvent.key;
 			var codeSize = 7;
@@ -242,23 +242,23 @@
 				if(output.type=="numbers" && output.sizer<=codeSize){
 					output.val = (output.val-0).toFixed(2);
 					output.type = "money";
-					if((output.val-0)<=0.001 && (output.val-0)!=0){
+					if((output.val-0)<=0.001){
 						$(this).maskMoney({prefix:'-',thousands:'', decimal:'.'});
 						output.type = "negative";
 					}else{										
 						$(this).maskMoney({thousands:'', decimal:'.'});
 					}
-					if(dados.onMoneyDetect)dados.onMoneyDetect(output);
+					//if(dados.onMoneyDetect)dados.onMoneyDetect(output);
 				}
 
 				if(output.type=="numbers" && output.sizer>=codeSize){
 					output.type = "cod";
 					$(this).maskMoney({thousands:'', decimal:''});
-					if(dados.onCodeDetect)dados.onCodeDetect(output);
+					//if(dados.onCodeDetect)dados.onCodeDetect(output);
 				}
 
 				if(output.type=="text"){
-					if(dados.onTextDetect)dados.onTextDetect(output);
+					//if(dados.onTextDetect)dados.onTextDetect(output);
 				}
 
 				if(output.type=="calculadora"){
@@ -270,6 +270,17 @@
 					output.val = calc;
 				}
 
+				if((output.val=="")){
+					output.type="limpo"
+				}
+
+				switch (tecla) {
+				  case 'ArrowUp': case 'ArrowDown': case 'ArrowLeft': case 'ArrowRight':
+				  case '+': case '-': case '/': case '*':case '=':case ',':case '.':
+				    output.type="tecla";
+				    break;				    
+				}
+
 
 				if(dados.onkeyup)dados.onkeyup(output);
 
@@ -277,14 +288,12 @@
 				$(this).maskMoney('destroy');
 			}
 
-			//console.log(event.which);
-
 			if(event.which==27){	//Tecla Enter
 				$( dados.input ).focus();
 				event.preventDefault();
 				$(this).maskMoney('destroy');
 				$(this).val('');			
-				if(dados.onSend)dados.onClean(output);	
+				//if(dados.onSend)dados.onClean(output);	
 			}
 			if(event.which==13 || event.which==107){	//Tecla Enter
 				event.preventDefault();

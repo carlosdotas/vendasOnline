@@ -78,3 +78,19 @@ input, textarea{
 .blue-70{color: #2851A3;}
 .blue-80{color: #1D3C78;}
 
+/*------------------------------------------------------------*/
+.blockProdutos{
+	background-color: rgb(221, 221, 221);
+}
+.blockProdutos input{
+	width:100%;
+	font-size: 20px;
+	text-align: center;
+}
+
+/*------------------------------------------------------------*/
+.tabs-tool{
+	background-color: #fff;
+	border-width: 0;
+	border-bottom-width: 1;
+}

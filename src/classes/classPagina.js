@@ -45,9 +45,16 @@ class Pagina{
 	}
 	addJavascripts(value){
 		value.forEach(function(file){
-			var sc = document.createElement("script");
-			sc.setAttribute("src", file);
-			document.head.appendChild(sc);
+
+			$.ajax({
+			  url: file,
+			  async: false,
+			  dataType: "script",
+			});
+
+			//var sc = document.createElement("script");
+			//sc.setAttribute("src", file);
+			//document.head.appendChild(sc);
 		})
 	}
 

@@ -1,3 +1,38 @@
-<script type="text/javascript" src="modulos/pdv/js/model.js"></script>
-<script type="text/javascript" src="modulos/pdv/js/main.js"></script>
-<div id="pdv"></div>
+<div id="pdvLayout"></div>
+<script type="text/javascript">
+$( document ).ready(function() {
+
+	//Gera Layout do Pdv
+	////////////////////////////////////////////////////////////
+	$('#pdvLayout').layout({fit:true});	
+	$('#pdvLayout').layout('add',{
+	    region: 'north',
+	    border:0,
+	    bodyCls:'gradiente1'
+	});
+	$('#pdvLayout').layout('add',{
+	    region: 'center',
+	    border:0,
+	    bodyCls:'sombra_Interna_foot pdg5',
+	    content:'<div id="contentPdv"></div>'
+	});
+
+	//Gera Layout do Bloco Produtos e Carrinho
+	////////////////////////////////////////////////////////////
+	$('#contentPdv').layout({fit:true});	
+	$('#contentPdv').layout('add',{
+	    region: 'west',
+	    width: 380,
+	    border:0,
+	    title:'Termina: CAIXA1',
+	    split:true,
+	    href:'modulos/pdv/blocos/produtos.html'
+	});
+	$('#contentPdv').layout('add',{
+	    region: 'center',
+	    border:0,
+	    href:'modulos/pdv/blocos/carrinhos.html'
+	});
+
+});
+</script>
