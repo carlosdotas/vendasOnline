@@ -12,14 +12,18 @@ class Carrinho extends classPadrao{
 		this.valortotal=0
 		this.valorpago=0
 		this.valortroco=0
-		this.pagamentos={}
-		this.produtos={}
+		this.pagamentos=[]
 
 		//Execulda Mewtdos de Entrada
 		//---------------------------------------------------------------------//
 		this.onCreate(Object.assign(this, parans));		
 	}
 	setCarrinho(params){
+		this.list[this.selected].produtos.push(params);
+	}	
+	getCarrinho(idVenda=false){
+		if(!idVenda)idVenda=this.selected;
+		return this.list[idVenda].produtos;
+	}	
 
-	}
 }

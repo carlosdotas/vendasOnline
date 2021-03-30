@@ -264,6 +264,21 @@ function tabs(array,select){
     }, 500);
 }
 
+function addZeroes(num, len=5) {
+    var numberWithZeroes = String(num);
+  var counter = numberWithZeroes.length;
+      
+  while(counter < len) {
+  
+      numberWithZeroes = "0" + numberWithZeroes;
+    
+    counter++;
+  
+    }
+  
+  return numberWithZeroes;
+}
+
 ///////// Funcões  Google
 //////////////////////////////////////////////////
 //	googleSearch('Pandinha',function($value){

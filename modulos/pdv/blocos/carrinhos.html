@@ -11,7 +11,9 @@
 		totalVendas++;
 		localStorage.setItem('totalVendas',totalVendas);	
 	
-		return totalVendas;
+
+
+		return addZeroes(totalVendas);
 	}
 
 
@@ -23,7 +25,11 @@
 		},
 		onSet:function(params){	
 
-			params.title='Venda: <b>'+totalVendas()+'</b>';
+			//let NunTotalVendas = totalVendas();
+			params.title='Venda: <b>'+params.id+'</b>';
+			//params.id = '_'+NunTotalVendas;
+
+			//carrinhos.list[params.id] = {produtos:{}};
 
 			/*-----------------------------------------------------------------*/			
 			$('#blockCarrinhos').tabs('add',params);	
@@ -35,17 +41,16 @@
 			$('#'+params.id).layout('add',{//Gera Contedudo de Produtos
 			    region: 'center',			    
 			    border:0,
-			    title:'Venda:'+params.id,
+			   // title:'Venda:'+params.id,
 			    content:`<div id="list_${params.id}"></div>`
 			});
 		
 
 			//Gera Tabela de Produtos
 			/*-----------------------------------------------------------------*/
-			carrinhos.produtos[params.id] = {};
+			//carrinhos.produtos[params.id] = {};
 
 			$(`#list_${params.id}`).datagrid({
-			    url:'server.php?json=produtos',
 			    border:0,
 			    singleSelect:true,
 			    fitColumns:true,
@@ -69,7 +74,7 @@
 			        	width:250,
 			        	formatter: function(value,row,index){
 							return `
-							<b style="font-size: 14px;">${value}</b>
+							<b style="font-size: 14px;">${row.produto}</b>
 							<div> Codigo: <span style="color:blue">${row.cod}</span></div>
 							<div style="font-size: 14px;">Preço: <b style="color:red">R$ ${row.preco}</b></div>
 							`;
@@ -105,19 +110,34 @@
 
 	/*-----------------------------------------------------------------*/
 	carrinhos.set({//Gera Contedudo de Produtos
-	    title:'Venda',
+	    id:totalVendas(),
 	    closable:true,
-	    produtos:{}	    
+	    produtos:[]	    
+	    //href:`modulos/pdv/blocos/carrinho.html`,
+	});
+
+
+	/*-----------------------------------------------------------------*/
+	carrinhos.set({//Gera Contedudo de Produtos
+	    id:totalVendas(),
+	    closable:true,
+	    produtos:[]	    
 	    //href:`modulos/pdv/blocos/carrinho.html`,
 	});
 
 
 	
 
+	/*-----------------------------------------------------------------*/
+	carrinhos.set({//Gera Contedudo de Produtos
+	    title:'Venda',
+	    id:totalVendas(),
+	    closable:true,
+	    produtos:[]    
+	    //href:`modulos/pdv/blocos/carrinho.html`,
+	});
 
-	$('body').click(function(){
-		//console.log(carrinhos.selected);
-	})
+
 
 
 //});
