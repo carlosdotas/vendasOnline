@@ -138,7 +138,7 @@ function getRandomInt(min=1000, max=9999) {
 //////////////////////////////////////////////////
 function getCodTimer(min=1000, max=9999) {
   min = Math.ceil(min);
-  return mikrotime()+''+getRandomInt();
+  return mikrotime()+''+getRandomInt(min, max);
 }
 
 

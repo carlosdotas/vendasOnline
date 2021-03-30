@@ -1,7 +1,19 @@
 <script type="text/javascript" src="modulos/pdv/classes/classCarrinho.js"></script>
 <div id="blockCarrinhos"></div>
 <script type="text/javascript">
-$( document ).ready(function() {
+//$( document ).ready(function() {
+
+	function totalVendas(){
+		let totalVendas = localStorage.getItem('totalVendas')-0;
+		if(!totalVendas){
+			totalVendas  = 0;
+		}
+		totalVendas++;
+		localStorage.setItem('totalVendas',totalVendas);	
+	
+		return totalVendas;
+	}
+
 
 	/*-----------------------------------------------------------------*/
 	const carrinhos = new Carrinho({
@@ -9,52 +21,104 @@ $( document ).ready(function() {
 		onCreate:function(params){
 			$('#blockCarrinhos').tabs(params);
 		},
-		onSet:function(params){					
-			$('#blockCarrinhos').tabs('add',params);
+		onSet:function(params){	
+
+			params.title='Venda: <b>'+totalVendas()+'</b>';
+
+			/*-----------------------------------------------------------------*/			
+			$('#blockCarrinhos').tabs('add',params);	
+
+			/*-----------------------------------------------------------------*/
+			$('#'+params.id).layout({fit:true});
+
+			/*-----------------------------------------------------------------*/
+			$('#'+params.id).layout('add',{//Gera Contedudo de Produtos
+			    region: 'center',			    
+			    border:0,
+			    title:'Venda:'+params.id,
+			    content:`<div id="list_${params.id}"></div>`
+			});
+		
+
+			//Gera Tabela de Produtos
+			/*-----------------------------------------------------------------*/
+			carrinhos.produtos[params.id] = {};
+
+			$(`#list_${params.id}`).datagrid({
+			    url:'server.php?json=produtos',
+			    border:0,
+			    singleSelect:true,
+			    fitColumns:true,
+			    pagination:true,
+			    fit:true,
+			    pageSize:20,
+			    columns:[[
+
+			        {
+			        	field:'imgsSelected',
+			        	title:'#',
+			        	align:'center',
+			        	width:55,
+			        	formatter: function(value,row,index){
+							return `<img src="${value}" width="55" height="55">`;
+						}
+			        },
+			        {
+			        	field:'produto',
+			        	title:'Produto',
+			        	width:250,
+			        	formatter: function(value,row,index){
+							return `
+							<b style="font-size: 14px;">${value}</b>
+							<div> Codigo: <span style="color:blue">${row.cod}</span></div>
+							<div style="font-size: 14px;">Preço: <b style="color:red">R$ ${row.preco}</b></div>
+							`;
+						}
+			        }
+			    ]]
+			});
+
+			$('#'+params.id).layout('add',{//Gera Conteudo de Carrinhos
+			    width: 200,
+			    title: 'Pagamento',
+			    region: 'east',
+			    border:0,
+			    bodyCls:'blockProdutos pdg5',
+			    content:`<span>Valor Total:</span>
+			    	<input name="total" >
+			    	<span>Valor Pago:</span>
+			    	<input name="pago" >
+			    	<span>Valor Troco:</span>
+			    	<input name="troco" >
+			    	<span>Cliente:</span>
+			    	<input name="cliente" >
+			    	<span>Detalhes:</span>
+			    	<input name="detalhe" >`});
+
+
 		},
 		onSelect:function(value,index,value2){
 	    	carrinhos.selected = $('#blockCarrinhos').tabs('getSelected').attr('id');
-	    	//console.log(carrinhos)
+	    	//console.log(carrinhos.selected)
 	    }
 	});
 
 	/*-----------------------------------------------------------------*/
 	carrinhos.set({//Gera Contedudo de Produtos
-	    title:'Venda 1',
-	    id:"venda1",
-	    href:`modulos/pdv/blocos/carrinho.html?id=venda1`,
-	});
-
-	/*-----------------------------------------------------------------*/
-	carrinhos.set({//Gera Contedudo de Produtos
-	    title:'Venda 2',
-	    id:"venda2",
-	    href:`modulos/pdv/blocos/carrinho.html`,
+	    title:'Venda',
+	    closable:true,
+	    produtos:{}	    
+	    //href:`modulos/pdv/blocos/carrinho.html`,
 	});
 
 
-	//console.log(carrinhos);
+	
 
-	//$('#blockCarrinhos').tabs({
-	//	plain:false
-	//});
 
-	////////////////////////////////////////////////////////////
-	//const carrinhosTab = new Tabs({
-	//	element:'#blockCarrinhos',
-	//	plain:false
-	//});	
+	$('body').click(function(){
+		//console.log(carrinhos.selected);
+	})
 
-	////////////////////////////////////////////////////////////
-	//function criarCarrinho(){
-	//const carrinhos = new Carrinho();
-	//carrinhos.addObserver(carrinhosTab);
-	//carrinhos.notifyObservers();	
-	//}
 
-	//criarCarrinho();
-	//criarCarrinho();
-	//criarCarrinho();
-
-});
+//});
 </script>

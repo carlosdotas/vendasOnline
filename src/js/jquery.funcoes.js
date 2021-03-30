@@ -187,6 +187,9 @@
 
 		if(!dados.tipo)dados.tipo = "keydown";
 		$( this ).bind( dados.tipo, function(event) {
+
+
+
 			var tecla = event.originalEvent.key;
 			if(dados[tecla])dados[tecla]();
 		});
@@ -208,6 +211,7 @@
 			var detectIn = 0;
 			var qnt = 1;
 			var tecla = event.originalEvent.key;
+			var which = event.which;
 			var codeSize = 7;
 
 			if(isNumber(value)){

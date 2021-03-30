@@ -66,7 +66,7 @@ $( document ).ready(function() {
 	$('#buscaPorCodigo').select();
 	$('#buscaPorCodigo').buscar({
 		onkeyup:function(dados){
-			cl(dados);
+			//cl(dados);
 
 			if(dados.type=='text'){
 				$('#listaDeProdutos').datagrid({
@@ -90,9 +90,29 @@ $( document ).ready(function() {
 			}									
 		},
 		onSend:function(dados){
+
+			let produto = {};
+			produto.preco = dados.val;
+			produto.produto = 'Produto Avulso';
+			produto.cod = getCodTimer();
+
+			carrinhos.produtos[carrinhos.selected][produto.cod] = produto
+			
+			console.log(dados);
+			
 			//$('#listaDeProdutos').datagrid({
 			//	url:'server.php?json=produtos'
 			//});
+			/*-----------------------------------------------------------------*/
+			
+			/*
+			carrinhos.set({//Gera Contedudo de Produtos
+			    title:'Venda',
+			    closable:true,
+			    produtos:{}	
+			    //href:`modulos/pdv/blocos/carrinho.html`,
+			});			
+			*/
 		}		
 	})
 });
