@@ -92,18 +92,23 @@ $( document ).ready(function() {
 		onSend:function(dados){
 
 			let produto = {};
-			//Regra de Negocio de Entrada no Carrinho
-			//---------------------------------------------------------------------//
-			produto.preco = dados.val;
-			produto.produto = 'Produto Avulso';
-			produto.cod = getCodTimer();
+
+			if(dados.type=="money"){
+
+				//Regra de Negocio de Entrada no Carrinho
+				//---------------------------------------------------------------------//
+				produto.preco = dados.val;
+				produto.produto = 'Produto Avulso';
+				produto.cod = getCodTimer();
+				
+			}
 
 			//Adiciona Produto no Crrinho
 			//---------------------------------------------------------------------//
 			carrinhos.setCarrinho(produto);
 
-			console.log(carrinhos.getCarrinho());
-
+			//Seta produto na Grid
+			//---------------------------------------------------------------------//
 			$(`#list_${carrinhos.selected}`).datagrid({
 				data:(carrinhos.getCarrinho().reverse())
 			})
