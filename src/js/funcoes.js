@@ -89,14 +89,14 @@ function SESSION(data){
 ///////// Outras Funcoes
 //////////////////////////////////////////////////
 function getJSON(url){
-	$.ajaxSetup({
-	    async: false
-	});
+	$.ajaxSetup({  async: false });
 
  	var saida;
 	$.getJSON(url, function(resultado){
 		saida = resultado;
 	});
+
+	$.ajaxSetup({ async: true });
 
 	return saida;			
 }

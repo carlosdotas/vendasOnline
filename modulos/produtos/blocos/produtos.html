@@ -79,9 +79,9 @@ $( document ).ready(function() {
 				});				
 			}	
 			if(dados.type=='money'){
-				//$('#listaDeProdutos').datagrid({
-				//	url:'server.php?json=produtos&preco='+dados.val
-				//});				
+				$('#listaDeProdutos').datagrid({
+					url:'server.php?json=produtos&preco='+dados.val
+				});				
 			}	
 			if(dados.type=='limpo'){
 				$('#listaDeProdutos').datagrid({
@@ -93,24 +93,26 @@ $( document ).ready(function() {
 
 			let produto = {};
 
-			console.log(dados);
-
 			//Regra de Negocio de Entrada no Carrinho
 			//---------------------------------------------------------------------//
 
 			if(dados.type=="cod"){
-				let server = getJSON('server.php?json=produtos&cod='+dados.val)['rows'][0];
-				produto.preco = server.preco;
-				produto.produto = server.produto;
-				produto.cod = server.cod;
 
-			}
-
-			if(dados.type=="money"){
 				produto.preco = dados.val;
 				produto.produto = 'Produto Avulso';
 				produto.cod = getCodTimer();
+
 			}
+
+
+			if(dados.type=="money"){
+
+				produto.preco = dados.val;
+				produto.produto = 'Produto Avulso';
+				produto.cod = getCodTimer();
+
+			}
+
 
 			if(produto.cod){
 				//Adiciona Produto no Crrinho
