@@ -100,18 +100,21 @@ $( document ).ready(function() {
 				produto.preco = dados.val;
 				produto.produto = 'Produto Avulso';
 				produto.cod = getCodTimer();
-				
+
 			}
 
-			//Adiciona Produto no Crrinho
-			//---------------------------------------------------------------------//
-			carrinhos.setCarrinho(produto);
 
-			//Seta produto na Grid
-			//---------------------------------------------------------------------//
-			$(`#list_${carrinhos.selected}`).datagrid({
-				data:(carrinhos.getCarrinho().reverse())
-			})
+			if(produto.cod){
+				//Adiciona Produto no Crrinho
+				//---------------------------------------------------------------------//
+				carrinhos.setCarrinho(produto);
+
+				//Seta produto na Grid
+				//---------------------------------------------------------------------//
+				$(`#list_${carrinhos.selected}`).datagrid({
+					data:(carrinhos.getCarrinho().reverse())
+				});
+			}
 
 		}		
 	})
