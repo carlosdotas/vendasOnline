@@ -1,9 +1,10 @@
-class Carrinho extends Observers{
-	constructor(){
-		super();
-		let id = getCodTimer();
-		this.id=getCodTimer()
-		this.title='Carrinho:'+id
+class Carrinho extends classPadrao{
+	constructor(parans={}){
+		super(parans);
+
+		//---------------------------------------------------------------------//
+		//this.title='Carrinho:'
+		if(!this.id)this.id=this.codId()
 		this.dataIn=0
 		this.dataFim=0
 		this.client=0
@@ -13,19 +14,13 @@ class Carrinho extends Observers{
 		this.valortroco=0
 		this.pagamentos=[]
 		this.produtos=[]
-	}
-	set(id){
-		//if(!id)id=getCodTimer();
-		//this.selected = {
 
-		//}		
-		//this.vendas.push(this.selected);	
-			
+		//Execulda Mewtdos de Entrada
+		//---------------------------------------------------------------------//
+		this.onCreate(Object.assign(this, parans));		
 	}
-	get(id){
-		//delete this.vendas[id];
-	}
-	del(id){
-		//this.selected = this.vendas[id];
-	}
+	codId(){
+		var date  = new Date();
+		return Math.round(date.getTime()/1000 | 0)+String(Math.floor(Math.random() * (1000 + 9999)));; 
+	}	
 }

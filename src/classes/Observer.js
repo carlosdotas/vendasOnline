@@ -2,21 +2,18 @@ class Observers {
 	constructor() {
 		this.observers = [];
 	}
-	addObserver(objeto) {
+	add(objeto) {
 		this.observers.push(objeto);		
 	}
-	delObserver(objeto) {
+	del(objeto) {
 	  var index = this.observers.indexOf(objeto);
 	  if (index > -1) {
 	    this.observers.splice(index, 1);
 	  }		
 	}	
-	notifyObservers(){		
-		
-		console.log(this.observers);
-
+	notify(){
 		for(let objeto of this.observers) {
-			objeto.update(this);
+			objeto(this);
 		}
 	}	
 }

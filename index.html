@@ -16,19 +16,17 @@
 		<script type="text/javascript" src="extension/jquery-easyui/jquery.easyui.min.js"></script>
 		<script type="text/javascript" src="extension/jquery-easyui/locale/easyui-lang-pt_BR.js"></script>
 		<script type="text/javascript" src="extension/jquery.maskMoney.min.js"></script>
-		<script type="text/javascript" src="src/classes/Observer.js"></script>
+		<script type="text/javascript" src="src/classes/classPadrao.js"></script>		
 		<script type="text/javascript" src="src/js/funcoes.js"></script>
 		<script type="text/javascript" src="src/js/jquery.funcoes.js"></script>
 
 	</head>
-	<body>
+	<body >
 		<div class="easyui-panel" id="panelBody"></div>
 	</body>
 	<script type="text/javascript">
-		$('#panelBody').panel({
-			fit:true,
-			border:0,
-			href:"modulos/home/index.html"
-		})
+		$.get("modulos/home/index.html",function(content){	
+			$('body').html(content);
+		});
 	</script>
 </html>

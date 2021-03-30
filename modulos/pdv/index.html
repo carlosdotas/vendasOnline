@@ -1,28 +1,48 @@
 <div id="pdvLayout"></div>
 <script type="text/javascript" src="modulos/pdv/classes/classVenda.js"></script>
-<script type="text/javascript" src="modulos/pdv/classes/classCarrinho.js"></script>
+<script type="text/javascript" src="modulos/pdv/classes/classProdutos.js"></script>
 <script type="text/javascript">
 $( document ).ready(function() {
 
-	//Gera Layout do Pdv
-	////////////////////////////////////////////////////////////
-	$('#pdvLayout').layout({fit:true});	
-	$('#pdvLayout').layout('add',{
+	/*-----------------------------------------------------------------*/
+	const venda = new Vendas({
+		fit:true,
+		onCreate:function(params){
+			$('#pdvLayout').layout(params);
+		},
+		onSet:function(params){					
+			$('#pdvLayout').layout('add',params);
+		}
+	});
+
+	/*-----------------------------------------------------------------*/
+	venda.set({//Gera Menu Superior do Modulo
 	    region: 'north',
 	    border:0,
 	    bodyCls:'gradiente1'
 	});
-	$('#pdvLayout').layout('add',{
+
+	venda.set({//Gera conteudo Central do Modulo
 	    region: 'center',
 	    border:0,
 	    bodyCls:'sombra_Interna_foot pdg5',
 	    content:'<div id="contentPdv"></div>'
 	});
 
-	//Gera Layout do Bloco Produtos e Carrinho
-	////////////////////////////////////////////////////////////
-	$('#contentPdv').layout({fit:true});	
-	$('#contentPdv').layout('add',{
+
+	/*-----------------------------------------------------------------*/
+	const pdvProduto = new PdvProdutos({
+		fit:true,
+		onCreate:function(params){
+			$('#contentPdv').layout(params);
+		},
+		onSet:function(params){					
+			$('#contentPdv').layout('add',params);
+		}
+	});
+
+	/*-----------------------------------------------------------------*/
+	pdvProduto.set({//Gera Contedudo de Produtos
 	    region: 'west',
 	    width: 380,
 	    border:0,
@@ -30,11 +50,13 @@ $( document ).ready(function() {
 	    split:true,
 	    href:'modulos/pdv/blocos/produtos.html'
 	});
-	$('#contentPdv').layout('add',{
+
+	pdvProduto.set({//Gera Conteudo de Carrinhos
 	    region: 'center',
 	    border:0,
 	    href:'modulos/pdv/blocos/carrinhos.html'
 	});
+
 
 });
 </script>

@@ -2,22 +2,31 @@
 <script type="text/javascript">
 $( document ).ready(function() {
 
-	//Gera Bloco de Produtos
-	////////////////////////////////////////////////////////////
-	$('#blockProdutos').layout({fit:true});	
-	$('#blockProdutos').layout('add',{
+	/*-----------------------------------------------------------------*/
+	const pdvProduto = new PdvProdutos({
+		fit:true,
+		onCreate:function(params){
+			$('#blockProdutos').layout(params);
+		},
+		onSet:function(params){					
+			$('#blockProdutos').layout('add',params);
+		}
+	});
+
+	/*-----------------------------------------------------------------*/
+	pdvProduto.set({
 	    region: 'north',
 	    bodyCls:'blockProdutos pdg5',
 	    content:'<input autocomplete="off" id="buscaPorCodigo">'
 	});
-	$('#blockProdutos').layout('add',{
+	pdvProduto.set({
 	    region: 'center',
 	    border:1,
 	    content:'<div id="listaDeProdutos"></div>'
 	});
 
 	//Gera Tabela de Produtos
-	////////////////////////////////////////////////////////////
+	/*-----------------------------------------------------------------*/
 	$('#listaDeProdutos').datagrid({
 	    url:'server.php?json=produtos',
 	    border:0,
@@ -32,9 +41,9 @@ $( document ).ready(function() {
 	        	field:'imgsSelected',
 	        	title:'#',
 	        	align:'center',
-	        	width:33,
+	        	width:55,
 	        	formatter: function(value,row,index){
-					return `<img src="${value}" width="30" height="30">`;
+					return `<img src="${value}" width="55" height="55">`;
 				}
 	        },
 	        {
@@ -53,7 +62,7 @@ $( document ).ready(function() {
 	});
 	
 	//Regras de Negocios do Filtro de Busca
-	////////////////////////////////////////////////////////////
+	/*-----------------------------------------------------------------*/
 	$('#buscaPorCodigo').select();
 	$('#buscaPorCodigo').buscar({
 		onkeyup:function(dados){

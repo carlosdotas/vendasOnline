@@ -1,13 +1,43 @@
+<script type="text/javascript" src="modulos/pdv/classes/classCarrinho.js"></script>
 <div id="blockCarrinhos"></div>
 <script type="text/javascript">
 $( document ).ready(function() {
 
-	////////////////////////////////////////////////////////////
-	//const vendas = new Vendas();
-
-	$('#blockCarrinhos').tabs({
-		plain:false
+	/*-----------------------------------------------------------------*/
+	const carrinhos = new Carrinho({
+		fit:true,
+		onCreate:function(params){
+			$('#blockCarrinhos').tabs(params);
+		},
+		onSet:function(params){					
+			$('#blockCarrinhos').tabs('add',params);
+		},
+		onSelect:function(value,index,value2){
+	    	carrinhos.selected = $('#blockCarrinhos').tabs('getSelected').attr('id');
+	    	//console.log(carrinhos)
+	    }
 	});
+
+	/*-----------------------------------------------------------------*/
+	carrinhos.set({//Gera Contedudo de Produtos
+	    title:'Venda 1',
+	    id:"venda1",
+	    href:`modulos/pdv/blocos/carrinho.html?id=venda1`,
+	});
+
+	/*-----------------------------------------------------------------*/
+	carrinhos.set({//Gera Contedudo de Produtos
+	    title:'Venda 2',
+	    id:"venda2",
+	    href:`modulos/pdv/blocos/carrinho.html`,
+	});
+
+
+	//console.log(carrinhos);
+
+	//$('#blockCarrinhos').tabs({
+	//	plain:false
+	//});
 
 	////////////////////////////////////////////////////////////
 	//const carrinhosTab = new Tabs({

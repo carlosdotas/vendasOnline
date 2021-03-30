@@ -1,41 +1,62 @@
+<script type="text/javascript" src="modulos/home/classHome.js"></script>
 <div id="tabHome"></div>
 <script type="text/javascript">
-	$( document ).ready(function() {
+$( document ).ready(function() {
 
-		$('#tabHome').tabs({
-			fit:true,
-			plain:false,
-			tools:[{
-					iconCls:'icon-save',
-					handler:function(){
-						alert('save')
-					}
-				},{
-					iconCls:'icon-add',
-					handler:function(){
-						alert('add')
-					}
-				},{
-					text:'Hora:<b>06:46</b>'
-				}]
-		});
-
-		$('#tabHome').tabs('add',{
-		    title:'Pdv',
-		    href:'modulos/pdv/index.html'
-		});
-
-		$('#tabHome').tabs('add',{
-		    title:'Vendas',
-		    selected:0,
-		    href:'modulos/vendas/index.html'
-		});
-
-		$('#tabHome').tabs('add',{
-		    title:'Produtos',
-		    selected:0,
-		    href:'modulos/produtos/index.html'
-		});	
-		
+	const modulos = new Home({
+		fit:true,
+		plain:false,
+		onCreate:function(params){
+			$('#tabHome').tabs(params);	
+		},
+		onAddTools:function(params){
+			$('#tabHome').tabs(params);	
+		},
+		onSet:function(dados){			
+			$('#tabHome').tabs('add',dados);
+		}
 	});
+
+	/*-----------------------------------------------------------------*/
+	modulos.addTools({
+		iconCls:'icon-add',
+		handler:function(){
+			alert('add')
+		}
+	})
+	modulos.addTools({
+		iconCls:'icon-save',
+		handler:function(){
+			alert('add')
+		}
+	})
+	modulos.addTools({
+		text:'Hora:<b>06:46</b>'
+	})
+
+	/*-----------------------------------------------------------------*/
+	modulos.set({
+		id:'pdv',
+		title:"PDV",
+		onOpen:function(){
+			$('#buscaPorCodigo').select();
+		},
+		href:"modulos/pdv/index.html"
+	});
+
+	modulos.set({
+		id:'produtos',
+		title:"Produtos",
+		selected:0,
+		href:"modulos/produtos/index.html"
+	});
+
+	modulos.set({
+		id:'vendas',
+		title:"Vendas",
+		selected:0,
+		href:"modulos/vendas/index.html"
+	});
+	
+});
 </script>
