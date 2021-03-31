@@ -45,8 +45,10 @@ function ativaTeclasPDV(){
 		},
 		F9:function(){ //Imprimir
 
-			var carrinhoJson = JSON.stringify('criaCarrinhoDeCompras');				
-			postPrint(carrinhoJson,'modulos/pdv/print.php');
+			console.log(carrinhos.list[carrinhos.selected]);
+
+			var carrinhoJson = JSON.stringify(carrinhos.list[carrinhos.selected]);				
+			postPrint(carrinhoJson,'print.php');
 
 		},	
 		Delete:function(){ //Deleta Item Selecionado

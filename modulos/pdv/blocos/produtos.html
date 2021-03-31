@@ -59,6 +59,7 @@ $('#listaDeProdutos').datagrid({
                 $('[name="preco"]').select();
             },
             onClose:function(){
+                $('#listaDeProdutos').datalist('reload');
                 ativaTeclasPDV();
             }
         });

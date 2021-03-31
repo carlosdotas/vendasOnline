@@ -44,9 +44,15 @@ class Carrinho extends classPadrao{
 			//Adiciona na Lista
 			//---------------------------------------------------------------------//
 			this.list[this.selected].produtos.push(params);
+
+
+			//Aciona O seletor
+			//---------------------------------------------------------------------//
+			this.somaTotal(params);
+					
 			//Retorna para Evento
 			//---------------------------------------------------------------------//
-			this.onSetCarrinho(this.getCarrinho());	
+			this.onSetCarrinho(this.list[this.selected]);	
 		}
 	}
 
@@ -67,9 +73,13 @@ class Carrinho extends classPadrao{
 			this.selectProduto(this.list[this.selected].produtos[index-1]);
 		}			
 
+		//Aciona O seletor
+		//---------------------------------------------------------------------//
+		this.somaTotal(params);
+
 		//Retorna para Evento
 		//---------------------------------------------------------------------//
-		this.onSetCarrinho(this.getCarrinho());	
+		this.onSetCarrinho(this.list[this.selected]);		
 	}
 	setCarrinho(params){
 

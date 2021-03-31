@@ -146,60 +146,55 @@ $('#buscaPorCodigo').buscar({
 		//cl(dados);
 		//$('#listaDeProdutos').datalist('unselectAll');
 
-		if(dados.type=='cod'){
-			$('#listaDeProdutos').datagrid({
-				url:'server.php?json=produtos&cod='+dados.val
-			});						
-		}
+		if(dados.sizer<=2)return false;
+		$().Deley(function(){
 
-		if(dados.type=='text' && dados.tecla!='Enter'){
-			$('#listaDeProdutos').datagrid({
-				url:'server.php?json=produtos&produto='+dados.val,
-				onLoadSuccess:function(){
-					window.listSelected = '#listaDeProdutos';
-					$('#listaDeProdutos').datalist('selectRow',0);
-				}
-			});						
-		}
+			if(dados.type=='cod'){
+				$('#listaDeProdutos').datagrid({
+					url:'server.php?json=produtos&cod='+dados.val
+				});						
+			}
+		
+			if(dados.type=='text' && dados.tecla!='Enter'){
+				$('#listaDeProdutos').datagrid({
+					url:'server.php?json=produtos&produto='+dados.val,
+					onLoadSuccess:function(){
+						window.listSelected = '#listaDeProdutos';
+						$('#listaDeProdutos').datalist('selectRow',0);
+					}
+				});						
+			}
 
-		if(dados.type=='money'){
-			$('#listaDeProdutos').datalist('unselectAll');					
-		}
+			if(dados.type=='money'){
+				$('#listaDeProdutos').datalist('unselectAll');					
+			}
 
-		if(dados.type=='limpo'){
-			$('#listaDeProdutos').datagrid({
-				url:'server.php?json=produtos',
-				onLoadSuccess:function(){
+			if(dados.type=='limpo'){
+				$('#listaDeProdutos').datagrid({
+					url:'server.php?json=produtos',
+					onLoadSuccess:function(){
 
-					$('#listaDeProdutos').datalist('unselectAll');
-				}
-			});	
-						
-		}									
+						$('#listaDeProdutos').datalist('unselectAll');
+					}
+				});	
+							
+			}	
+		});								
 	},
 	//Envia Produto
 	/*-----------------------------------------------------------------*/
 	onSend:function(dados){		
-
 
 		//Cerifica Linha Selecionada
 		//---------------------------------------------------------------------//
 		var getSelected = $('#listaDeProdutos').datalist('getSelected');
 		var getRowIndex = $('#listaDeProdutos').datalist('getRowIndex',getSelected);
 
-		if(getRowIndex>=0){
+		if(getRowIndex>=0 && dados.type!="cod"){
 			dados.type="cod";
 			dados.val=getSelected.cod;
 		}
 
-		if(dados.tecla=='Enter'){
-			//$('#listaDeProdutos').datagrid({
-			//	url:'server.php?json=produtos',
-			//	onLoadSuccess:function(){
-			//		$('#listaDeProdutos').datalist('unselectAll');
-			//	}
-			//});	
-		}
 
 		let produto = {};
 

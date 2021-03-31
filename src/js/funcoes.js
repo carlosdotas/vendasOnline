@@ -165,7 +165,14 @@ function postPrint(data,url){
     $('body').append('<form action="'+url+'" method="post" target="iframePrint" id="postToIframe"></form>');
     $('#postToIframe').append('<input type="hidden" name="carrinho" value=\''+data+'\' />');
     $('#postToIframe').submit().remove();;
-    document.getElementById("iframePrint").contentWindow.print();
+
+	setTimeout(function(){ 
+
+		document.getElementById("iframePrint").contentWindow.print();
+
+	}, 500);
+
+    
 
 }
 ///////////////////////////////////////////////////
