@@ -96,11 +96,11 @@
 			    border:0,
 			    bodyCls:'blockProdutos pdg5',
 			    content:`<span>Valor Total:</span>
-			    	<input name="total" >
+			    	<input id="valorTotal_${carrinhos.selected}" name="total" >
 			    	<span>Valor Pago:</span>
-			    	<input name="pago" >
+			    	<input id="valorPago_${carrinhos.selected}" name="pago" >
 			    	<span>Valor Troco:</span>
-			    	<input name="troco" >
+			    	<input id="valorTroco_${carrinhos.selected}" name="troco" >
 			    	<span>Cliente:</span>
 			    	<input name="cliente" >
 			    	<span>Detalhes:</span>
@@ -112,12 +112,17 @@
 	    	carrinhos.selected = $('#blockCarrinhos').tabs('getSelected').attr('id');
 	    	//console.log(carrinhos.selected)
 	    },
-	    onSetCarrinho:function(){
+	    onSetCarrinho:function(value){
 			//Seta produto na Grid
 			//---------------------------------------------------------------------//
 			$(`#list_${carrinhos.selected}`).datagrid({
 				data:(carrinhos.getCarrinho())
-			});	    	
+			});	    
+			$(`#valorTotal_${carrinhos.selected}`).val('R$ '+value.valorTotal);	  
+			$(`#valorPago_${carrinhos.selected}`).val('R$ '+value.valorPgto);	  
+			let troco = 'R$ '+(value.valorPgto-value.valorTotal-0).toFixed(2);
+			$(`#valorTroco_${carrinhos.selected}`).val(troco);	
+
 	    }
 	});
 
@@ -217,7 +222,7 @@ $('#buscaPorCodigo').buscar({
 					onOpen:function(){
 						desativaTeclas();
 						googleSearch(dados.val,function(dados){
-							$('[name="produto"]').val(dados.items[1].title);
+							$('[name="produto"]').val(dados.items[0].title);
 							$('[name="preco"]').focus();
 						})						
 					},

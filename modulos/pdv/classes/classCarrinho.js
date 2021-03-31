@@ -18,6 +18,7 @@ class Carrinho extends classPadrao{
 		//---------------------------------------------------------------------//
 		this.onCreate(Object.assign(this, parans));		
 		this.onSetCarrinho = parans.onSetCarrinho ? (parms1) => parans.onSetCarrinho(parms1) : ()=>{} ;
+		this.onTotal = parans.onTotal ? (parms1) => parans.onTotal(parms1) : ()=>{} ;
 	}
 	selectProduto(params){		
 		this.produtos_selected = params;		
@@ -100,10 +101,31 @@ class Carrinho extends classPadrao{
 		//---------------------------------------------------------------------//
 		this.selectProduto(params);
 
+		//Aciona O seletor
+		//---------------------------------------------------------------------//
+		this.somaTotal(params);
+
 		//Retorna para Evento
 		//---------------------------------------------------------------------//
-		this.onSetCarrinho(this.getCarrinho());
+		this.onSetCarrinho(this.list[this.selected]);
 	}	
+	somaTotal(){		
+		
+		let valorTotal = 0;
+		let valorPgto = 0;
+		this.list[this.selected].produtos.forEach(function(name){
+		   if((name.total-0)>=0){
+		   	valorTotal += name.total-0;
+		   }else{
+		   	valorPgto += -(name.total-0);
+		   }
+		});
+		this.list[this.selected].valorTotal = valorTotal.toFixed(2);
+		this.list[this.selected].valorPgto = valorPgto.toFixed(2);
+		
+		return this.list[this.selected];
+	}
+
 	getCarrinho(idVenda=false){
 		if(!idVenda)idVenda=this.selected;
 		let saida = (this.list[idVenda].produtos).slice();		
