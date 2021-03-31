@@ -1,0 +1,26 @@
+<meta title='Cadatro Rápido' >
+<style type="text/css">
+	#layoutCadastroProdutosRapido{
+		width: 300px;
+		padding: 5px;
+	}
+	#layoutCadastroProdutosRapido input{
+		margin-bottom: 5px;
+		width: 100%;
+	}
+</style>
+<div id="layoutCadastroProdutosRapido">
+	<span>Codigo</span>
+	<input name="cod" >
+	<span>Nome do Produto</span>
+	<input name="produto" >
+	<span>Preco</span>
+	<input class="money" name="preco" >
+</div>
+<script type="text/javascript">
+//Gera Layout de PDV
+/*-----------------------------------------------------------------*/
+$( document ).ready(function() {
+	$('.money').maskMoney({thousands:'', decimal:'.'});
+});	
+</script>

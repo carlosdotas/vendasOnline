@@ -32,7 +32,7 @@ $( document ).ready(function() {
 	    region: 'north',
 	    border: 0,
 	    bodyCls:'blocoDeFiltros pdg5',
-	    content:`<button>Adicionar</button>
+	    content:`<button id="cadastroRapido">Adicionar</button>
 				 <button>Imprimir</button>
 	    		`
 	});
@@ -55,11 +55,13 @@ $( document ).ready(function() {
 		pageList:[50,100,200,500],
 		pageSize:50,
 		fitColumns:true,
+		rownumbers:true,
 		singleSelect:true,
 	    url:'server.php?json=produtos',
 	    pagination:true,
 	    bodyCls:'inputList',
 	    columns:[[
+	        {sortable:true,field:'produtos_id',title:'#',width:50,align:'center'},	    
 	        {sortable:true,field:'cod',title:'Code',width:100,align:'center',
 		    formatter: function(value,row,index){
 				return `<input index="1_${index}" class="inputTable" ref="${row.produtos_id}" name="cod" value="${value}">`;
@@ -109,11 +111,40 @@ $( document ).ready(function() {
 
 	$('[name="cod"]').select();	
 
+
+	//Abre Dialod Cadastro Rápido
+	/*-----------------------------------------------------------------*/
+	$('#cadastroRapido').click(function(){
+		dialog({
+			href:'modulos/produtos/cadastroRapido.html',
+			focus:'[name="cod"]',
+			valuesInput:{},
+			onOpen:function(id){
+
+			},
+			onSave:function(params,id){
+				var save = Object.assign({salvar:'produtos'},params);
+
+				if(!params.cod)return false;
+				if(!params.produto)return false;
+				if(!params.preco)return false;
+
+				$.post( "server.php", save, function( data ) {
+					$('#'+id).dialog('close'); 
+					$('#listDeProdutos').datagrid('reload');
+					console.log(data);
+				});
+			}
+		})
+	})
+
+
+
 });	
 </script>
 <style type="text/css">
 	.blocoDeFiltros{
-		background-color: #eee
+		background-color: #eee;
 	}
 	.blocoDeFiltros input,button{
 		margin-bottom: 5px;
