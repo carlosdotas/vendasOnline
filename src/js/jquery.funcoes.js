@@ -311,6 +311,7 @@
 				event.preventDefault();
 				$(this).maskMoney('destroy');
 				$(this).val('');
+				//$(this).select();
 
 				if(dados.onSend)dados.onSend(output);
 			}

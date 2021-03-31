@@ -2,23 +2,13 @@
 <script type="text/javascript">
 
 /*-----------------------------------------------------------------*/
-const pdvProduto = new PdvProdutos({
-	fit:true,
-	onCreate:function(params){
-		$('#blockProdutos').layout(params);
-	},
-	onSet:function(params){					
-		$('#blockProdutos').layout('add',params);
-	}
-});
-
-/*-----------------------------------------------------------------*/
-pdvProduto.set({
+$('#blockProdutos').layout({fit:true});
+$('#blockProdutos').layout('add',{
     region: 'north',
     bodyCls:'blockProdutos pdg5',
     content:'<input autocomplete="off" id="buscaPorCodigo">'
 });
-pdvProduto.set({
+$('#blockProdutos').layout('add',{
     region: 'center',
     border:1,
     content:'<div id="listaDeProdutos"></div>'
