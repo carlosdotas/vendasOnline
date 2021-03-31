@@ -35,21 +35,80 @@
 
 //////////////////////////////////////////////////////////////////
 (function( $ ){
-	$.fn.templateJquery = function(params1,params2){	
+	$.fn.easuiTabs = function(dados){
 
-		let pai = $(this).attr('id');
+	}
+})( jQuery );
 
-		if(params1.onSelect)$(this)[0].onSelect = (data)=>params1.onSelect(data);
-	
-		if(params1=='select'){		
-			selectReturn = select(params2);
-			$(this)[0].onSelect(selectReturn);
-			return selectReturn
+
+//////////////////////////////////////////////////////////////////
+(function( $ ){
+	$.fn.keySeletor = function(params,id){	
+
+		//Parametros
+		let thisobject = this
+		let classSeletor = params.classSeletor;
+		let classKey     = params.classKey;
+
+		//Eventos
+		$(this)[0].onSelect = params.onSelect ? (data1,data2)=> params.onSelect(data1,data2) : ()=>{}
+		$(this)[0].onSend = params.onSend ? (data1,data2)=> params.onSend(data1,data2) : ()=>{}
+		
+		//Start
+		$( this )[0][classSeletor] = -1;
+		onKeyUp();
+
+		//Metodos
+		function onKeyUp(){
+			$( classKey ).keyup(function(event) {
+				let totalElements = (thisobject.length-1);
+
+			  	if(event.keyCode==40){
+			  		$( thisobject )[0][classSeletor]++;
+			  		aplicaSelecao();
+			  	}
+			  	if(event.keyCode==38){
+			  		$( thisobject )[0][classSeletor]--;
+			  		aplicaSelecao();
+			  	}
+
+			  	if(event.keyCode==13){
+	  				$( thisobject )[0].onSend(
+						$( thisobject )[0][classSeletor],
+						$( thisobject ).eq( $( thisobject )[0][classSeletor] )
+					);
+  				}
+
+				if($( thisobject )[0][classSeletor] >= totalElements)$( thisobject )[0][classSeletor] = totalElements;
+				if($( thisobject )[0][classSeletor] <= 0)$( thisobject )[0][classSeletor] = 0;
+
+			  	
+			});
 		}
 
+		function aplicaSelecao(){
+			$( thisobject ).removeClass( classSeletor );
+			$( thisobject ).eq( $( thisobject )[0][classSeletor] ).toggleClass( classSeletor );
+			$( thisobject )[0].onSelect(
+				$( thisobject )[0][classSeletor],
+				$( thisobject ).eq( $( thisobject )[0][classSeletor] )
+			);
+		}
+	}
+})( jQuery );
 
-		let template = templater(params1.template);
-		let data = params1.data;
+//////////////////////////////////////////////////////////////////
+(function( $ ){
+	$.fn.templateJquery = function(params){	
+
+		//Parametros
+		let thisobject = this
+		let template = templater(params.template)
+		let data = params.data
+
+		//Eventos
+		$(this)[0].onRender = params.onRender ? (data1)=> params.onRender(data1) : ()=>{}
+			
 		
 		//Metodos
 
@@ -65,6 +124,9 @@
 			  	}	  	
 			};
 			if(saidaHtml)template = saidaHtml;
+
+			$(thisobject)[0].onRender(thisobject);
+		   
 			return template;
 		}
 
@@ -75,17 +137,6 @@
 						
 		}
 		
-		////////////////////////////////////////////////////////
-		function select(selected){
-
-			let index = $('#'+pai).find('[ref="'+selected+'"]').index();
-
-			$( '#'+pai+" .selectTemplateJquery" ).removeClass( "selectTemplateJquery" );
-			$('#'+pai+' [ref="'+selected+'"]').toggleClass('selectTemplateJquery');  
-
-			return {pai:'#'+pai,id:selected,index:index};
-		}
-
 		$(this).html(render(data,template));
 		return this;
 	}
@@ -133,11 +184,21 @@
 (function( $ ){
 	$.fn.teclas = function(dados){
 
-
 		if(!dados.tipo)dados.tipo = "keydown";
 		$( this ).bind( dados.tipo, function(event) {
 			var tecla = event.originalEvent.key;
-			if(dados[tecla])dados[tecla]();
+			if(dados[tecla]){
+				event.preventDefault();
+				dados[tecla]();
+			}
+
+			var teclado = (event.which)
+			if(dados[teclado]){
+				event.preventDefault();
+				dados[teclado]();
+			}
+
+			if(dados.keyDown)dados.keyDown(tecla);
 		});
 	}
 })( jQuery );
@@ -154,9 +215,10 @@
 			var text = '';
 			var type = 'text';
 			var value = $( this ).val();			
-			var detectIn = 1;
+			var detectIn = 0;
 			var qnt = 1;
 			var tecla = event.originalEvent.key;
+			var which = event.which;
 			var codeSize = 7;
 
 			if(isNumber(value)){
@@ -191,23 +253,23 @@
 				if(output.type=="numbers" && output.sizer<=codeSize){
 					output.val = (output.val-0).toFixed(2);
 					output.type = "money";
-					if((output.val-0)<=0.001 && (output.val-0)!=0){
+					if((output.val-0)<=0.001){
 						$(this).maskMoney({prefix:'-',thousands:'', decimal:'.'});
 						output.type = "negative";
 					}else{										
 						$(this).maskMoney({thousands:'', decimal:'.'});
 					}
-					if(dados.onMoneyDetect)dados.onMoneyDetect(output);
+					//if(dados.onMoneyDetect)dados.onMoneyDetect(output);
 				}
 
 				if(output.type=="numbers" && output.sizer>=codeSize){
 					output.type = "cod";
 					$(this).maskMoney({thousands:'', decimal:''});
-					if(dados.onCodeDetect)dados.onCodeDetect(output);
+					//if(dados.onCodeDetect)dados.onCodeDetect(output);
 				}
 
 				if(output.type=="text"){
-					if(dados.onTextDetect)dados.onTextDetect(output);
+					//if(dados.onTextDetect)dados.onTextDetect(output);
 				}
 
 				if(output.type=="calculadora"){
@@ -219,6 +281,19 @@
 					output.val = calc;
 				}
 
+				if((output.val=="")){
+					output.type="limpo"
+				}
+
+				switch (tecla) {
+				  case 'ArrowUp': case 'ArrowDown': case 'ArrowLeft': case 'ArrowRight':
+				  case '+': case '-': case '/': case '*':case '=':case ',':case '.':
+				  case 'Delete': 
+
+				    output.type="tecla";
+				    break;				    
+				}
+
 
 				if(dados.onkeyup)dados.onkeyup(output);
 
@@ -226,20 +301,17 @@
 				$(this).maskMoney('destroy');
 			}
 
-			//console.log(event.which);
-
 			if(event.which==27){	//Tecla Enter
-				$( dados.input ).focus();
 				event.preventDefault();
 				$(this).maskMoney('destroy');
 				$(this).val('');			
-				if(dados.onSend)dados.onClean(output);	
-			}
-			if(event.which==13 || event.which==107){	//Tecla Enter
+				//if(dados.onSend)dados.onClean(output);	
+			}		
+			if(event.which==13){	//Tecla Enter
 				event.preventDefault();
-				$( dados.input ).focus();
 				$(this).maskMoney('destroy');
 				$(this).val('');
+				//$(this).select();
 
 				if(dados.onSend)dados.onSend(output);
 			}

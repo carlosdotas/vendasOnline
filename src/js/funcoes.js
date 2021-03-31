@@ -89,14 +89,14 @@ function SESSION(data){
 ///////// Outras Funcoes
 //////////////////////////////////////////////////
 function getJSON(url){
-	$.ajaxSetup({
-	    async: false
-	});
+	$.ajaxSetup({  async: false });
 
  	var saida;
 	$.getJSON(url, function(resultado){
 		saida = resultado;
 	});
+
+	$.ajaxSetup({ async: true });
 
 	return saida;			
 }
@@ -138,7 +138,7 @@ function getRandomInt(min=1000, max=9999) {
 //////////////////////////////////////////////////
 function getCodTimer(min=1000, max=9999) {
   min = Math.ceil(min);
-  return mikrotime()+''+getRandomInt();
+  return mikrotime()+''+getRandomInt(min, max);
 }
 
 
@@ -264,6 +264,21 @@ function tabs(array,select){
     }, 500);
 }
 
+function addZeroes(num, len=5) {
+    var numberWithZeroes = String(num);
+  var counter = numberWithZeroes.length;
+      
+  while(counter < len) {
+  
+      numberWithZeroes = "0" + numberWithZeroes;
+    
+    counter++;
+  
+    }
+  
+  return numberWithZeroes;
+}
+
 ///////// Funcões  Google
 //////////////////////////////////////////////////
 //	googleSearch('Pandinha',function($value){
@@ -307,4 +322,21 @@ function geraListaHtml(templateInt,lista){
 		})+saidaHtml;		
 	}
 	return saidaHtml;
+}
+
+
+//////////////////////////////////////////////////
+//	
+//////////////////////////////////////////////////
+function totalVendas(){
+	let totalVendas = localStorage.getItem('totalVendas')-0;
+	if(!totalVendas){
+		totalVendas  = 0;
+	}
+	totalVendas++;
+	localStorage.setItem('totalVendas',totalVendas);	
+
+
+
+	return addZeroes(totalVendas);
 }

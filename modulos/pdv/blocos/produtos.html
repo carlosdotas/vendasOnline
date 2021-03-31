@@ -1,0 +1,61 @@
+<div id="blockProdutos"></div>
+<script type="text/javascript">
+
+/*-----------------------------------------------------------------*/
+$('#blockProdutos').layout({fit:true});
+$('#blockProdutos').layout('add',{
+    region: 'north',
+    bodyCls:'blockProdutos pdg5',
+    content:'<input autocomplete="off" id="buscaPorCodigo">'
+});
+$('#blockProdutos').layout('add',{
+    region: 'center',
+    border:1,
+    content:'<div id="listaDeProdutos"></div>'
+});
+
+//Gera Tabela de Produtos
+/*-----------------------------------------------------------------*/
+$('#listaDeProdutos').datagrid({
+    url:'server.php?json=produtos',
+    border:0,
+    singleSelect:true,
+    fitColumns:true,
+    pagination:true,
+    fit:true,
+    pageSize:20,
+    columns:[[
+
+        {
+        	field:'imgsSelected',
+        	title:'#',
+        	align:'center',
+        	width:55,
+        	formatter: function(value,row,index){
+				return `<img src="${value}" width="55" height="55">`;
+			}
+        },
+        {
+        	field:'produto',
+        	title:'Produto',
+        	width:250,
+        	formatter: function(value,row,index){
+				return `
+				<b style="font-size: 14px;">${value}</b>
+				<div> Codigo: <span style="color:blue">${row.cod}</span></div>
+				<div style="font-size: 14px;">Preço: <b style="color:red">R$ ${row.preco}</b></div>
+				`;
+			}
+        }
+    ]],
+    onSelect:function(index,row){
+
+    }
+});
+
+
+
+
+
+
+</script>

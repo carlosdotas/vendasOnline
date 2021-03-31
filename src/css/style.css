@@ -57,6 +57,10 @@ input, textarea{
 	background: linear-gradient(to bottom, rgba(255,255,255,1) 0%, rgba(246,246,246,1) 47%, rgba(237,237,237,1) 100%);
 	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#ededed', GradientType=0 );    	
 }
+.pdg5{
+	padding: 5px;
+}
+
 /*------------------------------------------------------------*/
 .fundoImg{
 	/*background: url(../imgs/Wallpaper_1366x768.jpg);
@@ -74,3 +78,19 @@ input, textarea{
 .blue-70{color: #2851A3;}
 .blue-80{color: #1D3C78;}
 
+/*------------------------------------------------------------*/
+.blockProdutos{
+	background-color: rgb(221, 221, 221);
+}
+.blockProdutos input{
+	width:100%;
+	font-size: 20px;
+	text-align: center;
+}
+
+/*------------------------------------------------------------*/
+.tabs-tool{
+	background-color: #fff;
+	border-width: 0;
+	border-bottom-width: 1;
+}
