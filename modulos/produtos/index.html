@@ -61,7 +61,11 @@ $( document ).ready(function() {
 	    pagination:true,
 	    bodyCls:'inputList',
 	    columns:[[
-	        {sortable:true,field:'produtos_id',title:'#',width:50,align:'center'},	    
+	        {sortable:true,field:'remove',title:'#',width:0,align:'center',
+		    formatter: function(value,row,index){
+				return `<button class="bntAcionList bntEdit" ref="${row.produtos_id}" json='${JSON.stringify(row)}' >Edit</button><button class="bntAcionList bntRemove" ref="${row.produtos_id}">Remove</button>`;
+			}},	    
+	        {sortable:true,field:'produtos_id',title:'#',width:0,align:'center'},	    
 	        {sortable:true,field:'cod',title:'Code',width:100,align:'center',
 		    formatter: function(value,row,index){
 				return `<input index="1_${index}" class="inputTable" ref="${row.produtos_id}" name="cod" value="${value}">`;
@@ -91,7 +95,20 @@ $( document ).ready(function() {
 					});
 
 			  	}
-			});	    	
+			});	
+			/*-----------------------------------------------------------------*/
+			$('.bntRemove').click(function(){
+				$.post( "server.php?exclui_mysql=produtos", {id:$(this).attr('ref')}, function( data ) {
+					$('#listDeProdutos').datagrid('reload');				
+				});
+			})    	
+			/*-----------------------------------------------------------------*/
+			$('.bntEdit').click(function(){
+				//console.log($(this).attr('json'))
+				dialogCadastroRapido({
+					valuesInput:JSON.parse($(this).attr('json'))
+				});
+			}) 
 	    },
 	    onSelect:function(index){
 	    	//$(`[index="1_${index}"]`).focus();
@@ -115,29 +132,8 @@ $( document ).ready(function() {
 	//Abre Dialod Cadastro Rápido
 	/*-----------------------------------------------------------------*/
 	$('#cadastroRapido').click(function(){
-		dialog({
-			href:'modulos/produtos/cadastroRapido.html',
-			focus:'[name="cod"]',
-			valuesInput:{},
-			onOpen:function(id){
-
-			},
-			onSave:function(params,id){
-				var save = Object.assign({salvar:'produtos'},params);
-
-				if(!params.cod)return false;
-				if(!params.produto)return false;
-				if(!params.preco)return false;
-
-				$.post( "server.php", save, function( data ) {
-					$('#'+id).dialog('close'); 
-					$('#listDeProdutos').datagrid('reload');
-					console.log(data);
-				});
-			}
-		})
+		dialogCadastroRapido();
 	})
-
 
 
 });	
@@ -155,5 +151,10 @@ $( document ).ready(function() {
 		background-color: #fff;
 		box-shadow: none;
 		border-width: 0;
+		font-size: 12px
+	}
+	.inputList .bntAcionList{
+		width: 65px;
+		margin-left: 5px;
 	}
 </style>

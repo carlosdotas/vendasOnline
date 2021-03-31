@@ -69,7 +69,24 @@
 			    ]],
 			    onSelect:function(index,row){
 			    	carrinhos.selectProduto(row);
-			    }
+			    },
+			    onDblClickRow:function(index,row){
+			        dialogCadastroRapido({
+			            valuesInput:row,
+			            onOpen:function(){
+			                desativaTeclas();
+			                $('[name="preco"]').select();
+			            },
+			            onSave:function(saveData,id){
+							carrinhos.setCarrinho(saveData);
+							carrinhos.subSelectProduto(saveData);
+							$('#'+id).dialog('close');							
+			            },			            
+			            onClose:function(){
+			                ativaTeclasPDV();
+			            }
+			        });
+			    },			    
 			});
 
 			$('#'+params.id).layout('add',{//Gera Conteudo de Carrinhos
@@ -188,11 +205,34 @@ $('#buscaPorCodigo').buscar({
 
 		if(dados.type=="cod"){
 			let server = getJSON('server.php?json=produtos&cod='+dados.val)['rows'][0];
-			produto.preco = server.preco;
-			produto.produto = server.produto;
-			produto.cod = server.cod;
+			if(server){
+				produto.preco = server.preco;
+				produto.produto = server.produto;
+				produto.cod = server.cod;
+			}else{
+
+				dialogCadastroRapido({
+					focus:'[name="produto"]',
+					valuesInput:{cod:dados.val},
+					onOpen:function(){
+						desativaTeclas();
+						googleSearch(dados.val,function(dados){
+							$('[name="produto"]').val(dados.items[1].title);
+							$('[name="preco"]').focus();
+						})						
+					},
+		            onSendProdudo:function(saveData){
+		                carrinhos.setCarrinho(saveData);
+		            },
+					onClose:function(){
+						ativaTeclasPDV();
+					}
+				});
+			}
 
 		}
+
+
 
 		if(dados.type=="money"){
 			produto.preco = dados.val;

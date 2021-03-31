@@ -50,7 +50,19 @@ $('#listaDeProdutos').datagrid({
     ]],
     onSelect:function(index,row){
 
-    }
+    },
+    onDblClickRow:function(index,row){
+        dialogCadastroRapido({
+            valuesInput:row,
+            onOpen:function(){
+                desativaTeclas();
+                $('[name="preco"]').select();
+            },
+            onClose:function(){
+                ativaTeclasPDV();
+            }
+        });
+    },
 });
 
 
