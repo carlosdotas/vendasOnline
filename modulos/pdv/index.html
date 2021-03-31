@@ -57,6 +57,109 @@ $( document ).ready(function() {
 	    href:'modulos/pdv/blocos/carrinhos.html'
 	});
 
-
 });
+
+//////Cria Buscador
+/////////////////////////////////////////////////////////////////////////////
+$('body').teclas({
+	keyDown:function(){
+
+		if (!$('#buscaPorCodigo').is(":focus")) {
+		  $('#buscaPorCodigo').select()
+		}
+
+	},
+	188:function(){ //Tecla < = Muda de Pasta de Venda para Esquerda
+
+		var tab = $('#blockCarrinhos').tabs('getSelected');
+		var index = $('#blockCarrinhos').tabs('getTabIndex',tab);			
+		$('#blockCarrinhos').tabs('select', index-1);							
+
+	},	
+	190:function(){ //Livre > Muda de Pasta de Venda para a Direita
+
+		var tab = $('#blockCarrinhos').tabs('getSelected');
+		var index = $('#blockCarrinhos').tabs('getTabIndex',tab);			
+		$('#blockCarrinhos').tabs('select', index+1);								
+
+	},	
+	Enter:function(){
+		//$('#listaDeProdutos').datalist('unselectAll');
+	},
+	F2:function(){ //Livre
+
+									
+
+	},
+	F4:function(){ //Abre nova Venda
+		
+		/*-----------------------------------------------------------------*/
+		carrinhos.set({ //Gera Contedudo de Produtos
+		    title:'Venda',
+		    id:totalVendas(),
+		    closable:true,
+		    produtos:[]    
+		});
+
+	},
+	F5:function(){ 
+
+	},
+	F9:function(){ //Imprimir
+
+		var carrinhoJson = JSON.stringify('criaCarrinhoDeCompras');				
+		postPrint(carrinhoJson,'modulos/pdv/print.php');
+
+	},	
+	Delete:function(){ //Deleta Item Selecionado
+
+		carrinhos.delCarrinho(carrinhos.getselectProduto());
+
+	},	
+	'+':function(){
+		carrinhos.setCarrinho(carrinhos.getselectProduto());
+	},
+	'/':function(){ //Remove Item
+		carrinhos.subSelectProduto(carrinhos.getselectProduto());
+	},				
+	Escape:function(){ //Limpa Campos e Fecha Vendas
+
+		if($('#buscaPorCodigo').val().length==0){	
+			var tab = $('#blockCarrinhos').tabs('getSelected');
+			var index = $('#blockCarrinhos').tabs('getTabIndex',tab);			
+			$('#blockCarrinhos').tabs('close', index);								
+		}
+
+	},
+	ArrowLeft:function(){ //Seleciona Lista Pra Esquerda
+
+		$(window.listSelected).datalist('unselectAll');
+		window.listSelected = '#listaProdutos';	
+		$(window.listSelected).datalist('selectRow',0);	
+
+	},	
+	ArrowRight:function(){ //Seleciona Lista Pra Direita
+
+		$("window.listSelected").datalist('unselectAll');
+		window.listSelected = '#'+tableSelect;
+		$(window.listSelected).datalist('selectRow',0);	
+
+	},					
+	ArrowUp:function(){ //Seleciona para Cima
+
+		var getSelected = $('#listaDeProdutos').datalist('getSelected');
+		var getRowIndex = $('#listaDeProdutos').datalist('getRowIndex',getSelected);		
+		$('#listaDeProdutos').datalist('selectRow',getRowIndex-1);	
+
+	},
+	ArrowDown:function(){ //Seleciona para Baixo
+
+		var getSelected = $('#listaDeProdutos').datalist('getSelected');
+		var getRowIndex = $('#listaDeProdutos').datalist('getRowIndex',getSelected);		
+		$('#listaDeProdutos').datalist('selectRow',getRowIndex+1);	
+
+	}
+});	
+
+
 </script>

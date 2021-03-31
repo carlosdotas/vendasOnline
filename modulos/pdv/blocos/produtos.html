@@ -1,130 +1,71 @@
 <div id="blockProdutos"></div>
 <script type="text/javascript">
-$( document ).ready(function() {
 
-	/*-----------------------------------------------------------------*/
-	const pdvProduto = new PdvProdutos({
-		fit:true,
-		onCreate:function(params){
-			$('#blockProdutos').layout(params);
-		},
-		onSet:function(params){					
-			$('#blockProdutos').layout('add',params);
-		}
-	});
-
-	/*-----------------------------------------------------------------*/
-	pdvProduto.set({
-	    region: 'north',
-	    bodyCls:'blockProdutos pdg5',
-	    content:'<input autocomplete="off" id="buscaPorCodigo">'
-	});
-	pdvProduto.set({
-	    region: 'center',
-	    border:1,
-	    content:'<div id="listaDeProdutos"></div>'
-	});
-
-	//Gera Tabela de Produtos
-	/*-----------------------------------------------------------------*/
-	$('#listaDeProdutos').datagrid({
-	    url:'server.php?json=produtos',
-	    border:0,
-	    singleSelect:true,
-	    fitColumns:true,
-	    pagination:true,
-	    fit:true,
-	    pageSize:20,
-	    columns:[[
-
-	        {
-	        	field:'imgsSelected',
-	        	title:'#',
-	        	align:'center',
-	        	width:55,
-	        	formatter: function(value,row,index){
-					return `<img src="${value}" width="55" height="55">`;
-				}
-	        },
-	        {
-	        	field:'produto',
-	        	title:'Produto',
-	        	width:250,
-	        	formatter: function(value,row,index){
-					return `
-					<b style="font-size: 14px;">${value}</b>
-					<div> Codigo: <span style="color:blue">${row.cod}</span></div>
-					<div style="font-size: 14px;">Preço: <b style="color:red">R$ ${row.preco}</b></div>
-					`;
-				}
-	        }
-	    ]]
-	});
-	
-	//Regras de Negocios do Filtro de Busca
-	/*-----------------------------------------------------------------*/
-	$('#buscaPorCodigo').select();
-	$('#buscaPorCodigo').buscar({
-		onkeyup:function(dados){
-			//cl(dados);
-
-			if(dados.type=='text'){
-				$('#listaDeProdutos').datagrid({
-					url:'server.php?json=produtos&produto='+dados.val
-				});				
-			}
-			if(dados.type=='cod'){
-				$('#listaDeProdutos').datagrid({
-					url:'server.php?json=produtos&cod='+dados.val
-				});				
-			}	
-			if(dados.type=='money'){
-				//$('#listaDeProdutos').datagrid({
-				//	url:'server.php?json=produtos&preco='+dados.val
-				//});				
-			}	
-			if(dados.type=='limpo'){
-				$('#listaDeProdutos').datagrid({
-					url:'server.php?json=produtos'
-				});				
-			}									
-		},
-		onSend:function(dados){
-
-			let produto = {};
-
-			console.log(dados);
-
-			//Regra de Negocio de Entrada no Carrinho
-			//---------------------------------------------------------------------//
-
-			if(dados.type=="cod"){
-				let server = getJSON('server.php?json=produtos&cod='+dados.val)['rows'][0];
-				produto.preco = server.preco;
-				produto.produto = server.produto;
-				produto.cod = server.cod;
-
-			}
-
-			if(dados.type=="money"){
-				produto.preco = dados.val;
-				produto.produto = 'Produto Avulso';
-				produto.cod = getCodTimer();
-			}
-
-			if(produto.cod){
-				//Adiciona Produto no Crrinho
-				//---------------------------------------------------------------------//
-				carrinhos.setCarrinho(produto);
-
-				//Seta produto na Grid
-				//---------------------------------------------------------------------//
-				$(`#list_${carrinhos.selected}`).datagrid({
-					data:(carrinhos.getCarrinho().reverse())
-				});
-			}
-
-		}		
-	})
+/*-----------------------------------------------------------------*/
+const pdvProduto = new PdvProdutos({
+	fit:true,
+	onCreate:function(params){
+		$('#blockProdutos').layout(params);
+	},
+	onSet:function(params){					
+		$('#blockProdutos').layout('add',params);
+	}
 });
+
+/*-----------------------------------------------------------------*/
+pdvProduto.set({
+    region: 'north',
+    bodyCls:'blockProdutos pdg5',
+    content:'<input autocomplete="off" id="buscaPorCodigo">'
+});
+pdvProduto.set({
+    region: 'center',
+    border:1,
+    content:'<div id="listaDeProdutos"></div>'
+});
+
+//Gera Tabela de Produtos
+/*-----------------------------------------------------------------*/
+$('#listaDeProdutos').datagrid({
+    url:'server.php?json=produtos',
+    border:0,
+    singleSelect:true,
+    fitColumns:true,
+    pagination:true,
+    fit:true,
+    pageSize:20,
+    columns:[[
+
+        {
+        	field:'imgsSelected',
+        	title:'#',
+        	align:'center',
+        	width:55,
+        	formatter: function(value,row,index){
+				return `<img src="${value}" width="55" height="55">`;
+			}
+        },
+        {
+        	field:'produto',
+        	title:'Produto',
+        	width:250,
+        	formatter: function(value,row,index){
+				return `
+				<b style="font-size: 14px;">${value}</b>
+				<div> Codigo: <span style="color:blue">${row.cod}</span></div>
+				<div style="font-size: 14px;">Preço: <b style="color:red">R$ ${row.preco}</b></div>
+				`;
+			}
+        }
+    ]],
+    onSelect:function(index,row){
+
+    }
+});
+
+
+
+
+
+
 </script>

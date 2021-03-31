@@ -323,3 +323,20 @@ function geraListaHtml(templateInt,lista){
 	}
 	return saidaHtml;
 }
+
+
+//////////////////////////////////////////////////
+//	
+//////////////////////////////////////////////////
+function totalVendas(){
+	let totalVendas = localStorage.getItem('totalVendas')-0;
+	if(!totalVendas){
+		totalVendas  = 0;
+	}
+	totalVendas++;
+	localStorage.setItem('totalVendas',totalVendas);	
+
+
+
+	return addZeroes(totalVendas);
+}

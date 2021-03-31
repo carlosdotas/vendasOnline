@@ -184,14 +184,21 @@
 (function( $ ){
 	$.fn.teclas = function(dados){
 
-
 		if(!dados.tipo)dados.tipo = "keydown";
 		$( this ).bind( dados.tipo, function(event) {
-
-
-
 			var tecla = event.originalEvent.key;
-			if(dados[tecla])dados[tecla]();
+			if(dados[tecla]){
+				event.preventDefault();
+				dados[tecla]();
+			}
+
+			var teclado = (event.which)
+			if(dados[teclado]){
+				event.preventDefault();
+				dados[teclado]();
+			}
+
+			if(dados.keyDown)dados.keyDown(tecla);
 		});
 	}
 })( jQuery );
@@ -281,6 +288,8 @@
 				switch (tecla) {
 				  case 'ArrowUp': case 'ArrowDown': case 'ArrowLeft': case 'ArrowRight':
 				  case '+': case '-': case '/': case '*':case '=':case ',':case '.':
+				  case 'Delete': 
+
 				    output.type="tecla";
 				    break;				    
 				}
@@ -293,15 +302,13 @@
 			}
 
 			if(event.which==27){	//Tecla Enter
-				$( dados.input ).focus();
 				event.preventDefault();
 				$(this).maskMoney('destroy');
 				$(this).val('');			
 				//if(dados.onSend)dados.onClean(output);	
-			}
-			if(event.which==13 || event.which==107){	//Tecla Enter
+			}		
+			if(event.which==13){	//Tecla Enter
 				event.preventDefault();
-				$( dados.input ).focus();
 				$(this).maskMoney('destroy');
 				$(this).val('');
 

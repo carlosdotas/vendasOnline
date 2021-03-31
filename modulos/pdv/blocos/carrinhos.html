@@ -3,20 +3,6 @@
 <script type="text/javascript">
 //$( document ).ready(function() {
 
-	function totalVendas(){
-		let totalVendas = localStorage.getItem('totalVendas')-0;
-		if(!totalVendas){
-			totalVendas  = 0;
-		}
-		totalVendas++;
-		localStorage.setItem('totalVendas',totalVendas);	
-	
-
-
-		return addZeroes(totalVendas);
-	}
-
-
 	/*-----------------------------------------------------------------*/
 	const carrinhos = new Carrinho({
 		fit:true,
@@ -76,7 +62,7 @@
 							return `
 							<b style="font-size: 14px;">${row.produto}</b>
 							<div> Codigo: <span style="color:blue">${row.cod}</span></div>
-							<div style="font-size: 14px;">Preço: <b style="color:red">R$ ${row.preco}</b></div>
+							<div style="font-size: 14px;">Preço: <b style="color:red">R$ ${row.preco}</b> X ${row.qnt} = <b style="color:red">R$ ${row.total}</b></div>
 							`;
 						}
 			        }
@@ -105,6 +91,13 @@
 		onSelect:function(value,index,value2){
 	    	carrinhos.selected = $('#blockCarrinhos').tabs('getSelected').attr('id');
 	    	//console.log(carrinhos.selected)
+	    },
+	    onSetCarrinho:function(){
+			//Seta produto na Grid
+			//---------------------------------------------------------------------//
+			$(`#list_${carrinhos.selected}`).datagrid({
+				data:(carrinhos.getCarrinho())
+			});	    	
 	    }
 	});
 
@@ -117,25 +110,113 @@
 	});
 
 
+//Regras de Negocios do Filtro de Busca
+/*-----------------------------------------------------------------*/
+$('#buscaPorCodigo').select();
+$('#buscaPorCodigo').buscar({
+
+	//Filtra Produto
 	/*-----------------------------------------------------------------*/
-	carrinhos.set({//Gera Contedudo de Produtos
-	    id:totalVendas(),
-	    closable:true,
-	    produtos:[]	    
-	    //href:`modulos/pdv/blocos/carrinho.html`,
-	});
+	onkeyup:function(dados){
+		//cl(dados);
+		//$('#listaDeProdutos').datalist('unselectAll');
 
+		if(dados.type=='cod'){
+			$('#listaDeProdutos').datagrid({
+				url:'server.php?json=produtos&cod='+dados.val
+			});						
+		}
 
-	
+		if(dados.type=='text' && dados.tecla!='Enter'){
+			$('#listaDeProdutos').datagrid({
+				url:'server.php?json=produtos&produto='+dados.val,
+				onLoadSuccess:function(){
+					$('#listaDeProdutos').datalist('selectRow',0);
+				}
+			});						
+		}
 
+		if(dados.type=='money'){
+			$('#listaDeProdutos').datalist('unselectAll');					
+		}
+
+		if(dados.type=='limpo'){
+			$('#listaDeProdutos').datagrid({
+				url:'server.php?json=produtos',
+				onLoadSuccess:function(){
+
+					$('#listaDeProdutos').datalist('unselectAll');
+				}
+			});	
+						
+		}									
+	},
+	//Envia Produto
 	/*-----------------------------------------------------------------*/
-	carrinhos.set({//Gera Contedudo de Produtos
-	    title:'Venda',
-	    id:totalVendas(),
-	    closable:true,
-	    produtos:[]    
-	    //href:`modulos/pdv/blocos/carrinho.html`,
-	});
+	onSend:function(dados){		
+
+
+		//Cerifica Linha Selecionada
+		//---------------------------------------------------------------------//
+		var getSelected = $('#listaDeProdutos').datalist('getSelected');
+		var getRowIndex = $('#listaDeProdutos').datalist('getRowIndex',getSelected);
+
+		if(getRowIndex>=0){
+			dados.type="cod";
+			dados.val=getSelected.cod;
+		}
+
+		if(dados.tecla=='Enter'){
+			$('#listaDeProdutos').datagrid({
+				url:'server.php?json=produtos',
+				onLoadSuccess:function(){
+					$('#listaDeProdutos').datalist('unselectAll');
+				}
+			});	
+		}
+
+		let produto = {};
+
+		//console.log(dados);
+
+		//Regra de Negocio de Entrada no Carrinho
+		//---------------------------------------------------------------------//
+
+		if(dados.type=="cod"){
+			let server = getJSON('server.php?json=produtos&cod='+dados.val)['rows'][0];
+			produto.preco = server.preco;
+			produto.produto = server.produto;
+			produto.cod = server.cod;
+
+		}
+
+		if(dados.type=="money"){
+			produto.preco = dados.val;
+			produto.produto = 'Produto Avulso';
+			produto.cod = getCodTimer();
+		}
+
+		if(dados.type=="negative"){
+			produto.preco = dados.val;
+			produto.produto = 'Pagamento';
+			produto.cod = getCodTimer();
+		}
+		
+		if(dados.type=="limpo"){
+			produto = carrinhos.getselectProduto();
+		}		
+
+		if(produto.cod){
+			
+			//Adiciona Produto no Crrinho
+			//---------------------------------------------------------------------//
+			carrinhos.setCarrinho(produto);
+
+
+
+		}
+	}		
+})
 
 
 
