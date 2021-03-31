@@ -286,6 +286,7 @@ function addZeroes(num, len=5) {
 //	})
 //////////////////////////////////////////////////
 async function googleSearch(busca,funcao,key="AIzaSyAuRFhq0UJJU9Z1ChQdKKK_8AptzM00buU"){
+	/*
 	try{		
 		let url = `https://www.googleapis.com/customsearch/v1?q=${busca}&num=10&cx=013594553343653397533:q-qkkaltmay&key=${key}&cr=countryBR&lr=lang_pt`;
 		let saida = await $.get(url,function(data){
@@ -296,6 +297,7 @@ async function googleSearch(busca,funcao,key="AIzaSyAuRFhq0UJJU9Z1ChQdKKK_8AptzM
 	} catch{
 		console.log('ERROR googleSearch');
 	}	
+	*/
 }
 
 //////////////////////////////////////////////////

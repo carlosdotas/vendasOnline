@@ -8,42 +8,30 @@ $( "body" ).unbind( "keydown");
 
 //Seta Teclas
 /*-----------------------------------------------------------------*/
+
 $('body').teclas({
 	keyDown:function(){ //Ao Precionar Qualquer Tecla Focar no Campo de busca
-		if (!$('#buscaPorCodigo').is(":focus")) {
-		  $('#buscaPorCodigo').select()
-		}
-	},
-	//Teclas por Codigo
-	/*-----------------------------------------------------------------*/	
-	188:function(){ //Tecla < = Muda de Pasta de Venda para Esquerda
-							
-	},	
-
-	//Teclas Menu
-	/*-----------------------------------------------------------------*/	
-	F2:function(){ //Livre
+		//if (!$('#buscaPorCodigo').is(":focus")) {
+		//  $('#buscaPorCodigo').select()
+		//}
 
 	},
 
-	//Teclas de Seleção de Itens
 	/*-----------------------------------------------------------------*/
-	ArrowLeft:function(){ //Seleciona Lista Pra Esquerda
-		window.listSelected = '#listaDeProdutos';	
-		$(window.listSelected).datagrid('selectRow',0);	
-	},	
-	ArrowRight:function(){ //Seleciona Lista Pra Direita
-		window.listSelected = `#list_${carrinhos.selected}`;
-		$(window.listSelected).datagrid('selectRow',0);	
-	},					
+	//ArrowLeft:function(){ //Seleciona Lista Pra Esquerda
+		//if(window.colSele<=2)window.colSele = window.colSele--;	
+	//},	
+	//ArrowRight:function(){ //Seleciona Lista Pra Direita
+		//if(window.colSele>=2)window.colSele = window.colSele--;
+	//},		
 	ArrowUp:function(){ //Seleciona para Cima
-		var getSelected = $(window.listSelected).datagrid('getSelected');
-		var getRowIndex = $(window.listSelected).datagrid('getRowIndex',getSelected);		
-		$(window.listSelected).datagrid('selectRow',getRowIndex-1);	
+		var getSelected = $('#listDeProdutos').datagrid('getSelected');
+		var getRowIndex = $('#listDeProdutos').datagrid('getRowIndex',getSelected);		
+		$('#listDeProdutos').datagrid('selectRow',getRowIndex-1);	
 	},
 	ArrowDown:function(){ //Seleciona para Baixo
-		var getSelected = $(window.listSelected).datagrid('getSelected');
-		var getRowIndex = $(window.listSelected).datagrid('getRowIndex',getSelected);		
-		$(window.listSelected).datagrid('selectRow',getRowIndex+1);	
+		var getSelected = $('#listDeProdutos').datagrid('getSelected');
+		var getRowIndex = $('#listDeProdutos').datagrid('getRowIndex',getSelected);		
+		$('#listDeProdutos').datagrid('selectRow',getRowIndex+1);	
 	}
 });	
