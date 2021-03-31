@@ -1,62 +1,20 @@
-<div id="pdvLayout"></div>
-<script type="text/javascript" src="modulos/pdv/classes/classVenda.js"></script>
-<script type="text/javascript" src="modulos/pdv/classes/classProdutos.js"></script>
+<script type="text/javascript" src="modulos/produtos/teclas.js"></script>
+<div id="layoutProdutos">produtos</div>
 <script type="text/javascript">
+//Gera Layout de PDV
+/*-----------------------------------------------------------------*/
 $( document ).ready(function() {
-
-	/*-----------------------------------------------------------------*/
-	const venda = new Vendas({
-		fit:true,
-		onCreate:function(params){
-			$('#pdvLayout').layout(params);
-		},
-		onSet:function(params){					
-			$('#pdvLayout').layout('add',params);
-		}
-	});
-
-	/*-----------------------------------------------------------------*/
-	venda.set({//Gera Menu Superior do Modulo
+	$('#layoutProdutos').layout({fit:true,});
+	$('#layoutProdutos').layout('add',{//Gera Menu Superior do Modulo
 	    region: 'north',
 	    border:0,
 	    bodyCls:'gradiente1'
 	});
-
-	venda.set({//Gera conteudo Central do Modulo
+	$('#layoutProdutos').layout('add',{//Gera conteudo Central do Modulo
 	    region: 'center',
 	    border:0,
 	    bodyCls:'sombra_Interna_foot pdg5',
 	    content:'<div id="contentPdv"></div>'
 	});
-
-
-	/*-----------------------------------------------------------------*/
-	const pdvProduto = new PdvProdutos({
-		fit:true,
-		onCreate:function(params){
-			$('#contentPdv').layout(params);
-		},
-		onSet:function(params){					
-			$('#contentPdv').layout('add',params);
-		}
-	});
-
-	/*-----------------------------------------------------------------*/
-	pdvProduto.set({//Gera Contedudo de Produtos
-	    region: 'west',
-	    width: 380,
-	    border:0,
-	    title:'Termina: CAIXA1',
-	    split:true,
-	    href:'modulos/pdv/blocos/produtos.html'
-	});
-
-	pdvProduto.set({//Gera Conteudo de Carrinhos
-	    region: 'center',
-	    border:0,
-	    href:'modulos/pdv/blocos/carrinhos.html'
-	});
-
-
-});
+});	
 </script>

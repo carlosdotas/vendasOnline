@@ -24,15 +24,17 @@ $( document ).ready(function() {
 			alert('add')
 		}
 	})
+	/*-----------------------------------------------------------------*/
 	modulos.addTools({
 		iconCls:'icon-save',
 		handler:function(){
 			alert('add')
 		}
 	})
+	/*-----------------------------------------------------------------*/
 	modulos.addTools({
 		text:'Hora:<b>06:46</b>'
-	})
+	});
 
 	/*-----------------------------------------------------------------*/
 	modulos.set({
@@ -40,17 +42,21 @@ $( document ).ready(function() {
 		title:"PDV",
 		onOpen:function(){
 			$('#buscaPorCodigo').select();
+			$.getScript( "modulos/pdv/teclas.js");
 		},
 		href:"modulos/pdv/index.html"
 	});
-
+	/*-----------------------------------------------------------------*/
 	modulos.set({
 		id:'produtos',
 		title:"Produtos",
+		onOpen:function(){
+			$.getScript( "modulos/produtos/teclas.js");
+		},		
 		selected:0,
 		href:"modulos/produtos/index.html"
 	});
-
+	/*-----------------------------------------------------------------*/
 	modulos.set({
 		id:'vendas',
 		title:"Vendas",
