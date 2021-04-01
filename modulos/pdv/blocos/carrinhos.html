@@ -204,30 +204,44 @@ $('#buscaPorCodigo').buscar({
 		//---------------------------------------------------------------------//
 
 		if(dados.type=="cod"){
-			let server = getJSON('server.php?json=produtos&cod='+dados.val)['rows'][0];
-			if(server){
-				produto.preco = server.preco;
-				produto.produto = server.produto;
-				produto.cod = server.cod;
-			}else{
 
-				dialogCadastroRapido({
-					focus:'[name="produto"]',
-					valuesInput:{cod:dados.val},
-					onOpen:function(){
-						desativaTeclas();
-						googleSearch(dados.val,function(dados){
-							$('[name="produto"]').val(dados.items[0].title);
-							$('[name="preco"]').focus();
-						})						
-					},
-		            onSendProdudo:function(saveData){
-		                carrinhos.setCarrinho(saveData);
-		            },
-					onClose:function(){
-						ativaTeclasPDV();
-					}
-				});
+
+			if(dados.val.substr(0, 1)==2){
+
+				produto.cod = getCodTimer();
+				produto.preco = (dados.val.substr(-8,7)/100).toFixed(2);
+				produto.produto = 'Produto de Balança';
+
+				if(produto.preco=='0.00'){
+					produto.preco = prompt("Qual é o Preço do Produto?").replace(",", ".");
+				}
+
+				}else{
+				let server = getJSON('server.php?json=produtos&cod='+dados.val)['rows'][0];
+				if(server){
+					produto.preco = server.preco;
+					produto.produto = server.produto;
+					produto.cod = server.cod;
+				}else{
+
+					dialogCadastroRapido({
+						focus:'[name="produto"]',
+						valuesInput:{cod:dados.val},
+						onOpen:function(){
+							desativaTeclas();
+							googleSearch(dados.val,function(dados){
+								$('[name="produto"]').val(dados.items[0].title);
+								$('[name="preco"]').focus();
+							})						
+						},
+			            onSendProdudo:function(saveData){
+			                carrinhos.setCarrinho(saveData);
+			            },
+						onClose:function(){
+							ativaTeclasPDV();
+						}
+					});
+				}
 			}
 
 		}

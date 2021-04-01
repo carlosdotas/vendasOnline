@@ -1,0 +1,44 @@
+{"modulo":{
+	"name":"vendasOnline",
+	"title":"Vendas On Line",
+	"server":"",
+	"icon":"vo",
+	"path":"./",
+	"iconCls":"home",
+	"bodyCls":"home",	
+	"versão":"1.0 Beta",
+	"modulos":[{
+		"name":"home",		
+		"title":"HOME",
+		"iconCls":"home",
+		"bodyCls":"home",
+		"tools":"",
+		"path":"modulos/home/",		
+		"href":"modulos/home/index.html"
+	},{
+		"name":"pdv",		
+		"title":"PDV",
+		"iconCls":"pdv",
+		"bodyCls":"pdv",
+		"tools":"",
+		"path":"modulos/pdv/",		
+		"href":"modulos/pdv/index.html"
+	},{
+		"name":"produtos",		
+		"title":"Produtos",
+		"iconCls":"produts",
+		"bodyCls":"produtos",
+		"tools":"",
+		"path":"modulos/produtos/",		
+		"href":"modulos/produtos/index.html"
+	},{
+		"name":"config",		
+		"title":"Configurações",
+		"iconCls":"config",
+		"bodyCls":"config",
+		"tools":"",
+		"path":"modulos/config/",		
+		"href":"modulos/config/index.html"
+	},
+	]
+}}

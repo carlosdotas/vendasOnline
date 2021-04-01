@@ -1,0 +1,17 @@
+{"modulo":{
+	"name":"configuracoes",
+	"title":"Configurações",
+	"icon":"config",
+	"pasta":"modulos/configuracoes",
+	"versão":"1.0 Beta",
+	"sub-modulos":[{
+		"name":"servidor",
+		"title":"Servidor",
+		"icon":"server",
+	},{
+		"name":"sistema",
+		"title":"Sistema",
+		"icon":"system",
+	},
+	]
+}}

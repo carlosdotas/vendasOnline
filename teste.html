@@ -4,182 +4,195 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<title>Teste</title>
+	<title>Class Carrinho Easyui + Sql</title>
+	<link rel="stylesheet" href="extension/jquery-easyui/themes/bootstrap/easyui.css">
+	<link rel="stylesheet" href="extension/jquery-easyui/themes/icon.css">
+	<link rel="stylesheet" href="extension/bootstrap-4.0.0/dist/css/bootstrap.min.css">
+	<script type="text/javascript" src="src/js/jquery.min.js"></script>
+	<script type="text/javascript" src="extension/jquery-easyui/jquery.easyui.min.js"></script>
+	<script type="text/javascript" src="extension/jquery-easyui/locale/easyui-lang-pt_BR.js"></script>	
+
+	<script type="text/javascript" src="src/classes/classSQL.js"></script>
 </head>
-<link rel="stylesheet" href="extension/jquery.mobile-1.3.2/jquery.mobile-1.3.2.css" />
-<script src="extension/jquery-1.9.1.min.js"></script>
-<script src="extension/jquery.mobile-1.3.2/jquery.mobile-1.3.2.min.js"></script>
-
-<script type="text/javascript" src="src/js/funcoes.js"></script>
-<script type="text/javascript" src="src/js/jquery.funcoes.js"></script>
 <style type="text/css">
-.ui-listview-filter, .ui-listview {
-	margin-top: 15px
-}
-.selecionado{
-	background-color: #aaa;
-	color: #fff
-}
-
 </style>
 
 <body>
-
-<div style="padding: 5px;">
-	<template>
-	    <input id="filter-for-listview" data-type="search" placeholder="Type to search...">
-	</template>
-	<ul id="produtos" data-role="listview" data-inset="true" data-filter="true" data-input="#filter-for-listview">
-	    <li><a href="#">Acura</a></li>
-	    <li><a href="#">Audi</a></li>
-	    <li><a href="#">BMW</a></li>
-	    <li><a href="#">Cadillac</a></li>
-	    <li><a href="#">Ferrari</a></li>
-	</ul>
-	<button onclick="">SET</button>
-	<button onclick="">DEL</button>
+<div class="easyui-layout" id="layout" fit="true">
+    <div data-options="region:'west',title:'West',split:true" style="padding:5px;width:200px;">
+    	<input type="" value="25" id="cod" name="">
+    	<input type="" value="Gelatiha" id="name" name="">
+    	<input type="" value="2.50" id="preco" name="">
+    	<input type="" value="1" id="qnt" name="">
+    	<button id="insert">Inserir Item</button>
+    	<button id="remove">Remove Item</button>
+    	<button id="delete">Delete Item</button>
+    </div>
+    <div data-options="region:'center',title:'center title'" style="padding:5px;background:#eee;">
+    	<div id="carrinho">Carrinho</div>
+    </div>
+    <div data-options="region:'east',title:'east',split:true" style="padding:5px;width:200px;">
+    	<input type="" value="0" id="valorTotal" name="">
+    	<input type="" value="0" id="valorPago" name="">
+    	<input type="" value="0" id="valorTroco" name="">
+    </div>
 
 </div>
-
+<style type="text/css">
+	#layout button,input{
+		width: 100%;
+		margin-bottom: 5px;
+	}
+</style>
 
 <script type="text/javascript">
+class carrinhoEasyui{
+	constructor(params={}){
 
+		/* Eventos
+		/*-----------------------------------------*/
+		this.onSet = params.onSet ? (values,values2,values3) => params.onSet(values,values2,values3) : ()=>{} ;
 
+		/* Parampetro
+		/*-----------------------------------------*/
+		this.elemento = params.elemento;
+		this.itens = [];
+		this.valorTotal = 0;
+		this.valorPago = 0;
+		this.valorTroco = 0;
 
+		/* Regras
+		/*-----------------------------------------*/
+		let paramsDataGrid = Object.assign({fit:true}, params);
 
-
-
-
-
-
-function criaCarrinho(){
-
-	let listaDeProdutos={
-
-		selected:'45254',
-		lista:{}
+		/* Execucoes
+		/*-----------------------------------------*/
+		$(this.elemento).datagrid(paramsDataGrid);	
 	}
-
-	listaDeProdutos.somarUm = (ProdutoId)=>{
-		if(listaDeProdutos.lista[ProdutoId]){
-			return ++listaDeProdutos.lista[ProdutoId].qnt;
-		}else{
-			return 1
-		}
+	forEachRows(funcao){
+		let getRows = $(this.elemento).datagrid('getRows');
+		getRows.forEach(function(vals,index){
+			funcao(vals,index)
+		});	
+		return getRows;
 	}
+	calTotal(){
 
-	listaDeProdutos.subtrairUm = (ProdutoId)=>{
-		if(listaDeProdutos.lista[ProdutoId]){
-			return --listaDeProdutos.lista[ProdutoId].qnt;
-		}
+		let valorTotal = 0;
+		let valorPago = 0;
+
+		this.forEachRows(function(vals,index){
+			if(vals.total>=0){
+				valorTotal = (valorTotal-0)+(vals.total-0);
+			}else{
+				valorPago = (valorPago-0)+(-(vals.total-0));
+			}			
+		})
+
+		this.valorTotal = (valorTotal-0).toFixed(2);
+		this.valorPago = (valorPago-0).toFixed(2);
+		this.valorTroco = (valorPago-valorTotal).toFixed(2);	
+
 	}
-
-	listaDeProdutos.setProdutoNaLista=(values)=>{
-		
-		let produtoID = values.id;
-		let produtoNome = values.nome;
-		let produtoPreco = values.preco.toFixed(2);
-		let produtoQnt = listaDeProdutos.somarUm(produtoID);
-		let produtoTotal =  (produtoQnt*values.preco).toFixed(2);
-
-		listaDeProdutos.lista[produtoID] = {
-			id:produtoID,
-			nome:produtoNome,
-			preco:produtoPreco,
-			qnt:produtoQnt,
-			total:produtoTotal,
-		}
+	delItem(params){
+		let elemento = this.elemento;
+		this.forEachRows(function(vals,index){
+			if(vals.cod==params.data.cod){
+				$(elemento).datagrid('deleteRow',index);				
+			}		
+		})
+		this.calTotal();		
+		this.onSet(params.data,this);		
 	}
+	removeItem(params){
+		let elemento = this.elemento;
 
-	listaDeProdutos.delProdutoNaLista=(values)=>{
-		delete listaDeProdutos.lista[values];
+		this.forEachRows(function(vals,index){
+			if(vals.cod==params.data.cod){
+
+				if(vals.qnt<=1)return false;
+
+				$(elemento).datagrid('deleteRow',index);				
+				params.data.qnt = (vals.qnt-0)-(params.data.qnt-0);
+
+				//params.data.qnt = (params.data.qnt-0).toFixed(3);
+				params.data.total = ((params.data.preco-0)*(params.data.qnt-0)).toFixed(2);
+
+				$(elemento).datagrid('insertRow',{
+					index: 0,	
+					row: params.data
+				});
+
+			}	
+		})	
+
+		this.calTotal();		
+		this.onSet(params.data,this);	
+
 	}
+	insertItem(params){
 
-	return listaDeProdutos;
+		let elemento = this.elemento;
+
+		this.forEachRows(function(vals,index){
+			if(vals.cod==params.data.cod){
+				$(elemento).datagrid('deleteRow',index);				
+				params.data.qnt = (params.data.qnt-0)+(vals.qnt-0);
+			}
+		});		
+
+		params.data.total = ((params.data.preco-0)*(params.data.qnt-0)).toFixed(2);
+
+		$(elemento).datagrid('insertRow',{
+			index: 0,	
+			row: params.data
+		});
+
+		this.calTotal();		
+
+		this.onSet(params.data,this);
+	}
 }
 
-const carrinho = criaCarrinho();
-carrinho.setProdutoNaLista({
-	id:45254,
-	nome:'Vaneta1',
-	preco:10.25,
+const carrinho = new carrinhoEasyui({
+	elemento:'#carrinho',
+	columns:[[
+        {field:'cod',title:'Codigo'},
+        {field:'name',title:'Nome'},
+        {field:'preco',title:'Preco',align:'right'},
+        {field:'qnt',title:'Qnt',align:'center'},
+        {field:'total',title:'Total',align:'right'},
+    ]],
+	onSet:function(row,object){
+		console.log(object);
+		$('#valorTotal').val(object.valorTotal)
+		$('#valorPago').val(object.valorPago)
+		$('#valorTroco').val(object.valorTroco)
+	}
 });
-
-carrinho.setProdutoNaLista({
-	id:45252,
-	nome:'Vaneta23',
-	preco:10.5,
-});	
-carrinho.setProdutoNaLista({
-	id:45253,
-	nome:'Vaneta24',
-	preco:0.25,
-});
-
-carrinho.subtrairUm(45253);
-carrinho.subtrairUm(45253);
-carrinho.subtrairUm(45253);
-
-carrinho.setProdutoNaLista({
-	id:45253,
-	nome:'Vaneta25',
-	preco:0.25,
-});	
-carrinho.setProdutoNaLista({
-	id:45253,
-	nome:'Vaneta26',
-	preco:0.25,
-});
-carrinho.setProdutoNaLista({
-	id:45253,
-	nome:'Vaneta27',
-	preco:0.25,
-});
-carrinho.setProdutoNaLista({
-	id:45253,
-	nome:'Vaneta28',
-	preco:0.25,
-});
-carrinho.setProdutoNaLista({
-	id:45253,
-	nome:'Vaneta29',
-	preco:2.65,
-});		
-carrinho.setProdutoNaLista({
-	id:45255,
-	nome:'Vaneta210',
-	preco:1.39,
-});
-carrinho.setProdutoNaLista({
-	id:45256,
-	nome:'Vaneta211',
-	preco:1.5,
-});
-carrinho.delProdutoNaLista(45256);	
-
-	$('#produtos').templateJquery({
-		data:carrinho.lista,
-		template:'<li><a href="#">{nome}</a></li>',
-		onRender:function(objeto){
-			console.log(objeto);
-		}
-	})
-
-
- 
-	$('li').keySeletor({
-		classSeletor:"ui-btn-hover-c",
-		classKey:'body',
-		onSelect:function(index,objeto){
-			cl(index);
-		},
-		onSend:function(index,objeto){
-			alert(objeto);
-		}
+	
+$('#insert').click(function(){
+	carrinho.insertItem({
+		data:{cod:$('#cod').val(),name:$('#name').val(),preco:$('#preco').val(),qnt:$('#qnt').val()},
 	});
+});
 
+$('#remove').click(function(){
+	carrinho.removeItem({
+		data:{cod:$('#cod').val(),name:$('#name').val(),preco:$('#preco').val(),qnt:$('#qnt').val()},
+	});
+});
 
+$('#delete').click(function(){
+	carrinho.delItem({
+		data:{cod:$('#cod').val(),name:$('#name').val(),preco:$('#preco').val(),qnt:$('#qnt').val()},
+	});
+});
 
+//sessionStorage.setItem('Produtos1', save);
+//sessionStorage.setItem('Produtos2', save);
+//localStorage.setItem('Produtos1', save);
+//localStorage.setItem('Produtos2', save);
 </script>
 </body>
 </html>
