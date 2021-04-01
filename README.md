@@ -12,6 +12,9 @@ Versão de Correções e Otimizações
  - [ ] Envio de Json do Terminl para o Servidor
  - [ ] Criação de Memoria Interna de dados
  - [ ] Desligamento de Listas em Realtime
+ - [ ] Abrir Venda Automatica
+ - [ ] Caixa Livre
+ - [ ] Tecla F2 Editar Produto em PDV
 
 ## Otimizações
  - [ ] Lista de Teclas
