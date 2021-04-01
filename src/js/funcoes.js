@@ -165,7 +165,14 @@ function postPrint(data,url){
     $('body').append('<form action="'+url+'" method="post" target="iframePrint" id="postToIframe"></form>');
     $('#postToIframe').append('<input type="hidden" name="carrinho" value=\''+data+'\' />');
     $('#postToIframe').submit().remove();;
-    document.getElementById("iframePrint").contentWindow.print();
+
+	setTimeout(function(){ 
+
+		document.getElementById("iframePrint").contentWindow.print();
+
+	}, 500);
+
+    
 
 }
 ///////////////////////////////////////////////////
@@ -183,47 +190,72 @@ function cl(value){
 ///////// Funcões  Easyui
 //////////////////////////////////////////////////
 function dialog(dataIn){
-    var id          =   mikrotime();
-    var valuesInput =   dataIn.valuesInput; delete dataIn.valuesInput;
-    var onClose     =   dataIn.onClose; delete dataIn.onClose;
-    var onOpen	    =   dataIn.onOpen; delete dataIn.onOpen;
+    
+	//Parametros
+	//---------------------------------------------------------------------//
+	let id = dataIn.id ? dataIn.id : mikrotime();
+	let valuesInput = dataIn.valuesInput ? dataIn.valuesInput : {};
+	let focus = dataIn.focus ? dataIn.focus : '';
 
-    var dataIn = unirObj({
-        title: 'Title',
-        width:  550,
-        closed: false,
-        border:  false, 
-        modal:  true,
-        buttons:[{
-            text:'Salvar',
-            id:'Salvar_'+id,
-            handler:function(){
-                var inputs = {};
-                $.each($('#form_'+id).serializeArray(), function( index, value ) {
-                    inputs[value.name]=value.value;
-                });                    
-                dataIn.onSave({
-                    id:id,
-                    inputs:inputs
-                });                    
-            }
-        },{
-            text:'Fechar',
-            handler:function(){
-                $('#'+id).dialog('close');
-            }
-        }],
-        onClose:function(){  
-            onClose();
-            $('#'+id).dialog('destroy');                
-        }
-    },dataIn);
+	//Eventos
+	//---------------------------------------------------------------------//
+	let onClose = dataIn.onClose ? (parms1) => dataIn.onClose(parms1) : ()=>{} ;
+	let onOpen = dataIn.onOpen ? (parms1) => dataIn.onOpen(parms1) : ()=>{} ;
+	let onSave = dataIn.onSave ? (parms1,parms2) => dataIn.onSave(parms1,parms2) : ()=>{} ;
+
+	//Botoens
+	//---------------------------------------------------------------------//
+	let save = {text:'Salvar',id:'Salvar_'+id,
+        handler:function(){
+            onSave(serializador(),id);
+        }}
+	let cancel = {text:'Fechar',
+        handler:function(){
+            $('#'+id).dialog('close');
+            onClose(id);
+        }}
+
+	let botoes = [save,cancel];
+
+	//Funcoes
+	//---------------------------------------------------------------------//
 
     $.get(dataIn.href, function( data ) {
-        delete dataIn.href;
-        dataIn.content = '<form style="padding:5px" id="form_'+id+'">'+data+'<form>';            
-        $('<div id="'+id+'" ></div>').dialog(dataIn);
 
+        let conteudo = '<form id="form_'+id+'">'+data+'<form>';
+        $('body').append('<div id="'+id+'" >'+conteudo+'</div>');    	
+
+        let metas = $('#'+id).parent().find('meta');
+
+		//Set Parametros
+		//---------------------------------------------------------------------//
+	    var dataIn = Object.assign({
+	        width: metas.attr('width'),
+	        height: metas.attr('height'),
+	        title: metas.attr('title'),
+	        modal:  true,
+	        buttons:botoes,
+	        onClose:function(){  
+	            onClose(id);
+	            $('#'+id).dialog('destroy');                
+	        }
+	    },dataIn);
+
+		//Senderiza Dialog
+		//---------------------------------------------------------------------//
+        $('#'+id).dialog(dataIn);
+
+        //---------------------------------------------------------------------//
+       	$("#"+id+' '+focus).focus();
+
+       	//---------------------------------------------------------------------//
+        keyUpDialog();
+        setValues();
+        onOpen(id);
+    });   
+   
+	//---------------------------------------------------------------------//
+    function keyUpDialog(){
         $( "#"+id ).keyup(function(event) {
 			if ( event.which == 27 ) {
 				$('#'+id).dialog('close');
@@ -231,16 +263,21 @@ function dialog(dataIn){
 				$('#Salvar_'+id).click();				
 			}			
 		});
-
+    }   
+	//---------------------------------------------------------------------//
+    function setValues(){
         $.each(valuesInput, function( index, value ) {
-            $('[name="'+index+'"]').val(value);
-        });
-
-        $("#"+id).parent().find('input')[0].focus();
-
-        onOpen(data);
-    });        
-
+            $("#"+id+' [name="'+index+'"]').val(value);
+        });   
+    }  
+	//---------------------------------------------------------------------//
+    function serializador(){
+    	let retorno = {};
+        $.each($('#form_'+id).serializeArray(), function( index, value ) {
+            retorno[value.name] = value.value
+        });   
+        return retorno
+    }      
 }
 
 ///////////////////////////////////////////////////
@@ -286,16 +323,13 @@ function addZeroes(num, len=5) {
 //	})
 //////////////////////////////////////////////////
 async function googleSearch(busca,funcao,key="AIzaSyAuRFhq0UJJU9Z1ChQdKKK_8AptzM00buU"){
-	try{		
-		let url = `https://www.googleapis.com/customsearch/v1?q=${busca}&num=10&cx=013594553343653397533:q-qkkaltmay&key=${key}&cr=countryBR&lr=lang_pt`;
-		let saida = await $.get(url,function(data){
-	 		return data;		 	
-	 	});
-		funcao(saida);		
-		return 	saida;	
-	} catch{
-		console.log('ERROR googleSearch');
-	}	
+		
+	let url = `https://www.googleapis.com/customsearch/v1?q=${busca}&num=10&cx=013594553343653397533:q-qkkaltmay&key=${key}&cr=countryBR&lr=lang_pt`;
+	let saida = await $.get(url,function(data){
+ 		funcao(data);			 	
+ 	});
+		
+	return 	saida;	
 }
 
 //////////////////////////////////////////////////
