@@ -81,7 +81,7 @@
 <style type="text/css">
     *{
         font-family: arial;
-        font-size: 8px;
+        font-size: 10px;
     }
     table{
         width: 100%;
