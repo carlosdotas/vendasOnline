@@ -10,19 +10,16 @@ Versão de Correções e Otimizações
  - [ ] Criação de Modulo de Consigurações 
  - [ ] Criação de Condiguração de Sincronização
  - [ ] Captura de DB do Server Online para Json no Terminal
- - [ ] Envio de Json do Terminl para o Servidor
- - [ ] Criação de Db Interno HTML
+ - [ ] Implementar de Db Interno HTML
  - [ ] Desligamento de Listas em Realtime Externa
  - [ ] Abrir Venda Automatica
- - [ ] Caixa Livre
+ - [ ] Mostrar Caixa Livre
  - [x] Tecla F2 Editar Produto em PDV
  - [ ] Incluir Produto editado no Carrinho apos Edição em F2
  - [x] Largura de campos na table PDV
- - [ ] Lista de Teclas
+ - [x] Lista de Teclas
  - [ ] Adicionar Ícones
  - [ ] Melhorar CSS de Módulos
- - [ ] Criar Objetos em Interface Easyui
- - [ ] Desligar Leitora em Tempo Real com Servidor
  - [ ] Download de Imagens do Google
  - [ ] Corrigir Imagens de Apresentação nas Lista do PDV
  
