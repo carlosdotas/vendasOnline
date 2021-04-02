@@ -7,9 +7,7 @@ https://carlosdotas.github.io/vendasOnline/
 Versão de Correções e Otimizações
 ## Correções - 01/04/2021 
  - [ ] Padronizar Modulos
- - [ ] Criação de Modulo de Consigurações 
- - [ ] Criação de Condiguração de Sincronização
- - [ ] Captura de DB do Server Online para Json no Terminal
+ - [ ] Captura de Dados do Server Online para DB interno HTML
  - [ ] Implementar de Db Interno HTML
  - [ ] Desligamento de Listas em Realtime Externa
  - [ ] Abrir Venda Automatica
