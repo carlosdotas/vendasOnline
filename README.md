@@ -23,6 +23,7 @@ Versão de Correções e Otimizações
  - [ ] Criar Objetos em Interface Easyui
  - [ ] Desligar Leitora em Tempo Real com Servidor
  - [ ] Download de Imagens do Google
+ - [ ] Corrigir Imagens de Apresentação nas Lista do PDV
  
 ## Implementações
  - [ ] Módulo de Configurações
