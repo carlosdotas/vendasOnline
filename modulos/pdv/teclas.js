@@ -28,6 +28,19 @@ function ativaTeclasPDV(){
 		},
 		F2:function(){ //Livre
 
+			console.log(carrinhos.getselectProduto())
+	        dialogCadastroRapido({
+	            valuesInput:carrinhos.getselectProduto(),
+	            onOpen:function(){
+	                desativaTeclas();
+	                $('[name="preco"]').select();
+	            },
+	            onClose:function(){
+	                $('#listaDeProdutos').datalist('reload');
+	                ativaTeclasPDV();
+	            }
+	        });
+	        
 		},
 		F4:function(){ //Abre nova Venda
 			
