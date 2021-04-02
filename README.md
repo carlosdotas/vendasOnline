@@ -25,6 +25,7 @@ Versão de Correções e Otimizações
 ## Implementações
  - [ ] Módulo de Configurações
  	 - [ ] Sincronizador
+ 	 - [ ] Configurações de Impressora
  - [ ] Módulo de Usuários
  - [ ] Módulo  de Fornecedores
  - [ ] Módulo de Clientes
