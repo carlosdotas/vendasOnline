@@ -12,7 +12,7 @@ Versão de Correções e Otimizações
  - [ ] Captura de DB do Server Online para Json no Terminal
  - [ ] Envio de Json do Terminl para o Servidor
  - [ ] Criação de Db Interno HTML
- - [ ] Desligamento de Listas em Realtime
+ - [ ] Desligamento de Listas em Realtime Externa
  - [ ] Abrir Venda Automatica
  - [ ] Caixa Livre
  - [ ] Tecla F2 Editar Produto em PDV
