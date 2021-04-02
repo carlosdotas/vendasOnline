@@ -30,7 +30,7 @@ $('#listaDeProdutos').datagrid({
         	field:'imgsSelected',
         	title:'#',
         	align:'center',
-        	width:55,
+        	width:0,
         	formatter: function(value,row,index){
 				return `<img src="${value}" width="55" height="55">`;
 			}
@@ -52,17 +52,7 @@ $('#listaDeProdutos').datagrid({
 
     },
     onDblClickRow:function(index,row){
-        dialogCadastroRapido({
-            valuesInput:row,
-            onOpen:function(){
-                desativaTeclas();
-                $('[name="preco"]').select();
-            },
-            onClose:function(){
-                $('#listaDeProdutos').datalist('reload');
-                ativaTeclasPDV();
-            }
-        });
+
     },
 });
 

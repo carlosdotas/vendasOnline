@@ -47,12 +47,13 @@ function dialogCadastroRapido(paramsIn={}){
 			if(!params.cod)return false;
 			if(!params.produto)return false;
 			if(!params.preco)return false;
+
 			if(params.preco.length>=8){
 				$('[name="preco"]').select();
 				return false;
 			}
 
-			$.post( "server.php", save, function( data ) {
+			$.post( "server.php?ref=cod:"+save.cod, save, function( data ) {
 				$('#'+id).dialog('close'); 
 				$('#listDeProdutos').datagrid('reload');
 				onSendProdudo(save);

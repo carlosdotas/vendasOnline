@@ -5,134 +5,113 @@
 
 
 
-	/*-----------------------------------------------------------------*/
-	const carrinhos = new Carrinho({
-		fit:true,
-		onCreate:function(params){
-			$('#blockCarrinhos').tabs(params);
-		},
-		onSet:function(params){	
+/*-----------------------------------------------------------------*/
+const carrinhos = new Carrinho({
+	fit:true,
+	onCreate:function(params){
+		$('#blockCarrinhos').tabs(params);
+	},
+	onSet:function(params){	
 
-			//let NunTotalVendas = totalVendas();
-			params.title='Venda: <b>'+params.id+'</b>';
-			//params.id = '_'+NunTotalVendas;
+		//let NunTotalVendas = totalVendas();
+		params.title='Venda: <b>'+params.id+'</b>';
+		//params.id = '_'+NunTotalVendas;
 
-			//carrinhos.list[params.id] = {produtos:{}};
-
-			/*-----------------------------------------------------------------*/			
-			$('#blockCarrinhos').tabs('add',params);	
-
-			/*-----------------------------------------------------------------*/
-			$('#'+params.id).layout({fit:true});
-
-			/*-----------------------------------------------------------------*/
-			$('#'+params.id).layout('add',{//Gera Contedudo de Produtos
-			    region: 'center',			    
-			    border:0,
-			   // title:'Venda:'+params.id,
-			    content:`<div id="list_${params.id}"></div>`
-			});
+		//carrinhos.list[params.id] = {produtos:{}};
 		
+		/*-----------------------------------------------------------------*/			
+		$('#blockCarrinhos').tabs('add',params);	
 
-			//Gera Tabela de Produtos
-			/*-----------------------------------------------------------------*/
-			$(`#list_${params.id}`).datagrid({
-			    border:0,
-			    singleSelect:true,
-			    fitColumns:true,
-			    pagination:true,
-			    fit:true,
-			    pageSize:20,
-			    columns:[[
+		/*-----------------------------------------------------------------*/
+		$('#'+params.id).layout({fit:true});
 
-			        {
-			        	field:'imgsSelected',
-			        	title:'#',
-			        	align:'center',
-			        	width:55,
-			        	formatter: function(value,row,index){
-							return `<img src="${value}" width="55" height="55">`;
-						}
-			        },
-			        {
-			        	field:'produto',
-			        	title:'Produto',
-			        	width:250,
-			        	formatter: function(value,row,index){
-							return `
-							<b style="font-size: 14px;">${row.produto}</b>
-							<div> Codigo: <span style="color:blue">${row.cod}</span></div>
-							<div style="font-size: 14px;">Preço: <b style="color:red">R$ ${row.preco}</b> X ${row.qnt} = <b style="color:red">R$ ${row.total}</b></div>
-							`;
-						}
-			        }
-			    ]],
-			    onSelect:function(index,row){
-			    	carrinhos.selectProduto(row);
-			    },
-			    onDblClickRow:function(index,row){
-			        dialogCadastroRapido({
-			            valuesInput:row,
-			            onOpen:function(){
-			                desativaTeclas();
-			                $('[name="preco"]').select();
-			            },
-			            onSave:function(saveData,id){
-							carrinhos.setCarrinho(saveData);
-							carrinhos.subSelectProduto(saveData);
-							$('#'+id).dialog('close');							
-			            },			            
-			            onClose:function(){
-			                ativaTeclasPDV();
-			            }
-			        });
-			    },			    
-			});
+		/*-----------------------------------------------------------------*/
+		$('#'+params.id).layout('add',{//Gera Contedudo de Produtos
+		    region: 'center',			    
+		    border:0,
+		   // title:'Venda:'+params.id,
+		    content:`<div id="list_${params.id}"></div>`
+		});
+	
 
-			$('#'+params.id).layout('add',{//Gera Conteudo de Carrinhos
-			    width: 200,
-			    title: 'Pagamento',
-			    region: 'east',
-			    border:0,
-			    bodyCls:'blockProdutos pdg5',
-			    content:`<span>Valor Total:</span>
-			    	<input id="valorTotal_${carrinhos.selected}" name="total" >
-			    	<span>Valor Pago:</span>
-			    	<input id="valorPago_${carrinhos.selected}" name="pago" >
-			    	<span>Valor Troco:</span>
-			    	<input id="valorTroco_${carrinhos.selected}" name="troco" >
-			    	<span>Cliente:</span>
-			    	<input name="cliente" >
-			    	<span>Detalhes:</span>
-			    	<input name="detalhe" >`});
+		//Gera Tabela de Produtos
+		/*-----------------------------------------------------------------*/
+		$(`#list_${params.id}`).datagrid({
+		    border:0,
+		    singleSelect:true,
+		    fitColumns:true,
+		    pagination:true,
+		    fit:true,
+		    pageSize:20,
+		    columns:[[
+
+		        {
+		        	field:'imgsSelected',
+		        	title:'#',
+		        	align:'center',
+		        	width:0,
+		        	formatter: function(value,row,index){
+						return `<img src="${value}" width="55" height="55">`;
+					}
+		        },
+		        {
+		        	field:'produto',
+		        	title:'Produto',
+		        	width:250,
+		        	formatter: function(value,row,index){
+						return `
+						<b style="font-size: 14px;">${row.produto}</b>
+						<div> Codigo: <span style="color:blue">${row.cod}</span></div>
+						<div style="font-size: 14px;">Preço: <b style="color:red">R$ ${row.preco}</b> X ${row.qnt} = <b style="color:red">R$ ${row.total}</b></div>
+						`;
+					}
+		        }
+		    ]],
+		    onSelect:function(index,row){
+		    	carrinhos.selectProduto(row);
+		    },
+		    onDblClickRow:function(index,row){
+
+		    },			    
+		});
+
+		$('#'+params.id).layout('add',{//Gera Conteudo de Carrinhos
+		    width: 200,
+		    title: 'Pagamento',
+		    region: 'east',
+		    border:0,
+		    bodyCls:'blockProdutos pdg5',
+		    content:`<span>Valor Total:</span>
+		    	<input id="valorTotal_${carrinhos.selected}" name="total" >
+		    	<span>Valor Pago:</span>
+		    	<input id="valorPago_${carrinhos.selected}" name="pago" >
+		    	<span>Valor Troco:</span>
+		    	<input id="valorTroco_${carrinhos.selected}" name="troco" >
+		    	<span>Cliente:</span>
+		    	<input name="cliente" >
+		    	<span>Detalhes:</span>
+		    	<input name="detalhe" >`});
 
 
-		},
-		onSelect:function(value,index,value2){
-	    	carrinhos.selected = $('#blockCarrinhos').tabs('getSelected').attr('id');
-	    	//console.log(carrinhos.selected)
-	    },
-	    onSetCarrinho:function(value){
-			//Seta produto na Grid
-			//---------------------------------------------------------------------//
-			$(`#list_${carrinhos.selected}`).datagrid({
-				data:(carrinhos.getCarrinho())
-			});	    
-			$(`#valorTotal_${carrinhos.selected}`).val('R$ '+value.valorTotal);	  
-			$(`#valorPago_${carrinhos.selected}`).val('R$ '+value.valorPgto);	  
-			let troco = 'R$ '+(value.valorPgto-value.valorTotal-0).toFixed(2);
-			$(`#valorTroco_${carrinhos.selected}`).val(troco);	
+	},
+	onSelect:function(value,index,value2){
+    	carrinhos.selected = $('#blockCarrinhos').tabs('getSelected').attr('id');
+    	//console.log(carrinhos.selected)
+    },
+    onSetCarrinho:function(value){
+		//Seta produto na Grid
+		//---------------------------------------------------------------------//
+		$(`#list_${carrinhos.selected}`).datagrid({
+			data:(carrinhos.getCarrinho())
+		});	    
+		$(`#valorTotal_${carrinhos.selected}`).val('R$ '+value.valorTotal);	  
+		$(`#valorPago_${carrinhos.selected}`).val('R$ '+value.valorPgto);	  
+		let troco = 'R$ '+(value.valorPgto-value.valorTotal-0).toFixed(2);
+		$(`#valorTroco_${carrinhos.selected}`).val(troco);	
 
-	    }
-	});
+    }
+});
 
-	/*-----------------------------------------------------------------*/
-	carrinhos.set({//Gera Contedudo de Produtos
-	    id:totalVendas(),
-	    closable:true,
-	    produtos:[]	    
-	    //href:`modulos/pdv/blocos/carrinho.html`,
-	});
 
 
 //Regras de Negocios do Filtro de Busca
@@ -181,9 +160,14 @@ $('#buscaPorCodigo').buscar({
 			}	
 		});								
 	},
+	
 	//Envia Produto
 	/*-----------------------------------------------------------------*/
 	onSend:function(dados){		
+
+		//Verificador de vendas Existentes
+		//---------------------------------------------------------------------//
+
 
 		//Cerifica Linha Selecionada
 		//---------------------------------------------------------------------//
@@ -196,6 +180,7 @@ $('#buscaPorCodigo').buscar({
 		}
 
 
+
 		let produto = {};
 
 		//console.log(dados);
@@ -204,30 +189,46 @@ $('#buscaPorCodigo').buscar({
 		//---------------------------------------------------------------------//
 
 		if(dados.type=="cod"){
-			let server = getJSON('server.php?json=produtos&cod='+dados.val)['rows'][0];
-			if(server){
-				produto.preco = server.preco;
-				produto.produto = server.produto;
-				produto.cod = server.cod;
-			}else{
 
-				dialogCadastroRapido({
-					focus:'[name="produto"]',
-					valuesInput:{cod:dados.val},
-					onOpen:function(){
-						desativaTeclas();
-						googleSearch(dados.val,function(dados){
-							$('[name="produto"]').val(dados.items[0].title);
-							$('[name="preco"]').focus();
-						})						
-					},
-		            onSendProdudo:function(saveData){
-		                carrinhos.setCarrinho(saveData);
-		            },
-					onClose:function(){
-						ativaTeclasPDV();
-					}
-				});
+
+			if(dados.val.substr(0, 1)==2){
+
+				produto.cod = getCodTimer();
+				produto.preco = (dados.val.substr(-8,7)/100).toFixed(2);
+				produto.produto = 'Produto de Balança';
+				produto.type = 'balanca';
+
+				if(produto.preco=='0.00'){
+					produto.preco = prompt("Qual é o Preço do Produto?").replace(",", ".");
+				}
+
+				}else{
+				let server = getJSON('server.php?json=produtos&cod='+dados.val)['rows'][0];
+				if(server){
+
+					produto = server;
+					produto.type = 'db';
+
+				}else{
+
+					dialogCadastroRapido({
+						focus:'[name="produto"]',
+						valuesInput:{cod:dados.val},
+						onOpen:function(){
+							desativaTeclas();
+							googleSearch(dados.val,function(dados){
+								$('[name="produto"]').val(dados.items[0].title);
+								$('[name="preco"]').focus();
+							})						
+						},
+			            onSendProdudo:function(saveData){
+			                carrinhos.setCarrinho(saveData);
+			            },
+						onClose:function(){
+							ativaTeclasPDV();
+						}
+					});
+				}
 			}
 
 		}
@@ -235,12 +236,14 @@ $('#buscaPorCodigo').buscar({
 
 
 		if(dados.type=="money"){
+			produto.type = dados.type;
 			produto.preco = dados.val;
 			produto.produto = 'Produto Avulso';
 			produto.cod = getCodTimer();
 		}
 
 		if(dados.type=="negative"){
+			produto.type = dados.type;
 			produto.preco = dados.val;
 			produto.produto = 'Pagamento';
 			produto.cod = getCodTimer();
@@ -263,6 +266,13 @@ $('#buscaPorCodigo').buscar({
 })
 
 
+/*-----------------------------------------------------------------*/
+carrinhos.set({//Gera Contedudo de Produtos
+    id:totalVendas(),
+    closable:true,
+    produtos:[]	    
+    //href:`modulos/pdv/blocos/carrinho.html`,
+});
 
 
 //});

@@ -28,12 +28,25 @@ function ativaTeclasPDV(){
 		},
 		F2:function(){ //Livre
 
+			console.log(carrinhos.getselectProduto())
+	        dialogCadastroRapido({
+	            valuesInput:carrinhos.getselectProduto(),
+	            onOpen:function(){
+	                desativaTeclas();
+	                $('[name="preco"]').select();
+	            },
+	            onClose:function(){
+	                $('#listaDeProdutos').datalist('reload');
+	                ativaTeclasPDV();
+	            }
+	        });
+
 		},
 		F4:function(){ //Abre nova Venda
 			
 			/*-----------------------------------------------------------------*/
 			carrinhos.set({ //Gera Contedudo de Produtos
-			    title:'Venda',
+			 //   title:'Venda',
 			    id:totalVendas(),
 			    closable:true,
 			    produtos:[]    
