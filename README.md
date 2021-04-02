@@ -20,6 +20,7 @@ Versão de Correções e Otimizações
  - [ ] Melhorar CSS de Módulos
  - [ ] Download de Imagens do Google
  - [ ] Corrigir Imagens de Apresentação nas Lista do PDV
+ - [ ] Enviar Carrinho para o db Vendas
  
 ## Implementações
  - [ ] Módulo de Configurações
