@@ -11,7 +11,7 @@ Versão de Correções e Otimizações
  - [ ] Criação de Condiguração de Sincronização
  - [ ] Captura de DB do Server Online para Json no Terminal
  - [ ] Envio de Json do Terminl para o Servidor
- - [ ] Criação de Memoria Interna de dados
+ - [ ] Criação de Db Interno HTML
  - [ ] Desligamento de Listas em Realtime
  - [ ] Abrir Venda Automatica
  - [ ] Caixa Livre
