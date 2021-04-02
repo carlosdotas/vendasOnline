@@ -22,6 +22,7 @@ Versão de Correções e Otimizações
  - [ ] Corrigir Imagens de Apresentação nas Lista do PDV
  - [ ] Enviar Carrinho para o db Vendas
  - [ ] cORES NA aBA DE VENDA
+ - [ ] Remover Selecd na lista produtos em Venda
  
 ## Implementações
  - [ ] Módulo de Configurações
