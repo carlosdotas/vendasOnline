@@ -6,6 +6,7 @@ https://carlosdotas.github.io/vendasOnline/
 ## Versão 1.0 Beta 
 Versão de Correções e Otimizações
 ## Correções - 01/04/2021 
+ - [ ] Padronizar Modulos
  - [ ] Criação de Modulo de Consigurações 
  - [ ] Criação de Condiguração de Sincronização
  - [ ] Captura de DB do Server Online para Json no Terminal
@@ -15,8 +16,7 @@ Versão de Correções e Otimizações
  - [ ] Abrir Venda Automatica
  - [ ] Caixa Livre
  - [ ] Tecla F2 Editar Produto em PDV
-
-## Otimizações
+ - [ ] Largura de campos na table PDV
  - [ ] Lista de Teclas
  - [ ] Adicionar Ícones
  - [ ] Melhorar CSS de Módulos
