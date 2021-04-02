@@ -16,7 +16,7 @@ Versão de Correções e Otimizações
  - [ ] Abrir Venda Automatica
  - [ ] Caixa Livre
  - [ ] Tecla F2 Editar Produto em PDV
- - [ ] Largura de campos na table PDV
+ - [x] Largura de campos na table PDV
  - [ ] Lista de Teclas
  - [ ] Adicionar Ícones
  - [ ] Melhorar CSS de Módulos
