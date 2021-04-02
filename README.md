@@ -21,6 +21,7 @@ Versão de Correções e Otimizações
  - [ ] Download de Imagens do Google
  - [ ] Corrigir Imagens de Apresentação nas Lista do PDV
  - [ ] Enviar Carrinho para o db Vendas
+ - [ ] cORES NA aBA DE VENDA
  
 ## Implementações
  - [ ] Módulo de Configurações
