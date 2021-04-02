@@ -15,7 +15,8 @@ Versão de Correções e Otimizações
  - [ ] Desligamento de Listas em Realtime Externa
  - [ ] Abrir Venda Automatica
  - [ ] Caixa Livre
- - [ ] Tecla F2 Editar Produto em PDV
+ - [x] Tecla F2 Editar Produto em PDV
+ - [ ] Incluir Produto editado no Carrinho apos Edição em F2
  - [x] Largura de campos na table PDV
  - [ ] Lista de Teclas
  - [ ] Adicionar Ícones
