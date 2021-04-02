@@ -40,13 +40,13 @@ function ativaTeclasPDV(){
 	                ativaTeclasPDV();
 	            }
 	        });
-	        
+
 		},
 		F4:function(){ //Abre nova Venda
 			
 			/*-----------------------------------------------------------------*/
 			carrinhos.set({ //Gera Contedudo de Produtos
-			    title:'Venda',
+			 //   title:'Venda',
 			    id:totalVendas(),
 			    closable:true,
 			    produtos:[]    

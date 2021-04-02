@@ -18,7 +18,7 @@ const carrinhos = new Carrinho({
 		//params.id = '_'+NunTotalVendas;
 
 		//carrinhos.list[params.id] = {produtos:{}};
-
+		
 		/*-----------------------------------------------------------------*/			
 		$('#blockCarrinhos').tabs('add',params);	
 
@@ -165,6 +165,10 @@ $('#buscaPorCodigo').buscar({
 	/*-----------------------------------------------------------------*/
 	onSend:function(dados){		
 
+		//Verificador de vendas Existentes
+		//---------------------------------------------------------------------//
+
+
 		//Cerifica Linha Selecionada
 		//---------------------------------------------------------------------//
 		var getSelected = $('#listaDeProdutos').datalist('getSelected');
@@ -174,6 +178,7 @@ $('#buscaPorCodigo').buscar({
 			dados.type="cod";
 			dados.val=getSelected.cod;
 		}
+
 
 
 		let produto = {};
