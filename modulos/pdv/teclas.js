@@ -74,10 +74,26 @@ function ativaTeclasPDV(){
 			carrinhos.subSelectProduto(carrinhos.getselectProduto());
 		},				
 		Escape:function(){ //Limpa Campos e Fecha Vendas
+
+
+
 			if($('#buscaPorCodigo').val().length==0){	
+
+
 				var tab = $('#blockCarrinhos').tabs('getSelected');
 				var index = $('#blockCarrinhos').tabs('getTabIndex',tab);			
-				$('#blockCarrinhos').tabs('close', index);								
+				$('#blockCarrinhos').tabs('close', index);				
+
+				var tab = $('#blockCarrinhos').tabs('getSelected');
+				if(!tab){
+					carrinhos.set({ //Gera Contedudo de Produtos
+					 //   title:'Venda',
+					    id:totalVendas(),
+					    closable:true,
+					    produtos:[]    
+					});					
+				}
+								
 			}
 		},
 		
