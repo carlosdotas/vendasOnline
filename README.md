@@ -8,6 +8,7 @@ Versão de Correções e Otimizações
 ## Correções - 01/04/2021 
  - [ ] Padronizar Modulos
  - [ ] Captura de Dados do Server Online para DB interno HTML
+ - [ ] Implementa a Class easyui table
  - [ ] Implementar de Db Interno HTML
  - [ ] Desligamento de Listas em Realtime Externa
  - [ ] Abrir Venda Automatica
@@ -21,10 +22,13 @@ Versão de Correções e Otimizações
  - [ ] Download de Imagens do Google
  - [ ] Corrigir Imagens de Apresentação nas Lista do PDV
  - [ ] Enviar Carrinho para o db Vendas
+ - [ ] cORES NA aBA DE VENDA
+ - [ ] Remover Selecd na lista produtos em Venda
  
 ## Implementações
  - [ ] Módulo de Configurações
  	 - [ ] Sincronizador
+ 	 - [ ] Configurações de Impressora
  - [ ] Módulo de Usuários
  - [ ] Módulo  de Fornecedores
  - [ ] Módulo de Clientes

@@ -18,25 +18,7 @@
 </style>
 
 <body>
-<div class="easyui-layout" id="layout" fit="true">
-    <div data-options="region:'west',title:'West',split:true" style="padding:5px;width:200px;">
-    	<input type="" value="25" id="cod" name="">
-    	<input type="" value="Gelatiha" id="name" name="">
-    	<input type="" value="2.50" id="preco" name="">
-    	<input type="" value="1" id="qnt" name="">
-    	<button id="insert">Inserir Item</button>
-    	<button id="remove">Remove Item</button>
-    	<button id="delete">Delete Item</button>
-    </div>
-    <div data-options="region:'center',title:'center title'" style="padding:5px;background:#eee;">
-    	<div id="carrinho">Carrinho</div>
-    </div>
-    <div data-options="region:'east',title:'east',split:true" style="padding:5px;width:200px;">
-    	<input type="" value="0" id="valorTotal" name="">
-    	<input type="" value="0" id="valorPago" name="">
-    	<input type="" value="0" id="valorTroco" name="">
-    </div>
-
+<div id="panel">
 </div>
 <style type="text/css">
 	#layout button,input{
@@ -46,153 +28,51 @@
 </style>
 
 <script type="text/javascript">
-class carrinhoEasyui{
-	constructor(params={}){
 
-		/* Eventos
-		/*-----------------------------------------*/
-		this.onSet = params.onSet ? (values,values2,values3) => params.onSet(values,values2,values3) : ()=>{} ;
+class easylayout{
 
-		/* Parampetro
-		/*-----------------------------------------*/
-		this.elemento = params.elemento;
-		this.itens = [];
-		this.valorTotal = 0;
-		this.valorPago = 0;
-		this.valorTroco = 0;
+	constructor(parms){
 
-		/* Regras
-		/*-----------------------------------------*/
-		let paramsDataGrid = Object.assign({fit:true}, params);
+		this.return = '';
 
-		/* Execucoes
-		/*-----------------------------------------*/
-		$(this.elemento).datagrid(paramsDataGrid);	
+		$('#'+parms.ref).panel(parms)		
+
+
+		if(typeof parms.content=='object'){
+
+			var parmsimplement = parms.content;
+
+			parmsimplement.ref = parms.ref+'_'+parmsimplement.title;
+			parms.content = '<div id="'+parms.ref+parmsimplement.title+'"></div>';
+
+			$('#'+parms.ref).panel(parms)
+
+			//new easylayout(parmsimplement);			
+		}
+
+
+
+		
 	}
-	forEachRows(funcao){
-		let getRows = $(this.elemento).datagrid('getRows');
-		getRows.forEach(function(vals,index){
-			funcao(vals,index)
-		});	
-		return getRows;
-	}
-	calTotal(){
 
-		let valorTotal = 0;
-		let valorPago = 0;
-
-		this.forEachRows(function(vals,index){
-			if(vals.total>=0){
-				valorTotal = (valorTotal-0)+(vals.total-0);
-			}else{
-				valorPago = (valorPago-0)+(-(vals.total-0));
-			}			
-		})
-
-		this.valorTotal = (valorTotal-0).toFixed(2);
-		this.valorPago = (valorPago-0).toFixed(2);
-		this.valorTroco = (valorPago-valorTotal).toFixed(2);	
-
-	}
-	delItem(params){
-		let elemento = this.elemento;
-		this.forEachRows(function(vals,index){
-			if(vals.cod==params.data.cod){
-				$(elemento).datagrid('deleteRow',index);				
-			}		
-		})
-		this.calTotal();		
-		this.onSet(params.data,this);		
-	}
-	removeItem(params){
-		let elemento = this.elemento;
-
-		this.forEachRows(function(vals,index){
-			if(vals.cod==params.data.cod){
-
-				if(vals.qnt<=1)return false;
-
-				$(elemento).datagrid('deleteRow',index);				
-				params.data.qnt = (vals.qnt-0)-(params.data.qnt-0);
-
-				//params.data.qnt = (params.data.qnt-0).toFixed(3);
-				params.data.total = ((params.data.preco-0)*(params.data.qnt-0)).toFixed(2);
-
-				$(elemento).datagrid('insertRow',{
-					index: 0,	
-					row: params.data
-				});
-
-			}	
-		})	
-
-		this.calTotal();		
-		this.onSet(params.data,this);	
-
-	}
-	insertItem(params){
-
-		let elemento = this.elemento;
-
-		this.forEachRows(function(vals,index){
-			if(vals.cod==params.data.cod){
-				$(elemento).datagrid('deleteRow',index);				
-				params.data.qnt = (params.data.qnt-0)+(vals.qnt-0);
-			}
-		});		
-
-		params.data.total = ((params.data.preco-0)*(params.data.qnt-0)).toFixed(2);
-
-		$(elemento).datagrid('insertRow',{
-			index: 0,	
-			row: params.data
-		});
-
-		this.calTotal();		
-
-		this.onSet(params.data,this);
-	}
 }
 
-const carrinho = new carrinhoEasyui({
-	elemento:'#carrinho',
-	columns:[[
-        {field:'cod',title:'Codigo'},
-        {field:'name',title:'Nome'},
-        {field:'preco',title:'Preco',align:'right'},
-        {field:'qnt',title:'Qnt',align:'center'},
-        {field:'total',title:'Total',align:'right'},
-    ]],
-	onSet:function(row,object){
-		console.log(object);
-		$('#valorTotal').val(object.valorTotal)
-		$('#valorPago').val(object.valorPago)
-		$('#valorTroco').val(object.valorTroco)
-	}
-});
-	
-$('#insert').click(function(){
-	carrinho.insertItem({
-		data:{cod:$('#cod').val(),name:$('#name').val(),preco:$('#preco').val(),qnt:$('#qnt').val()},
-	});
-});
+paneljson = {
+	ref:'panel',
+	title:'teste',
+	type:'panel',
+	fit:true,
+	content:{
+		ref:'#panel',
+		title:'teste',
+		type:'panel',
+		content:'novo',
+		fit:true,		
+	},
+}
 
-$('#remove').click(function(){
-	carrinho.removeItem({
-		data:{cod:$('#cod').val(),name:$('#name').val(),preco:$('#preco').val(),qnt:$('#qnt').val()},
-	});
-});
+const panel = new easylayout(paneljson);
 
-$('#delete').click(function(){
-	carrinho.delItem({
-		data:{cod:$('#cod').val(),name:$('#name').val(),preco:$('#preco').val(),qnt:$('#qnt').val()},
-	});
-});
-
-//sessionStorage.setItem('Produtos1', save);
-//sessionStorage.setItem('Produtos2', save);
-//localStorage.setItem('Produtos1', save);
-//localStorage.setItem('Produtos2', save);
 </script>
 </body>
 </html>
