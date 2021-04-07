@@ -11,7 +11,7 @@ Versão de Correções e Otimizações
  - [ ] Implementa a Class easyui table
  - [ ] Implementar de Db Interno HTML
  - [ ] Desligamento de Listas em Realtime Externa
- - [ ] Abrir Venda Automatica
+ - [x] Abrir Venda Automatica
  - [ ] Mostrar Caixa Livre
  - [x] Tecla F2 Editar Produto em PDV
  - [ ] Incluir Produto editado no Carrinho apos Edição em F2
