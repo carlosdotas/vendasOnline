@@ -42,7 +42,7 @@ function dialogCadastroRapido(paramsIn={}){
 
 		},
 		onSave:function(params,id){
-			var save = Object.assign({salvar:'produtos'},params);
+			var save = Object.assign({},params);
 
 			if(!params.cod)return false;
 			if(!params.produto)return false;

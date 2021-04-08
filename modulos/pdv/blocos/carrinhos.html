@@ -139,7 +139,7 @@ $('#buscaPorCodigo').buscar({
 					url:'server.php?json=produtos&produto='+dados.val,
 					onLoadSuccess:function(){
 						window.listSelected = '#listaDeProdutos';
-						$('#listaDeProdutos').datalist('selectRow',0);
+						//$('#listaDeProdutos').datalist('selectRow',0);
 					}
 				});						
 			}
