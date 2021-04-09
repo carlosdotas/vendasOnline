@@ -44,13 +44,7 @@ function ativaTeclasPDV(){
 		},
 		F4:function(){ //Abre nova Venda
 			
-			/*-----------------------------------------------------------------*/
-			carrinhos.set({ //Gera Contedudo de Produtos
-			 //   title:'Venda',
-			    id:totalVendas(),
-			    closable:true,
-			    produtos:[]    
-			});
+			tabsDeCarrinho.addAba(totalVendas());
 
 		},
 		F5:function(){ 
@@ -79,19 +73,13 @@ function ativaTeclasPDV(){
 
 			if($('#buscaPorCodigo').val().length==0){	
 
-
 				var tab = $('#blockCarrinhos').tabs('getSelected');
 				var index = $('#blockCarrinhos').tabs('getTabIndex',tab);			
 				$('#blockCarrinhos').tabs('close', index);				
 
 				var tab = $('#blockCarrinhos').tabs('getSelected');
 				if(!tab){
-					carrinhos.set({ //Gera Contedudo de Produtos
-					 //   title:'Venda',
-					    id:totalVendas(),
-					    closable:true,
-					    produtos:[]    
-					});					
+					tabsDeCarrinho.addAba(totalVendas());					
 				}
 								
 			}

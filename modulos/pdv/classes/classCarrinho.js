@@ -1,145 +1,104 @@
-class Carrinho extends classPadrao{
-	constructor(parans={}){
-		super(parans);
-
-		//---------------------------------------------------------------------//
-		//this.title='Carrinho:'
-		if(!this.id)this.id=this.codId()
-		this.dataIn=0
-		this.dataFim=0
-		this.client=0
-		this.informacoes=''
-		this.valortotal=0
-		this.valorpago=0
-		this.valortroco=0
-		this.pagamentos=[]
-
-		//Execulda Mewtdos de Entrada
-		//---------------------------------------------------------------------//
-		this.onCreate(Object.assign(this, parans));		
-		this.onSetCarrinho = parans.onSetCarrinho ? (parms1) => parans.onSetCarrinho(parms1) : ()=>{} ;
-		this.onTotal = parans.onTotal ? (parms1) => parans.onTotal(parms1) : ()=>{} ;
-	}
-	selectProduto(params){		
-		this.produtos_selected = params;		
-		//console.log(this.produtos_selected);		
+class tabsCarrinhosEasyui{	
+	constructor(params){
+		this.element  = params.element;
+		this.carrinho = {};
+		this.columns  = params.columns;
+		this.selected = 0;
+		this.itemSelected = {};
+		this.criaTab(this.element);
 	}
 
-	subSelectProduto(params){		
-		//Busca Na Lista
-		//---------------------------------------------------------------------//
-		var pos = this.list[this.selected].produtos.map(function(e) { return e.cod; });
-		var index = pos.indexOf(params.cod);
-		//Regra de Adção Caso Exista
-		//---------------------------------------------------------------------//
-		if (index > -1 && params.qnt>=2) {	
-
-			params.qnt = this.list[this.selected].produtos[index].qnt;
-			delete this.list[this.selected].produtos.splice(index, 1);
-			params.qnt--;	
-
-			//Caucula Total
-			//---------------------------------------------------------------------//
-			params.total = ((params.preco-0)*(params.qnt-0)).toFixed(2);
-			//Adiciona na Lista
-			//---------------------------------------------------------------------//
-			this.list[this.selected].produtos.push(params);
-
-
-			//Aciona O seletor
-			//---------------------------------------------------------------------//
-			this.somaTotal(params);
-					
-			//Retorna para Evento
-			//---------------------------------------------------------------------//
-			this.onSetCarrinho(this.list[this.selected]);	
-		}
+	getSelected(){
+		return this.selected
 	}
 
-	getselectProduto(){		
-		return this.produtos_selected;
+	getItemSelected(){
+		return this.itemSelected
 	}
-	delCarrinho(params){
 
-		//Busca Na Lista
-		//---------------------------------------------------------------------//
-		var pos = this.list[this.selected].produtos.map(function(e) { return e.cod; });
-		var index = pos.indexOf(params.cod);
-
-		//Seleciona e apaga
-		//---------------------------------------------------------------------//
-		if (index > -1) {
-			this.list[this.selected].produtos.splice(index, 1);
-			this.selectProduto(this.list[this.selected].produtos[index-1]);
-		}			
-
-		//Aciona O seletor
-		//---------------------------------------------------------------------//
-		this.somaTotal(params);
-
-		//Retorna para Evento
-		//---------------------------------------------------------------------//
-		this.onSetCarrinho(this.list[this.selected]);		
-	}
-	setCarrinho(params){
-
-		//Busca Na lista
-		//---------------------------------------------------------------------//
-		var pos = this.list[this.selected].produtos.map(function(e) { return e.cod; });
-		var index = pos.indexOf(params.cod);
-
-
-		//Regra de Adção Caso Exista
-		//---------------------------------------------------------------------//
-		if (index > -1) {			
-			params.qnt = this.list[this.selected].produtos[index].qnt;
-			delete this.list[this.selected].produtos.splice(index, 1);
-			params.qnt++;
-		}else{
-			params.qnt=1;
-		}
-
-		//Caucula Total
-		//---------------------------------------------------------------------//
-		params.total = ((params.preco-0)*(params.qnt-0)).toFixed(2);
-
-		//Adiciona na Lista
-		//---------------------------------------------------------------------//
-		this.list[this.selected].produtos.push(params);
-
-		//Aciona O seletor
-		//---------------------------------------------------------------------//
-		this.selectProduto(params);
-
-		//Aciona O seletor
-		//---------------------------------------------------------------------//
-		this.somaTotal(params);
-
-		//Retorna para Evento
-		//---------------------------------------------------------------------//
-		this.onSetCarrinho(this.list[this.selected]);
-	}	
-	somaTotal(){		
-		
-		let valorTotal = 0;
-		let valorPgto = 0;
-		this.list[this.selected].produtos.forEach(function(name){
-		   if((name.total-0)>=0){
-		   	valorTotal += name.total-0;
-		   }else{
-		   	valorPgto += -(name.total-0);
-		   }
+	criaTab(){
+		let select = (select)=>{ this.selected = select}
+		let element = this.element;
+		$(this.element).tabs({
+			fit:true,
+		 	onSelect:function(title,id){
+		 		let selected = $(element).tabs('getSelected').attr('id');
+		 		select(selected);
+		    }			
 		});
-		this.list[this.selected].valorTotal = valorTotal.toFixed(2);
-		this.list[this.selected].valorPgto = valorPgto.toFixed(2);
+	}
+	
+	onOpenNovaAba(id){
+		let onOpenNovoCarrinho = (id) => {this.onOpenNovoCarrinho(id)}
+
+		$(`#tab${id}`).layout({fit:true});		
+		$(`#tab${id}`).layout('add',{//Gera Contedudo de Produtos
+		    region: 'center',			    
+		    border:0,	    
+		    content:`<div id="list${id}"></div>`,
+		    onOpen:function(){
+		    	onOpenNovoCarrinho(id)
+		    }
+		});	
+		$(`#tab${id}`).layout('add',{//Gera Conteudo de Carrinhos
+		    width: 200,
+		    title: 'Pagamento',
+		    region: 'east',
+		    border:0,
+		    bodyCls:'blockProdutos pdg5',
+		    content:`<span>Valor Total:</span>
+		    	<input id="valorTotal${id}" name="total" >
+		    	<span>Valor Pago:</span>
+		    	<input id="valorPago${id}" name="pago" >
+		    	<span>Valor Troco:</span>
+		    	<input id="valorTroco${id}" name="troco" >
+		    	<span>Cliente:</span>
+		    	<input name="cliente" >
+		    	<span>Detalhes:</span>
+		    	<input name="detalhe" >`
+		});	
+	}
+	
+	onOpenNovoCarrinho(id){
 		
-		return this.list[this.selected];
+		this.carrinho['tabId'+id] = new carrinhoEasyui({
+		    border:0,
+		    singleSelect:true,
+		    fitColumns:true,
+		    pagination:true,
+		    fit:true,
+		    pageSize:20,
+			elemento:`#list${id}`,
+			columns:[this.columns],
+			onSet:function(row,object){
+				$(`#valorTotal${id}`).val(object.valorTotal)
+				$(`#valorPago${id}`).val(object.valorPago)
+				$(`#valorTroco${id}`).val(object.valorTroco)
+			}
+		});	
 	}
 
-	getCarrinho(idVenda=false){
-		if(!idVenda)idVenda=this.selected;
-		let saida = (this.list[idVenda].produtos).slice();		
-		return (saida.reverse());
-	}	
+	addAba(id){
+		let onOpenNovaAba = (id) => {this.onOpenNovaAba(id)}
+		$(this.element).tabs('add',{
+			title:`Venda ${id}`,
+			closable:true,
+			id:`tabId${id}`,
+			content:`<div id="tab${id}"></div>`,
+			onOpen:function(){
+				onOpenNovaAba(id);		
+			}
+		});	
+	}
+
+	insertItem(value){
+		//if(!value) value = this.itemSelected[this.getSelected()];		
+		this.carrinho[this.getSelected()].insertItem({
+			data:value,
+		});
+		let vals = Object.assign({}, value);
+		delete vals.qnt;
+		this.itemSelected = vals;
+	}
 
 }
