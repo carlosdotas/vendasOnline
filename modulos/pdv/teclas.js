@@ -28,15 +28,19 @@ function ativaTeclasPDV(){
 		},
 		F2:function(){ //Livre
 
-			console.log(carrinhos.getselectProduto())
+			//console.log(carrinhos.getselectProduto())
 	        dialogCadastroRapido({
-	            valuesInput:carrinhos.getselectProduto(),
+	            valuesInput:tabsDeCarrinho.getItemSelected(),
 	            onOpen:function(){
 	                desativaTeclas();
 	                $('[name="preco"]').select();
 	            },
-	            onClose:function(){
+	            onClose:function(index,row){
 	                $('#listaDeProdutos').datalist('reload');
+
+	                tabsDeCarrinho.delItem(tabsDeCarrinho.getItemSelected());
+	                tabsDeCarrinho.insertItem(row);
+	                
 	                ativaTeclasPDV();
 	            }
 	        });
@@ -59,13 +63,13 @@ function ativaTeclasPDV(){
 
 		},	
 		Delete:function(){ //Deleta Item Selecionado
-			carrinhos.delCarrinho(carrinhos.getselectProduto());
+			tabsDeCarrinho.delItem(tabsDeCarrinho.getItemSelected());
 		},	
 		'+':function(){
-			carrinhos.setCarrinho(carrinhos.getselectProduto());
+			tabsDeCarrinho.insertItem(tabsDeCarrinho.getItemSelected());
 		},
 		'/':function(){ //Remove Item
-			carrinhos.subSelectProduto(carrinhos.getselectProduto());
+			tabsDeCarrinho.removeItem(tabsDeCarrinho.getItemSelected());
 		},				
 		Escape:function(){ //Limpa Campos e Fecha Vendas
 
@@ -88,11 +92,13 @@ function ativaTeclasPDV(){
 		//Teclas de Seleção de Itens
 		/*-----------------------------------------------------------------*/
 		ArrowLeft:function(){ //Seleciona Lista Pra Esquerda
+			$(window.listSelected).datalist('unselectAll');
 			window.listSelected = '#listaDeProdutos';	
 			$(window.listSelected).datagrid('selectRow',0);	
 		},	
 		ArrowRight:function(){ //Seleciona Lista Pra Direita
-			window.listSelected = `#list_${carrinhos.selected}`;
+			$(window.listSelected).datalist('unselectAll');
+			window.listSelected = `#list${tabsDeCarrinho.getSelected()}`;
 			$(window.listSelected).datagrid('selectRow',0);	
 		},					
 		ArrowUp:function(){ //Seleciona para Cima

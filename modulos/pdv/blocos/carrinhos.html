@@ -1,5 +1,4 @@
-<script type="text/javascript" src="modulos/pdv/classes/classCarrinho.js"></script>
-<script type="text/javascript" src="modulos/pdv/classCarrinhoEasyui.js"></script>
+<script type="text/javascript" src="modulos/pdv/classTabs.CarrinhoEasyui.js"></script>
 <div id="blockCarrinhos"></div>
 <script type="text/javascript">
 //$( document ).ready(function() {
@@ -35,18 +34,18 @@ $('#buscaPorCodigo').buscar({
 
 
 		if(dados.type=='money'){
-			$('#listaDeProdutos').datalist('unselectAll');					
+			$(window.listSelected).datalist('unselectAll');					
 		}
 
 		if(dados.type=="negative"){
-			$('#listaDeProdutos').datalist('unselectAll');	
+			$(window.listSelected).datalist('unselectAll');	
 		}
 
 		if(dados.type=='limpo'){
 			$('#listaDeProdutos').datagrid({
 				url:'server.php?json=produtos',
 				onLoadSuccess:function(){
-					$('#listaDeProdutos').datalist('unselectAll');
+					$(window.listSelected).datalist('unselectAll');
 				}
 			});							
 		}			
@@ -81,13 +80,6 @@ $('#buscaPorCodigo').buscar({
 
 		//Cerifica Linha Selecionada
 		//---------------------------------------------------------------------//
-		var getSelected = $('#listaDeProdutos').datalist('getSelected');
-		var getRowIndex = $('#listaDeProdutos').datalist('getRowIndex',getSelected);
-
-		if(getRowIndex>=0 && dados.type!="cod"){
-			dados.type="cod";
-			dados.val=getSelected.cod;
-		}
 
 
 
@@ -97,6 +89,20 @@ $('#buscaPorCodigo').buscar({
 
 		//Regra de Negocio de Entrada no Carrinho
 		//---------------------------------------------------------------------//
+		var getSelected = $(window.listSelected).datalist('getSelected');
+		var getRowIndex = $(window.listSelected).datalist('getRowIndex',getSelected);
+
+		if(
+			getRowIndex>=0 && dados.type!="cod"){
+			dados.type="select";
+			produto = getSelected;
+			//let vals = Object.assign({}, getSelected);
+			if(produto.qnt>=2)produto.qnt =produto.qnt / 2;
+			//tabsDeCarrinho.insertItem(vals);
+			//return false;
+			//dados.val=getSelected.cod;
+		}
+
 
 		if(dados.type=="cod"){
 
@@ -113,33 +119,36 @@ $('#buscaPorCodigo').buscar({
 				}
 
 				}else{
-				let server = getJSON('server.php?json=produtos&cod='+dados.val)['rows'][0];
-				if(server){
 
-					produto = server;
-					produto.type = 'db';
+					let server = getJSON('server.php?json=produtos&cod='+dados.val)['rows'][0];
 
-				}else{
+					if(server){
 
-					dialogCadastroRapido({
-						focus:'[name="produto"]',
-						valuesInput:{cod:dados.val},
-						onOpen:function(){
-							desativaTeclas();
-							googleSearch(dados.val,function(dados){
-								$('[name="produto"]').val(dados.items[0].title);
-								$('[name="preco"]').focus();
-							})						
-						},
-			            onSendProdudo:function(saveData){
-			                carrinhos.setCarrinho(saveData);
-			            },
-						onClose:function(){
-							ativaTeclasPDV();
-						}
-					});
+						produto = server;
+						produto.type = 'db';
+
+					}else{
+
+						dialogCadastroRapido({
+							focus:'[name="produto"]',
+							valuesInput:{cod:dados.val},
+							onOpen:function(){
+								desativaTeclas();
+								googleSearch(dados.val,function(dados){
+									$('[name="produto"]').val(dados.items[0].title);
+									$('[name="preco"]').focus();
+								})						
+							},
+				            onSendProdudo:function(saveData){
+				            	saveData.name=saveData.produto;
+				            	tabsDeCarrinho.insertItem(saveData);
+				            },
+							onClose:function(){
+								ativaTeclasPDV();
+							}
+						});
+					}
 				}
-			}
 
 		}
 

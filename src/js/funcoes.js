@@ -199,7 +199,7 @@ function dialog(dataIn){
 
 	//Eventos
 	//---------------------------------------------------------------------//
-	let onClose = dataIn.onClose ? (parms1) => dataIn.onClose(parms1) : ()=>{} ;
+	let onClose = dataIn.onClose ? (parms1,parms2) => dataIn.onClose(parms1,parms2) : ()=>{} ;
 	let onOpen = dataIn.onOpen ? (parms1) => dataIn.onOpen(parms1) : ()=>{} ;
 	let onSave = dataIn.onSave ? (parms1,parms2) => dataIn.onSave(parms1,parms2) : ()=>{} ;
 
@@ -236,7 +236,7 @@ function dialog(dataIn){
 	        modal:  true,
 	        buttons:botoes,
 	        onClose:function(){  
-	            onClose(id);
+	            onClose(id,serializador());
 	            $('#'+id).dialog('destroy');                
 	        }
 	    },dataIn);
