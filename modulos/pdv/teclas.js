@@ -1,11 +1,11 @@
 //Tecla de Comando do Sistema
 /*-----------------------------------------------------------------*/
+desativaTeclas();
 ativaTeclasPDV();
 
 //Seta Teclas
 /*-----------------------------------------------------------------*/
-function ativaTeclasPDV(){
-	desativaTeclas();
+function ativaTeclasPDV(){	
 
 	$('body').teclas({
 		keyDown:function(){ //Ao Precionar Qualquer Tecla Focar no Campo de busca

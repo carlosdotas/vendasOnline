@@ -2,7 +2,7 @@
 /*
 * Dotas Sistemas 
 * Carlos Henrique Silva Dotas < carlosdotas@gmail.com >
-* fone: 62 996689253
+* fone: 62 996157340
 * http://www.dotas.com.br/
 */
 include_once('config.php');

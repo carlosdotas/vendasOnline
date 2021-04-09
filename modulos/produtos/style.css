@@ -1,0 +1,18 @@
+.blocoDeFiltros{
+	background-color: #eee;
+}
+.blocoDeFiltros input,button{
+	margin-bottom: 5px;
+	width: 100%;
+}	
+.inputList input{
+	width: 100%;
+	background-color: #fff;
+	box-shadow: none;
+	border-width: 0;
+	font-size: 12px
+}
+.inputList .bntAcionList{
+	width: 65px;
+	margin-left: 5px;
+}

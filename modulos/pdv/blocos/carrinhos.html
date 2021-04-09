@@ -3,8 +3,6 @@
 <script type="text/javascript">
 //$( document ).ready(function() {
 
-
-
 /*-----------------------------------------------------------------*/
 const carrinhos = new Carrinho({
 	fit:true,
@@ -112,27 +110,45 @@ const carrinhos = new Carrinho({
     }
 });
 
-
-
 //Regras de Negocios do Filtro de Busca
 /*-----------------------------------------------------------------*/
 $('#buscaPorCodigo').select();
 $('#buscaPorCodigo').buscar({
 
-	//Filtra Produto
+	//Filtra Produto ao Digitar Teclas
 	/*-----------------------------------------------------------------*/
 	onkeyup:function(dados){
 		//cl(dados);
 		//$('#listaDeProdutos').datalist('unselectAll');
 
-		if(dados.sizer<=2)return false;
+		if(dados.sizer<=1)return false;
+		
+		if(dados.type=='cod'){
+			$('#listaDeProdutos').datagrid({
+				url:'server.php?json=produtos&cod='+dados.val
+			});						
+		}
+
+		if(dados.type=='money'){
+			$('#listaDeProdutos').datalist('unselectAll');					
+		}
+
+		if(dados.type=="negative"){
+			$('#listaDeProdutos').datalist('unselectAll');	
+		}
+
+		if(dados.type=='limpo'){
+			$('#listaDeProdutos').datagrid({
+				url:'server.php?json=produtos',
+				onLoadSuccess:function(){
+					$('#listaDeProdutos').datalist('unselectAll');
+				}
+			});							
+		}			
+
 		$().Deley(function(){
 
-			if(dados.type=='cod'){
-				$('#listaDeProdutos').datagrid({
-					url:'server.php?json=produtos&cod='+dados.val
-				});						
-			}
+
 		
 			if(dados.type=='text' && dados.tecla!='Enter'){
 				$('#listaDeProdutos').datagrid({
@@ -144,20 +160,9 @@ $('#buscaPorCodigo').buscar({
 				});						
 			}
 
-			if(dados.type=='money'){
-				$('#listaDeProdutos').datalist('unselectAll');					
-			}
 
-			if(dados.type=='limpo'){
-				$('#listaDeProdutos').datagrid({
-					url:'server.php?json=produtos',
-					onLoadSuccess:function(){
 
-						$('#listaDeProdutos').datalist('unselectAll');
-					}
-				});	
-							
-			}	
+
 		});								
 	},
 	

@@ -1,11 +1,10 @@
 <?php
+include_once('funcoes.php');
+
 if($_GET['json']){
 	$_GET['ordem'] = 'produto';
 	$_GET['direc'] = 'asc';	
 }
-
-
-include_once('funcoes.php');
 
 if($_POST[cod]){
 	unset($_POST[produtos_id]);
