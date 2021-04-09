@@ -26,13 +26,9 @@ $('#buscaPorCodigo').buscar({
 
 	//Filtra Produto ao Digitar Teclas
 	onkeyup:function(dados){
-		//cl(dados);
-		//$('#listaDeProdutos').datalist('unselectAll');
 
 		if(dados.sizer<=1)return false;
 		
-
-
 		if(dados.type=='money'){
 			$(window.listSelected).datalist('unselectAll');					
 		}

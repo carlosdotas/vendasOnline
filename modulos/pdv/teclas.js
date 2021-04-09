@@ -39,8 +39,9 @@ function ativaTeclasPDV(){
 	                $('#listaDeProdutos').datalist('reload');
 
 	                tabsDeCarrinho.delItem(tabsDeCarrinho.getItemSelected());
+	                row.name = row.produto;
 	                tabsDeCarrinho.insertItem(row);
-	                
+
 	                ativaTeclasPDV();
 	            }
 	        });
