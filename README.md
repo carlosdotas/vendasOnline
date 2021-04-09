@@ -24,6 +24,7 @@ Versão de Correções e Otimizações
  - [ ] Enviar Carrinho para o db Vendas
  - [ ] cORES NA aBA DE VENDA
  - [ ] Remover Selecd na lista produtos em Venda
+ - [ ] Salvar e Renderizar Imagens Buscadas
  
 ## Implementações
  - [ ] Módulo de Configurações
