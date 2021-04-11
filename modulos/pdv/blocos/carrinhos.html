@@ -70,21 +70,9 @@ $('#buscaPorCodigo').buscar({
 	//Envia Produto
 	onSend:function(dados){		
 
-		//Verificador de vendas Existentes
-		//---------------------------------------------------------------------//
-
-
-		//Cerifica Linha Selecionada
-		//---------------------------------------------------------------------//
-
-
-
 		let produto = {};
 
 		//console.log(dados);
-
-		//Regra de Negocio de Entrada no Carrinho
-		//---------------------------------------------------------------------//
 		var getSelected = $(window.listSelected).datalist('getSelected');
 		var getRowIndex = $(window.listSelected).datalist('getRowIndex',getSelected);
 
@@ -92,11 +80,7 @@ $('#buscaPorCodigo').buscar({
 			getRowIndex>=0 && dados.type!="cod"){
 			dados.type="select";
 			produto = getSelected;
-			//let vals = Object.assign({}, getSelected);
 			if(produto.qnt>=2)produto.qnt =produto.qnt / 2;
-			//tabsDeCarrinho.insertItem(vals);
-			//return false;
-			//dados.val=getSelected.cod;
 		}
 
 
@@ -167,21 +151,14 @@ $('#buscaPorCodigo').buscar({
 		if(dados.type=="limpo"){
 
 			//if(tabsDeCarrinho.getItemSelected());
-
 			tabsDeCarrinho.insertItem(tabsDeCarrinho.getItemSelected())
-			//produto = carrinhos.getselectProduto();
 		}		
 
 		if(produto.cod){
 			
 			//Adiciona Produto no Crrinho
-			//---------------------------------------------------------------------//
-
 			produto.name = produto.produto; 
 			tabsDeCarrinho.insertItem(produto);
-			//carrinhos.setCarrinho(produto);
-			//window.listSelected = `#list_${carrinhos.selected}`;
-			//$(window.listSelected).datagrid('selectRow',0);	
 
 		}
 	}		
