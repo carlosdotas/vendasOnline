@@ -7,6 +7,8 @@ class tabsCarrinhosEasyui{
 		this.columns  = params.columns;
 		this.selected = 0;
 		this.itemSelected = {};
+		this.datagridSelected = '';
+		this.rowSelected = '';
 		this.criaTab(this.element);
 	}
 
@@ -14,28 +16,36 @@ class tabsCarrinhosEasyui{
 		return this.selected
 	}
 
+	getDatagridSelected(){
+		return this.datagridSelected
+	}
+	setDatagridSelected(id){
+		this.datagridSelected = id;
+	}
+
 	getItemSelected(){
 		return this.itemSelected
 	}
-
 	setItemSelected(value){
 		this.itemSelected = value;
 	}
 
 	criaTab(){
 		let select = (select)=>{ this.selected = select}
+		let setDatagridSelected = (id) => {this.setDatagridSelected(`datagrid${id}`)}
 		let element = this.element;
 		$(this.element).tabs({
 			fit:true,
 		 	onSelect:function(title,id){
-		 		let selected = $(element).tabs('getSelected').attr('id');
+		 		let selected = $(element).tabs('getSelected').attr('id');		 		
 		 		select(selected);
+		 		setDatagridSelected(selected);
 		    }			
 		});
 	}
 	
 	onOpenNovaAba(id){
-		let onOpenNovoCarrinho = (id) => {this.onOpenNovoCarrinho(id)}
+		let onOpenNovoCarrinho = (id) => {this.onOpenNovoCarrinho(id)}	
 
 		$(`#tab${id}`).layout({fit:true});		
 		$(`#tab${id}`).layout('add',{//Gera Contedudo de Produtos
@@ -46,6 +56,7 @@ class tabsCarrinhosEasyui{
 		    	onOpenNovoCarrinho(id)
 		    }
 		});	
+
 		$(`#tab${id}`).layout('add',{//Gera Conteudo de Carrinhos
 		    width: 200,
 		    title: 'Pagamento',
@@ -66,8 +77,9 @@ class tabsCarrinhosEasyui{
 	}
 	
 	onOpenNovoCarrinho(id){
+		let datagrid = 'datagrid'+id;
 		let onSelect = (id) => {this.setItemSelected(id)}
-		this.carrinho[''+id] = new carrinhoEasyui({
+		this.carrinho[datagrid] = new carrinhoEasyui({
 		    border:0,
 		    singleSelect:true,
 		    fitColumns:true,
@@ -76,6 +88,9 @@ class tabsCarrinhosEasyui{
 		    pageSize:20,
 			elemento:`#list${id}`,
 			columns:[this.columns],
+			onOpen:function(){
+				
+			},
 			onSelect:function(index,row){
 				onSelect(row);
 			},
@@ -84,9 +99,9 @@ class tabsCarrinhosEasyui{
 				$(`#valorPago${id}`).val(object.valorPago)
 				$(`#valorTroco${id}`).val(object.valorTroco)
 			}
-		});	
+		});
+			
 	}
-
 	addAba(id){
 		let onOpenNovaAba = (id) => {this.onOpenNovaAba(id)}
 		$(this.element).tabs('add',{
@@ -102,12 +117,13 @@ class tabsCarrinhosEasyui{
 
 	insertItem(value){
 		//if(!value) value = this.itemSelected[this.getSelected()];		
-		this.carrinho[this.getSelected()].insertItem({
+		this.carrinho[this.getDatagridSelected()].insertItem({
 			data:value,
 		});
 		let vals = Object.assign({}, value);
 		delete vals.qnt;
 		this.itemSelected = vals;
+
 	}
 
 	removeItem(value){
@@ -115,7 +131,7 @@ class tabsCarrinhosEasyui{
 		let vals = Object.assign({}, value);
 		vals.qnt = 1;
 
-		this.carrinho[this.getSelected()].removeItem({
+		this.carrinho[this.getDatagridSelected()].removeItem({
 			data:vals,
 		});
 
@@ -123,12 +139,14 @@ class tabsCarrinhosEasyui{
 
 	delItem(value){
 		//if(!value) value = this.itemSelected[this.getSelected()];	
-		this.carrinho[this.getSelected()].delItem({
+		this.carrinho[this.getDatagridSelected()].delItem({
 			data:value,
 		});
 
 	}
+	selectRow(index){
 
+	}
 }
 
 
@@ -148,6 +166,7 @@ class carrinhoEasyui{
 		this.valorTotal = 0;
 		this.valorPago = 0;
 		this.valorTroco = 0;
+		this.rowSelected = 0;
 
 		/* Regras
 		/*-----------------------------------------*/
@@ -218,6 +237,13 @@ class carrinhoEasyui{
 		this.onSet(params.data,this);	
 
 	}
+	getRowSelected(){		
+		return this.rowSelected;		
+	}	
+	setRowSelected(index){		
+		this.rowSelected = index;
+		$(this.elemento).datagrid('selectRow',index);
+	}
 	insertItem(params){
 
 		let elemento = this.elemento;
@@ -240,6 +266,8 @@ class carrinhoEasyui{
 			index: 0,	
 			row: params.data
 		});
+
+		this.setRowSelected(0);
 
 		this.calTotal();		
 
