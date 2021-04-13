@@ -60,7 +60,7 @@
         </tr>
         <tr>
             <td align="left" class="LP" width="150">VALOR PAGO</td>
-            <td class="right LP"><b> R$ <?php if($carrinho[valorPgto]){echo $carrinho[valorPgto];}else{echo $carrinho[subTotal];}; ?> </b></td>
+            <td class="right LP"><b> R$ <?php if($carrinho[valorPgto]){echo $carrinho[valorPgto]; }else{echo $carrinho[subTotal]; }; ?> </b></td>
         </tr>
         <tr>
             <td align="left" class="LP" width="150">TROCO</td>
