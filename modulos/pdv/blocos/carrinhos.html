@@ -7,9 +7,11 @@
 const carrinhos = new Carrinho({
 	fit:true,
 	onCreate:function(params){
-		$('#blockCarrinhos').tabs(params);
+		$('#blockCarrinhos').tabs(params);		
 	},
 	onSet:function(params){	
+
+		
 
 		//let NunTotalVendas = totalVendas();
 		params.title='Venda: <b>'+params.id+'</b>';
@@ -106,6 +108,7 @@ const carrinhos = new Carrinho({
 		$(`#valorPago_${carrinhos.selected}`).val('R$ '+value.valorPgto);	  
 		let troco = 'R$ '+(value.valorPgto-value.valorTotal-0).toFixed(2);
 		$(`#valorTroco_${carrinhos.selected}`).val(troco);	
+
 
     }
 });
