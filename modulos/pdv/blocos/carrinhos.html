@@ -7,7 +7,11 @@
 const carrinhos = new Carrinho({
 	fit:true,
 	onCreate:function(params){
-		$('#blockCarrinhos').tabs(params);		
+		$('#blockCarrinhos').tabs(params);	
+
+
+
+
 	},
 	onSet:function(params){	
 
@@ -109,6 +113,10 @@ const carrinhos = new Carrinho({
 		let troco = 'R$ '+(value.valorPgto-value.valorTotal-0).toFixed(2);
 		$(`#valorTroco_${carrinhos.selected}`).val(troco);	
 
+
+		//Salva Carrinhos
+		jsonStorage.setItem('carrinhos',carrinhos);
+		
 
     }
 });
@@ -282,6 +290,11 @@ carrinhos.set({//Gera Contedudo de Produtos
     //href:`modulos/pdv/blocos/carrinho.html`,
 });
 
+/*
+//Lê Carrinhos Salvo;
+var loadCarrinhos = jsonStorage.getItem('carrinhos');	
 
+console.log(loadCarrinhos);
+*/
 //});
 </script>

@@ -425,19 +425,17 @@ function dialogCadastroRapido(paramsIn={}){
 	},params))		
 }
 
-function jsonStorage(){
-
-	return {
-
-	    setItem: function (key,value) {
-			localStorage.setItem(key, JSON.stringify(value));
-			return JSON.parse(localStorage.getItem(key));
-	    },
-	    getItem: function (key) {
-	        return JSON.parse(localStorage.getItem(key));
-	    }
-	}
-
+var jsonStorage = {
+    setItem: function (key,value) {
+		localStorage.setItem(key, JSON.stringify(value));
+		return JSON.parse(localStorage.getItem(key));
+    },
+    getItem: function (key,subkey) {
+    	let json = JSON.parse(localStorage.getItem(key));
+    	if(subkey){
+    		return json[subkey];
+    	}else{
+    		return json;
+    	}
+    }
 }
-
-jsonStorage.setItem('teste',{teste:'Simples'})
