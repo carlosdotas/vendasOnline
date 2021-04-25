@@ -39,7 +39,82 @@
         <b style="font-size: 30px">/UN</b>
     </div>
 </center>
-  
+ 
+ <center id="preco">
+    <h1 style="font-size: 16px">SERVE MAIS COM PREÇO E QUALIDADE</h1>    
+    <div >
+        <div style="font-size: 20px">De:</div>
+        <b style="font-size: 20px">R$</b>
+        <b style="font-size: 40px; text-decoration: line-through"> 35,99</b>
+        <b style="font-size: 30px">/UN</b>
+    </div>
+    <div >
+        <div style="font-size: 20px">Por:</div>
+        <b style="font-size: 30px">R$</b>
+        <b style="font-size: 60px"> 25,99</b>
+        <b style="font-size: 30px">/UN</b>
+    </div>
+</center>
+<center id="preco">
+    <h1 style="font-size: 16px">SERVE MAIS COM PREÇO E QUALIDADE</h1>    
+    <div >
+        <div style="font-size: 20px">De:</div>
+        <b style="font-size: 20px">R$</b>
+        <b style="font-size: 40px; text-decoration: line-through"> 35,99</b>
+        <b style="font-size: 30px">/UN</b>
+    </div>
+    <div >
+        <div style="font-size: 20px">Por:</div>
+        <b style="font-size: 30px">R$</b>
+        <b style="font-size: 60px"> 25,99</b>
+        <b style="font-size: 30px">/UN</b>
+    </div>
+</center>
+<center id="preco">
+    <h1 style="font-size: 16px">SERVE MAIS COM PREÇO E QUALIDADE</h1>    
+    <div >
+        <div style="font-size: 20px">De:</div>
+        <b style="font-size: 20px">R$</b>
+        <b style="font-size: 40px; text-decoration: line-through"> 35,99</b>
+        <b style="font-size: 30px">/UN</b>
+    </div>
+    <div >
+        <div style="font-size: 20px">Por:</div>
+        <b style="font-size: 30px">R$</b>
+        <b style="font-size: 60px"> 25,99</b>
+        <b style="font-size: 30px">/UN</b>
+    </div>
+</center>
+<center id="preco">
+    <h1 style="font-size: 16px">SERVE MAIS COM PREÇO E QUALIDADE</h1>    
+    <div >
+        <div style="font-size: 20px">De:</div>
+        <b style="font-size: 20px">R$</b>
+        <b style="font-size: 40px; text-decoration: line-through"> 35,99</b>
+        <b style="font-size: 30px">/UN</b>
+    </div>
+    <div >
+        <div style="font-size: 20px">Por:</div>
+        <b style="font-size: 30px">R$</b>
+        <b style="font-size: 60px"> 25,99</b>
+        <b style="font-size: 30px">/UN</b>
+    </div>
+</center>
+<center id="preco">
+    <h1 style="font-size: 16px">SERVE MAIS COM PREÇO E QUALIDADE</h1>    
+    <div >
+        <div style="font-size: 20px">De:</div>
+        <b style="font-size: 20px">R$</b>
+        <b style="font-size: 40px; text-decoration: line-through"> 35,99</b>
+        <b style="font-size: 30px">/UN</b>
+    </div>
+    <div >
+        <div style="font-size: 20px">Por:</div>
+        <b style="font-size: 30px">R$</b>
+        <b style="font-size: 60px"> 25,99</b>
+        <b style="font-size: 30px">/UN</b>
+    </div>
+</center> 
 <style type="text/css">
     *{
         font-family: arial;
